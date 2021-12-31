@@ -30,3 +30,26 @@
 *.exe
 *.out
 *.app
+
+# Ouput Dir
+/build
+
+# specific folders
+/vs/.vs/
+/vs/AdditionalPylons/Debug/
+/vs/AdditionalPylons/Release/
+/vs/AdditionalPylons_client/Debug/
+/vs/AdditionalPylons_client/Release/
+/.vscode/
+
+# vs specific files
+*.user
+*.tlog
+*.lastbuildstate
+*.recipe
+*.ilk
+*.idb
+*.pdb
+*.log
+*.iobj
+*.ipdb
