@@ -13,15 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{c33ae4c6-9e73-4fe9-b721-8c4af8b3968e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\Placement">
+      <UniqueIdentifier>{31a9e405-efe3-440f-b60a-ed4f201527ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Map\Placement\Placement.cpp">
+      <Filter>Source Files\Map\Placement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\Placement\Placement.h">
+      <Filter>Source Files\Map\Placement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
