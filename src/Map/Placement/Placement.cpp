@@ -1,6 +1,6 @@
 #include "Placement.h"
 
-#include <unordered_set>
+#include <set>
 #include <queue>
 
 namespace Placement {
@@ -15,7 +15,7 @@ namespace Placement {
 		BWAPI::TilePosition start = BWAPI::Broodwar->self()->getStartLocation();
 		BWAPI::TilePosition mapSize = BWAPI::TilePosition(BWAPI::Broodwar->mapWidth(), BWAPI::Broodwar->mapHeight());
 
-		std::unordered_set<BWAPI::TilePosition> visited;
+		std::set<BWAPI::TilePosition> visited;
 		std::queue<BWAPI::TilePosition> posQueue({start});
 		while (!posQueue.empty()) {
 			auto pos = posQueue.front();
