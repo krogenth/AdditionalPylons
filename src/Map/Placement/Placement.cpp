@@ -27,11 +27,11 @@ namespace Placement {
 
 			if ((pos.x > 1) && (visited.find(BWAPI::TilePosition(pos.x - 1, pos.y)) != visited.end()))
 				posQueue.push(BWAPI::TilePosition(pos.x - 1, pos.y));
-			if ((pos.x > 1) && (visited.find(BWAPI::TilePosition(pos.x + 1, pos.y)) != visited.end()))
+			if ((pos.x < (mapSize.x - 1)) && (visited.find(BWAPI::TilePosition(pos.x + 1, pos.y)) != visited.end()))
 				posQueue.push(BWAPI::TilePosition(pos.x + 1, pos.y));
-			if ((pos.x > 1) && (visited.find(BWAPI::TilePosition(pos.x, pos.y - 1)) != visited.end()))
+			if ((pos.y > 1) && (visited.find(BWAPI::TilePosition(pos.x, pos.y - 1)) != visited.end()))
 				posQueue.push(BWAPI::TilePosition(pos.x, pos.y - 1));
-			if ((pos.x > 1) && (visited.find(BWAPI::TilePosition(pos.x, pos.y + 1)) != visited.end()))
+			if ((pos.y < (mapSize.y - 1)) && (visited.find(BWAPI::TilePosition(pos.x, pos.y + 1)) != visited.end()))
 				posQueue.push(BWAPI::TilePosition(pos.x, pos.y + 1));
 		}
 
