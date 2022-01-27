@@ -24,10 +24,10 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapTile.cpp">
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
       <Filter>Source Files\Map\MapTile</Filter>
     </ClCompile>
-    <ClCompile Include="..\AdditionalPylons_client\MapSingleton.cpp">
+    <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapTile.h">
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h">
       <Filter>Source Files\Map\MapTile</Filter>
     </ClInclude>
-    <ClInclude Include="..\AdditionalPylons_client\MapSingleton.h">
+    <ClInclude Include="..\..\src\Map\MapSingleton.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
   </ItemGroup>

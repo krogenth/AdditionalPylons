@@ -1,7 +1,7 @@
 #pragma once
 
 #include <BWAPI.h>
-#include "..\AdditionalPylons\MapTile.h"
+#include ".\MapTile\MapTile.h"
 
 class MapSingleton
 {
@@ -30,19 +30,15 @@ public:
     /*
     Returns a reference to a specific tile
     @returns
-        @retval BWAPI::TilePosition&
+        @retval MapTile&
     */
-    const BWAPI::TilePosition& getTile(int x, int y);
+    const MapTile& getTile(int x, int y);
     /*
     Returns a reference to all tiles
     @returns
-        @retval std::vector<BWAPI::TilePosition&>
+        @retval std::vector<MapTile>&
     */
-    const std::vector<BWAPI::TilePosition>& getTiles();
-    /*
-    Draws a tile with the chosen color
-    */
-    void drawTile(BWAPI::TilePosition tile, const BWAPI::Color& color);
+    const std::vector<MapTile>& getTiles();
     /*
     Draws all tiles on screen
     */
@@ -55,8 +51,12 @@ private:
         @retval int 
     */
     int toOneD(int x, int y) { return x + (m_size.x * y); };
+    /*
+    Draws a tile with the chosen color
+    */
+    void drawTile(BWAPI::TilePosition tile, const BWAPI::Color& color);
     MapSingleton() = default;
-    BWAPI::Game* gameObj;
+    BWAPI::Game* gameObj = BWAPI::BroodwarPtr;
     std::vector<MapTile> m_map;
 };
 

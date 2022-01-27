@@ -4,6 +4,9 @@
 typedef class MapTile
 {
 	public:
+		/*
+		MapTile constructor
+		*/
 		MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game);
 		~MapTile();
 		/*
