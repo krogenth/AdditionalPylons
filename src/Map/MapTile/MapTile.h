@@ -1,14 +1,14 @@
 #pragma once
 
 #include <BWAPI.h>
-typedef class MapTile
+class MapTile
 {
 	public:
 		/*
 		MapTile constructor
 		*/
 		MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game);
-		~MapTile();
+		~MapTile() = default;
 		/*
 		Sets bool for if the tile is walkable
 		*/
