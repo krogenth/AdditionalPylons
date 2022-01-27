@@ -56,7 +56,7 @@ private:
     */
     int toOneD(int x, int y) { return x + (m_size.x * y); };
     MapSingleton() = default;
-    BWAPI::Game* gameObj;
+    BWAPI::Game* gameObj = BWAPI::BroodwarPtr;
     std::vector<MapTile> m_map;
 };
 
