@@ -155,9 +155,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
+    <ClCompile Include="..\AdditionalPylons_client\MapSingleton.cpp" />
+    <ClCompile Include="MapTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\AdditionalPylons_client\MapSingleton.h" />
+    <ClInclude Include="MapTile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
