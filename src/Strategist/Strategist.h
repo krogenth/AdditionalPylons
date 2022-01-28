@@ -35,5 +35,5 @@ private:
     BWAPI::Race enemy_race;
 
     std::initializer_list<std::pair<BWAPI::UnitType, int>> build_order_list;
-    int list_pos = 0;
+    int list_pos;
 };

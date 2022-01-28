@@ -2,8 +2,9 @@
 
 void Strategist::onStart() {
     // Get initial gamestate information
-    build_order_list = chooseOpeningBuildOrder(getMapSize());
+    build_order_list = chooseOpeningBuildOrder(DetermineMapSize());
     minerals_spent = 0;
+    list_pos = 0;
     supply_total = BWAPI::Broodwar->self().supply_total();
     enemy_race = BWAPI::Broodwar->enemy().getRace(); // Try to get enemy race on startup.  If the enemy chose random race, unknown will be returned.
 }
@@ -27,6 +28,9 @@ void Strategist::onFrame(){
         }
         // update spent minerals
         minerals_spent += build_order_list[list_pos].first().mineralPrice();
+
+        // increment list_pos
+        list_pos++;
     }
 }
 
