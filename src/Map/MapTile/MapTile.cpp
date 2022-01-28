@@ -10,30 +10,14 @@ auto walkabilityLambda = [](const BWAPI::TilePosition& pos, const BWAPI::Game* g
     return true;
 };
 
-MapTile::MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game)
-{
-	tilePosition = tilePos;
-    gameObj = game;
-	buildability = game->isBuildable(tilePosition);
-	altitude = BWAPI::Broodwar->getGroundHeight(tilePosition);
-	hasCreep = BWAPI::Broodwar->hasCreep(tilePosition);
-    walkability = walkabilityLambda(tilePos, gameObj);
+MapTile::MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game) {
+	buildability = game->isBuildable(tilePos);
+	altitude = game->getGroundHeight(tilePos);
+	hasCreep = game->hasCreep(tilePos);
+    walkability = walkabilityLambda(tilePos, game);
     if (BWAPI::Broodwar->isVisible(tilePos)) {
         lastFrameSeen = BWAPI::Broodwar->getFrameCount();
     }
-    else { lastFrameSeen = -1; }
-    
+    else
+        lastFrameSeen = -1;
 }
-
-void MapTile::setWalkability(bool isWalk) {walkability = isWalk; }
-void MapTile::setBuildability(bool isBuild) { buildability = isBuild; }
-void MapTile::setHasCreep(bool isCreep) { hasCreep = isCreep; }
-void MapTile::setLastFrameSeen(int frameSeen) { lastFrameSeen = frameSeen; }
-void MapTile::setAltitude(int elevation) { altitude = elevation; }
-
-bool MapTile::getWalkability() { return walkability; }
-bool MapTile::getBuildability() { return buildability; }
-bool MapTile::getHasCreep() { return hasCreep; }
-int MapTile::getLastFrameSeen() { return lastFrameSeen; }
-int MapTile::getAltitude() { return altitude; }
-
