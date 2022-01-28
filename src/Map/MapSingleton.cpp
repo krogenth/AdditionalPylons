@@ -1,29 +1,32 @@
 #include "MapSingleton.h"
 
-void MapSingleton::onStart() {
-	MapSingleton::m_size = BWAPI::TilePosition(BWAPI::Broodwar->mapWidth(), BWAPI::Broodwar->mapHeight());
-    for (int x = 0; x < MapSingleton::m_size.x; ++x)
+static auto& map = MapSingleton::getInstance();
+
+void MapSingleton::onStart(BWAPI::Game* game) {
+	this->m_size = BWAPI::TilePosition(BWAPI::Broodwar->mapWidth(), BWAPI::Broodwar->mapHeight());
+    BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
+    for (int y = 0; y < this->m_size.y; ++y)
     {
-        for (int y = 0; y < MapSingleton::m_size.y; ++y)
+        for (int x = 0; x < this->m_size.y; ++x)
         {
             BWAPI::TilePosition current = BWAPI::TilePosition(x, y);
-            MapSingleton::m_map.push_back(MapTile::MapTile(current, MapSingleton::gameObj));
+            this->m_map.push_back(MapTile::MapTile(current, game));
         }
     }
 }
 
 const BWAPI::TilePosition& MapSingleton::getSize()
 {
-    return MapSingleton::m_size;
+    return this->m_size;
 }
 
 const MapTile& MapSingleton::getTile(int x, int y) {
-    int vecPos = MapSingleton::toOneD(x,y);
-    return m_map.at(vecPos);
+    int vecPos = this->toOneD(x,y);
+    return this->m_map.at(vecPos);
 }
 
 const std::vector<MapTile>& MapSingleton::getTiles() {
-    return m_map;
+    return this->m_map;
 }
 /*This is using the draw functions found in davechurchill's STARTcraft https://github.com/davechurchill/STARTcraft */
 void MapSingleton::drawTile(BWAPI::TilePosition tile, const BWAPI::Color& color){
@@ -55,18 +58,11 @@ void MapSingleton::draw() {
             if (true)
             {
                 int vecPos = (MapSingleton::toOneD(x, y));
-                BWAPI::TilePosition tile = BWAPI::TilePosition(x, y);
                 BWAPI::Color color;
-                //yellow
-                if (m_map.at(vecPos).getHasCreep()) { color = BWAPI::Color(255, 255, 0); }
-                //pink
-                else if (m_map.at(vecPos).getWalkability() && m_map.at(vecPos).getBuildability()) { color = BWAPI::Color(255, 0, 255); }
-                //blue
-                else if (m_map.at(vecPos).getWalkability()) { color = BWAPI::Color(0, 0, 255); }
-                //green
-                else if (m_map.at(vecPos).getBuildability()) { color = BWAPI::Color(0, 255, 0); }                
-
-                drawTile(tile, color);
+                if (m_map.at(vecPos).getHasCreep()) this->drawTile(tilePos, BWAPI::Colors::Red);
+                else if (m_map.at(vecPos).getWalkability() && m_map.at(vecPos).getBuildability()) this->drawTile(tilePos, BWAPI::Colors::Yellow);
+                else if (m_map.at(vecPos).getWalkability()) this->drawTile(tilePos, BWAPI::Colors::Blue);
+                else if (m_map.at(vecPos).getBuildability()) this->drawTile(tilePos, BWAPI::Colors::Green);
             }
         }
     }

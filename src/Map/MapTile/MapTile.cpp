@@ -14,7 +14,7 @@ MapTile::MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game)
 {
 	tilePosition = tilePos;
     gameObj = game;
-	buildability = BWAPI::Broodwar->isBuildable(tilePosition);
+	buildability = game->isBuildable(tilePosition);
 	altitude = BWAPI::Broodwar->getGroundHeight(tilePosition);
 	hasCreep = BWAPI::Broodwar->hasCreep(tilePosition);
     walkability = walkabilityLambda(tilePos, gameObj);

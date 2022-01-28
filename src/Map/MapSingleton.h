@@ -20,7 +20,7 @@ public:
         static MapSingleton instance;
         return instance;
     }
-    void onStart();
+    void onStart(BWAPI::Game* game);
     /*
     Returns the size of the map
     @returns
@@ -42,8 +42,7 @@ public:
     /*
     Draws all tiles on screen
     */
-    void draw();
-    
+    void draw();    
 private:
     /*
     Returns an int 1d representation of a 2d point
@@ -56,7 +55,6 @@ private:
     */
     void drawTile(BWAPI::TilePosition tile, const BWAPI::Color& color);
     MapSingleton() = default;
-    BWAPI::Game* gameObj = BWAPI::BroodwarPtr;
     std::vector<MapTile> m_map;
 };
 
