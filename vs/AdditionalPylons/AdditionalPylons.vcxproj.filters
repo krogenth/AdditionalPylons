@@ -18,9 +18,15 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Player.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
