@@ -1,12 +1,9 @@
 #include "./Player.h"
 
-std::unordered_map<int, BWAPI::Unit> units;
-std::unordered_map<int, BWAPI::Unit> buildings;
-BWAPI::Race ourRace;
-BWAPI::Race enemyRace;
-
 //Auto assigns this player's race and sets enemies race to unknown
 void Player::onStart() {
+	units.clear();
+	buildings.clear();
 	ourRace = BWAPI::Broodwar->self()->getRace();
 	enemyRace = BWAPI::Races::Unknown;
 }
@@ -37,6 +34,11 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 
 //When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
+
+	//If this is the first time seeing an enemy unit, we now know what race the enemy is
+	if (enemyRace == BWAPI::Races::Unknown)
+		enemyRace = unit->getPlayer()->getRace();
+
 	if (unit->getType().isBuilding()) {
 		buildings[unit->getID()] = unit;
 	}
@@ -76,9 +78,7 @@ void Player::onUnitComplete(BWAPI::Unit unit) {
 }
 
 void Player::onUnitDiscover(BWAPI::Unit unit) {
-	//If this is the first time seeing an enemy unit, we now know what race the enemy is
-	if (enemyRace == BWAPI::Races::Unknown)
-		enemyRace = unit->getPlayer()->getRace();
+
 }
 
 //Returns this player's race

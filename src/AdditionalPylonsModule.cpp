@@ -43,10 +43,6 @@ void AdditionalPylonsModule::onNukeDetect(BWAPI::Position target) {
 
 void AdditionalPylonsModule::onUnitDiscover(BWAPI::Unit unit) {
 	onUnitCreate(unit);
-	if (unit->getPlayer() != BWAPI::Broodwar->self())
-		player.onUnitDiscover(unit);
-	else
-		enemy.onUnitDiscover(unit);
 }
 
 void AdditionalPylonsModule::onUnitEvade(BWAPI::Unit unit) {

@@ -5,6 +5,12 @@
 
 class Player
 {
+private:
+    std::unordered_map<int, BWAPI::Unit> units;
+    std::unordered_map<int, BWAPI::Unit> buildings;
+    BWAPI::Race ourRace;
+    BWAPI::Race enemyRace;
+
 public:
     void onStart();
     void onFrame();
@@ -20,3 +26,6 @@ public:
     BWAPI::Race returnRace();
     void DisplayInfo();
 };
+
+Player player;
+Player enemy;
