@@ -27,5 +27,5 @@ public:
     void DisplayInfo();
 };
 
-Player player;
-Player enemy;
+static Player player = Player();
+static Player enemy = Player();
