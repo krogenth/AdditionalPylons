@@ -21,7 +21,7 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Player.cpp">
+    <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Player.h">
+    <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

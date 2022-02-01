@@ -1,8 +1,4 @@
 #include "./AdditionalPylonsModule.h"
-#include "./Player.h"
-
-Player enemy;
-Player player;
 
 void AdditionalPylonsModule::onStart() {
 	player.onStart();
@@ -49,9 +45,8 @@ void AdditionalPylonsModule::onUnitDiscover(BWAPI::Unit unit) {
 	onUnitCreate(unit);
 	if (unit->getPlayer() != BWAPI::Broodwar->self())
 		player.onUnitDiscover(unit);
-	else {
+	else
 		enemy.onUnitDiscover(unit);
-	}
 }
 
 void AdditionalPylonsModule::onUnitEvade(BWAPI::Unit unit) {

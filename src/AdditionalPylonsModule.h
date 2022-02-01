@@ -2,9 +2,11 @@
 #define ADDITIONAL_PYLONS_MODULE_H
 
 #include <BWAPI.h>
-
+#include "./Players/Player.h"
 class AdditionalPylonsModule : public BWAPI::AIModule
 {
+    Player player;
+    Player enemy;
 public:
 
     void onStart() override;
