@@ -1,11 +1,11 @@
 #include "./Player.h"
 
 //Auto assigns this player's race and sets enemies race to unknown
-void Player::onStart() {
+void Player::onStart(BWAPI::Race race) {
 	units.clear();
 	buildings.clear();
-	ourRace = BWAPI::Broodwar->self()->getRace();
-	enemyRace = BWAPI::Races::Unknown;
+	ourRace = race;
+	//enemyRace = BWAPI::Races::Unknown;
 }
 
 void Player::onFrame() {
@@ -36,13 +36,12 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 void Player::onUnitCreate(BWAPI::Unit unit) {
 
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
-	if (enemyRace == BWAPI::Races::Unknown)
-		enemyRace = unit->getPlayer()->getRace();
+	if (ourRace == BWAPI::Races::Unknown)
+		ourRace = unit->getType().getRace();
 
 	if (unit->getType().isBuilding()) {
 		buildings[unit->getID()] = unit;
 	}
-
 	else if (unit->getType().isWorker()) {
 		units[unit->getID()] = unit;
 	}
@@ -87,5 +86,21 @@ BWAPI::Race Player::returnRace() {
 }
 
 void Player::DisplayInfo() {
+	int countUnit = 0;
+	int countBuilding = 0;
 
+	for (std::pair<int, BWAPI::Unit> unit : units) {
+		countUnit++;
+	}
+
+	for (std::pair<int, BWAPI::Unit> building : buildings) {
+		countBuilding++;
+	}
+
+	std::cout << "# of units that " + ourRace.toString() + "control: " + std::to_string(countUnit) << std::endl;
+	std::cout << "# of buildings that " + ourRace.toString() + "control: " + std::to_string(countBuilding) << std::endl;
+}
+
+void Player::PrintRace() {
+	std::cout << "This player's race is: " + ourRace.toString() << std::endl;
 }

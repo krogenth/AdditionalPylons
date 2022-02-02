@@ -2,6 +2,7 @@
 
 #include <BWAPI.h>
 #include <unordered_map>
+#include <string>
 
 class Player
 {
@@ -9,10 +10,10 @@ private:
     std::unordered_map<int, BWAPI::Unit> units;
     std::unordered_map<int, BWAPI::Unit> buildings;
     BWAPI::Race ourRace;
-    BWAPI::Race enemyRace;
+    //BWAPI::Race enemyRace;
 
 public:
-    void onStart();
+    void onStart(BWAPI::Race race);
     void onFrame();
     void onNukeDetect(BWAPI::Position target);
     void onUnitEvade(BWAPI::Unit unit);
@@ -25,6 +26,7 @@ public:
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race returnRace();
     void DisplayInfo();
+    void PrintRace();
 };
 
 static Player player = Player();

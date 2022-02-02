@@ -1,8 +1,9 @@
 #include "./AdditionalPylonsModule.h"
+#include "./Players/Player.h"
 
 void AdditionalPylonsModule::onStart() {
-	player.onStart();
-	enemy.onStart();
+	player.onStart(BWAPI::Broodwar->self()->getRace());
+	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
 }
 
 void AdditionalPylonsModule::onEnd(bool isWinner) {
