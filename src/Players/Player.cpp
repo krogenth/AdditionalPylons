@@ -85,22 +85,12 @@ BWAPI::Race Player::returnRace() {
 	return ourRace;
 }
 
-void Player::DisplayInfo() {
-	int countUnit = 0;
-	int countBuilding = 0;
+void Player::DisplayInfo(int x, int y) {
 
-	for (std::pair<int, BWAPI::Unit> unit : units) {
-		countUnit++;
-	}
-
-	for (std::pair<int, BWAPI::Unit> building : buildings) {
-		countBuilding++;
-	}
-
-	std::cout << "# of units that " + ourRace.toString() + "control: " + std::to_string(countUnit) << std::endl;
-	std::cout << "# of buildings that " + ourRace.toString() + "control: " + std::to_string(countBuilding) << std::endl;
+	BWAPI::Broodwar->drawTextScreen(x, y, "# of units that %s control: %s", ourRace.toString(), std::to_string(units.size()));
+	BWAPI::Broodwar->drawTextScreen(x, y, "# of units that %s control: %s", ourRace.toString(), std::to_string(buildings.size()));
 }
 
 void Player::PrintRace() {
-	std::cout << "This player's race is: " + ourRace.toString() << std::endl;
+	BWAPI::Broodwar->drawTextScreen(x, y, "This player's race is: %s", ourRace.toString());
 }

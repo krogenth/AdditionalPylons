@@ -25,7 +25,7 @@ public:
     void onUnitComplete(BWAPI::Unit unit);
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race returnRace();
-    void DisplayInfo();
+    void DisplayInfo(int x, int y);
     void PrintRace();
 };
 

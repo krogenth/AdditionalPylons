@@ -63,20 +63,20 @@ void AdditionalPylonsModule::onUnitHide(BWAPI::Unit unit) {
 }
 
 void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
-	if (unit->getPlayer() != BWAPI::Broodwar->self()) {
-		enemy.onUnitCreate(unit);
-	}
-	else {
+	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		player.onUnitCreate(unit);
+	}
+	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
+		enemy.onUnitCreate(unit);
 	}
 }
 
 void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
-	if (unit->getPlayer() != BWAPI::Broodwar->self()) {
-		enemy.onUnitDestroy(unit);
+	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
+		player.onUnitCreate(unit);
 	}
-	else {
-		player.onUnitDestroy(unit);
+	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
+		enemy.onUnitCreate(unit);
 	}
 }
 
