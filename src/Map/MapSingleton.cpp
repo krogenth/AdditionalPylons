@@ -2,10 +2,12 @@
 
 void MapSingleton::onStart(BWAPI::Game* game) {
 	this->m_size = BWAPI::TilePosition(BWAPI::Broodwar->mapWidth(), BWAPI::Broodwar->mapHeight());
+    this->m_map.resize(this->m_size.x * this->m_size.y);
     for (int y = 0; y < this->m_size.y; ++y) {
         for (int x = 0; x < this->m_size.x; ++x) {
             BWAPI::TilePosition current = BWAPI::TilePosition(x, y);
-            this->m_map.push_back(MapTile::MapTile(current, game));
+            int vecPos = (this->toOneD(x, y));
+            this->m_map.at(vecPos)=(MapTile::MapTile(current, game));
         }
     }
 }

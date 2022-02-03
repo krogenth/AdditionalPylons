@@ -8,6 +8,7 @@ class MapTile
 		MapTile constructor
 		*/
 		MapTile(BWAPI::TilePosition tilePos, BWAPI::Game* game);
+		MapTile() = default;
 		~MapTile() = default;
 
 		/*
