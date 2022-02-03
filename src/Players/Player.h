@@ -26,7 +26,7 @@ public:
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race returnRace();
     void DisplayInfo(int x, int y);
-    void PrintRace();
+    void PrintRace(int x, int y);
 };
 
 static Player player = Player();

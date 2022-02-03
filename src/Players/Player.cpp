@@ -91,6 +91,6 @@ void Player::DisplayInfo(int x, int y) {
 	BWAPI::Broodwar->drawTextScreen(x, y, "# of units that %s control: %s", ourRace.toString(), std::to_string(buildings.size()));
 }
 
-void Player::PrintRace() {
+void Player::PrintRace(int x, int y) {
 	BWAPI::Broodwar->drawTextScreen(x, y, "This player's race is: %s", ourRace.toString());
 }
