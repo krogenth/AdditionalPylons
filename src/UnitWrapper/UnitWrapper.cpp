@@ -15,13 +15,13 @@ class UnitWrapper
     };
 
     virtual bool isBusy() = 0;
-    virtual void Order() = 0;
+    virtual void OnFrame() = 0;
 
     void Draw()
     {
         if (!queue.empty())
-        {
-            BWAPI::Broodwar->drawLineMap(unit->getTilePosition(), queue.back(), BWAPI::Colors::White);
+        {//team fortress 2 is the best game ever
+            BWAPI::Broodwar->drawLineMap(BWAPI::Position(unit->getTilePosition()), BWAPI::Position(queue.back()), BWAPI::Colors::White);
         }
     };
 };

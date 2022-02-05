@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
+    <ClCompile Include="..\..\src\UnitWrapper\UnitWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
