@@ -46,6 +46,7 @@ public:
             if (closest)
             {
                 unit->gather(closest);
+                currJob = Jobs::MineMinerals;
             }
         }
     }
