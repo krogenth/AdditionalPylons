@@ -4,10 +4,11 @@
 
 class UnitWrapper
 {
+protected:
     std::queue<BWAPI::TilePosition> queue;
     int unitID;
     BWAPI::Unit unit;
-
+public:
     UnitWrapper(BWAPI::Unit u)
     {
         unit = u;
@@ -20,7 +21,7 @@ class UnitWrapper
     void Draw()
     {
         if (!queue.empty())
-        {//team fortress 2 is the best game ever
+        { //team fortress 2 is the best game ever
             BWAPI::Broodwar->drawLineMap(BWAPI::Position(unit->getTilePosition()), BWAPI::Position(queue.back()), BWAPI::Colors::White);
         }
     };
