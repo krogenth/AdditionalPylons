@@ -29,7 +29,7 @@ public:
         }
     }
 
-    void OnFrame()
+    void onFrame()
     {
         BWAPI::Unit closest = nullptr;
         int smallestDistance = INT32_MAX;
