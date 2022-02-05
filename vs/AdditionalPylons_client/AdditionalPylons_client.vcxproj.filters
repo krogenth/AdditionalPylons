@@ -24,13 +24,16 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UnitWrapper\UnitWrapper.cpp">
-      <Filter>Source Files\UnitWrapper</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
+      <Filter>Source Files\UnitWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
+      <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
