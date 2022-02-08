@@ -18,12 +18,15 @@ public:
     void incrementSupply();
     void decrementSupply();
 
-    MapSize DetermineMapSize();
+    void DetermineMapSize();
 
-    std::initializer_list<std::pair<BWAPI::UnitType, int>> chooseOpeningBuildOrder(MapSize map_size);
+    
         
 private:
     Strategist() = default;
+
+    void chooseOpeningBuildOrder();
+    void updateUnitQueue();
 
     int minerals_spent;
     int supply_total;
@@ -33,7 +36,8 @@ private:
     std::queue<BWAPI::UnitType> hatchery_queue;
 
     BWAPI::Race enemy_race;
+    MapSize map_size;
 
     std::initializer_list<std::pair<BWAPI::UnitType, int>> build_order_list;
-    int list_pos;
+    std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;
 };

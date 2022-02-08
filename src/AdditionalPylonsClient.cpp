@@ -1,6 +1,7 @@
 #include <BWAPI.h>
 #include <BWAPI/Client.h>
 #include "./AdditionalPylonsModule.h"
+#include "./Strategist/Strategist.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
