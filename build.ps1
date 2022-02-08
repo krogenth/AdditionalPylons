@@ -6,7 +6,7 @@ if(-not(Test-Path -Path 'bwapi/Debug')) {
 }
 
 Set-Location ../../
-
+#
 msbuild /m /verbosity:detailed /p:Configuration=Debug /p:Platform=x86 ./vs/AdditionalPylons.sln
 if(!$?) {
     throw "Failed to build AdditionalPylons Debug"
