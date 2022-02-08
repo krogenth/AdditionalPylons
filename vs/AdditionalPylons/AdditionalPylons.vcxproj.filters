@@ -29,7 +29,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files\Players</Filter>
-	<ClCompile>
+	  </ClCompile>
     <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
       <Filter>Source Files\Map\MapTile</Filter>
     </ClCompile>

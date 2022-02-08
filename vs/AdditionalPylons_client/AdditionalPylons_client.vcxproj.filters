@@ -46,7 +46,7 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
-	</ClCompile>
+	  </ClInclude>
     <ClInclude Include="..\..\src\Map\MapSingleton.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
