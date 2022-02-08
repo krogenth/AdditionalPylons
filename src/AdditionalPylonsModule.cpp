@@ -1,11 +1,18 @@
 #include "./AdditionalPylonsModule.h"
 #include "./Players/Player.h"
+#include "./Map/MapSingleton.h"
+
+static auto& map = MapSingleton::getInstance();
 
 void AdditionalPylonsModule::onStart() {
+	
+	BWAPI::Broodwar->setLocalSpeed(10);
+	BWAPI::Broodwar->setFrameSkip(0);
+	//	set UserInput Flag so BWAPI::Broodwar->getScreenPosition() will return valid BWAPI::TilePositions for drawing
+	BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
+	map.onStart(BWAPI::BroodwarPtr);
 	player.onStart(BWAPI::Broodwar->self()->getRace());
 	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
-	BWAPI::Broodwar->setLocalSpeed(10);
-	BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
 }
 
 void AdditionalPylonsModule::onEnd(bool isWinner) {
@@ -17,6 +24,7 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 void AdditionalPylonsModule::onFrame() {
 	player.displayInfo(400);
 	enemy.displayInfo(530);
+	map.draw();
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {

@@ -155,11 +155,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
-    <ClCompile Include="..\..\src\Players\Player.cpp" />
+	<ClCompile Include="..\..\src\Players\Player.cpp" />
+	<ClCompile Include="..\..\src\Map\MapSingleton.cpp" />
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
     <ClInclude Include="..\..\src\Players\Player.h" />
+    <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\..\src\Map\MapSingleton.h" />
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

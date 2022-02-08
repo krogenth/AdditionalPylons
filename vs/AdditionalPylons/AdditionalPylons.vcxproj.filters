@@ -15,6 +15,12 @@
     </Filter>
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{f38c9a84-39f3-48c4-9caa-763afff53e44}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{78c58521-beeb-4a1a-883f-6976ce8a241c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\MapTile">
+      <UniqueIdentifier>{aac76845-1c87-40db-a11e-e3cc948357b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files\Players</Filter>
+	<ClCompile>
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
+      <Filter>Source Files\Map\MapTile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
+      <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h">
+      <Filter>Source Files\Map\MapTile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapSingleton.h">
+      <Filter>Source Files\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
