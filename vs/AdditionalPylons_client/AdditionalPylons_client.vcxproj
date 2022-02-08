@@ -156,10 +156,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp" />
+    <ClCompile Include="..\..\src\Map\MapSingleton.cpp" />
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp" />
     <ClCompile Include="..\..\src\Map\Placement\Placement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\..\src\Map\MapSingleton.h" />
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h" />
     <ClInclude Include="..\..\src\Map\Placement\Placement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

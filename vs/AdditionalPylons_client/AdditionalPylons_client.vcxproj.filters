@@ -14,7 +14,10 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Source Files\Map">
-      <UniqueIdentifier>{c129f108-11ae-4014-baa6-f8e4d813938d}</UniqueIdentifier>
+      <UniqueIdentifier>{faf0197b-5fbc-4d88-a944-7b61afaa8a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\MapTile">
+      <UniqueIdentifier>{143ba86c-5f0c-4743-a069-768cbd5cf1a0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Map\Placement">
       <UniqueIdentifier>{2c80bd4e-4167-4374-99bf-347ee66eacd8}</UniqueIdentifier>
@@ -27,6 +30,12 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
+      <Filter>Source Files\Map\MapTile</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\Map\Placement\Placement.cpp">
       <Filter>Source Files\Map\Placement</Filter>
     </ClCompile>
@@ -34,6 +43,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapSingleton.h">
+      <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h">
+      <Filter>Source Files\Map\MapTile</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Map\Placement\Placement.h">
       <Filter>Source Files\Map\Placement</Filter>
