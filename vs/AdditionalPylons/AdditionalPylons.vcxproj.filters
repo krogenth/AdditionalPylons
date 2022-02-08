@@ -13,15 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{78c58521-beeb-4a1a-883f-6976ce8a241c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map\MapTile">
+      <UniqueIdentifier>{aac76845-1c87-40db-a11e-e3cc948357b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
+      <Filter>Source Files\Map\MapTile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h">
+      <Filter>Source Files\Map\MapTile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapSingleton.h">
+      <Filter>Source Files\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
