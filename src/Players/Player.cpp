@@ -5,7 +5,6 @@ void Player::onStart(BWAPI::Race race) {
 	units.clear();
 	buildings.clear();
 	ourRace = race;
-	//enemyRace = BWAPI::Races::Unknown;
 }
 
 void Player::onFrame() {
@@ -85,12 +84,20 @@ BWAPI::Race Player::returnRace() {
 	return ourRace;
 }
 
-void Player::DisplayInfo(int x, int y) {
+//Displays player info (race, # of units, # of buildings)
+void Player::displayInfo(int x) {
+	std::string race;
 
-	BWAPI::Broodwar->drawTextScreen(x, y, "# of units that %s control: %s", ourRace.toString(), std::to_string(units.size()));
-	BWAPI::Broodwar->drawTextScreen(x, y, "# of units that %s control: %s", ourRace.toString(), std::to_string(buildings.size()));
-}
+	switch (ourRace) {
+	case BWAPI::Races::Enum::Protoss: race = "Protoss"; break;
+	case BWAPI::Races::Enum::Terran: race = "Terran"; break;
+	case BWAPI::Races::Enum::Zerg: race = "Zerg"; break;
+	default: race = "Unknown"; break;
+	}
 
-void Player::PrintRace(int x, int y) {
-	BWAPI::Broodwar->drawTextScreen(x, y, "This player's race is: %s", ourRace.toString());
+	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
+	BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
+	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", units.size());
+	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", buildings.size());
+	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }

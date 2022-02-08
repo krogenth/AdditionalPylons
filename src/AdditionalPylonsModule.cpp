@@ -4,6 +4,8 @@
 void AdditionalPylonsModule::onStart() {
 	player.onStart(BWAPI::Broodwar->self()->getRace());
 	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
+	BWAPI::Broodwar->setLocalSpeed(10);
+	BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
 }
 
 void AdditionalPylonsModule::onEnd(bool isWinner) {
@@ -13,9 +15,8 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
-
-
-
+	player.displayInfo(400);
+	enemy.displayInfo(530);
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {
@@ -73,10 +74,10 @@ void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 
 void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
-		player.onUnitCreate(unit);
+		player.onUnitDestroy(unit);
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
-		enemy.onUnitCreate(unit);
+		enemy.onUnitDestroy(unit);
 	}
 }
 
