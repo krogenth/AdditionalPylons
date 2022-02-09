@@ -1,13 +1,14 @@
 #pragma once
-
-enum MapSize { small, medium, large };
+#include <BWAPI.h>
+#include <queue>
+enum MapSize { smallest, medium, large };
 
 class Strategist {
 public:
     Strategist(const Strategist&) = delete;
     Strategist(const Strategist&&) = delete;
     Strategist operator=(const Strategist&) = delete;
-    Strategist& operator=(const Strategist&) = delete;
+    Strategist& operator=(const Strategist&&) = delete;
     static Strategist& getInstance() {
         static Strategist instance;
         return instance;
