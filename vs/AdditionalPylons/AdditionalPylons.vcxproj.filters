@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Map\MapTile">
       <UniqueIdentifier>{aac76845-1c87-40db-a11e-e3cc948357b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UnitWrapper">
+      <UniqueIdentifier>{e9656b00-98a4-4369-84e3-38ab36f3f6f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
@@ -40,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Map\MapSingleton.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
+      <Filter>Source Files\UnitWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
+      <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
