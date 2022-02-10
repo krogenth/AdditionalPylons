@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Strategist">
       <UniqueIdentifier>{793a53d4-d295-4e05-bd6c-1269da9e1f10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Strategist\BuildOrders">
+      <UniqueIdentifier>{69bf38af-1252-4be1-9470-614cabb3731c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp">
@@ -34,6 +37,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Strategist\Strategist.h">
       <Filter>Source Files\Strategist</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

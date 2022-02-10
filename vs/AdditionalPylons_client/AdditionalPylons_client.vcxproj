@@ -160,6 +160,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\Strategist.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

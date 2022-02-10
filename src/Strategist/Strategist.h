@@ -1,6 +1,11 @@
 #pragma once
 #include <BWAPI.h>
 #include <queue>
+#include "./BuildOrders/DefaultBuildOrders.h"
+#include "./BuildOrders/ZergBuildOrders.h"
+#include "./BuildOrders/TerranBuildOrders.h"
+#include "./BuildOrders/ProtossBuildOrders.h"
+
 enum MapSize { smallest, medium, large };
 
 class Strategist {
