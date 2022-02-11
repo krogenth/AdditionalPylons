@@ -155,6 +155,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
+    <ClCompile Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.cpp" />
+    <ClCompile Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.cpp" />
+    <ClCompile Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.cpp" />
+    <ClCompile Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
   </ItemGroup>
   <ItemGroup>
