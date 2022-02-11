@@ -1,3 +1,6 @@
 [submodule "libs/bwapi"]
 	path = libs/bwapi
 	url = https://github.com/bwapi/bwapi.git
+[submodule "libs/BWEM-community"]
+	path = libs/BWEM-community
+	url = https://github.com/N00byEdge/BWEM-community.git

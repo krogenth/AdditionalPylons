@@ -1,28 +1,36 @@
 #include "./AdditionalPylonsModule.h"
 
-#include "./Map/MapSingleton.h"
-
-static auto& map = MapSingleton::getInstance();
+#include "bwem.h"
+#include "BWEB.h"
 
 void AdditionalPylonsModule::onStart() {
-	
-	BWAPI::Broodwar->setLocalSpeed(10);
-	BWAPI::Broodwar->setFrameSkip(0);
+
+	//	initialize BWEM
+	BWEM::Map::Instance().Initialize(BWAPI::BroodwarPtr);
+	BWEM::Map::Instance().EnableAutomaticPathAnalysis();
+
+	//	initialize BWEB, must be after BWEM
+	BWEB::Map::onStart();
+	BWEB::Stations::findStations();
+	BWEB::Blocks::findBlocks();
+
 	//	set UserInput Flag so BWAPI::Broodwar->getScreenPosition() will return valid BWAPI::TilePositions for drawing
 	BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
-	map.onStart(BWAPI::BroodwarPtr);
+	BWAPI::Broodwar->setCommandOptimizationLevel(1);
+	BWAPI::Broodwar->setLocalSpeed(15);
+	BWAPI::Broodwar->setFrameSkip(0);
 
 }
 
 void AdditionalPylonsModule::onEnd(bool isWinner) {
 
-	
+
 
 }
 
 void AdditionalPylonsModule::onFrame() {
 
-	map.draw();
+	BWEB::Map::draw();
 
 }
 
@@ -82,7 +90,10 @@ void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 
 void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 
-
+	if (unit->getType().isMineralField())
+		BWEM::Map::Instance().OnMineralDestroyed(unit);
+	else if (unit->getType().isSpecialBuilding())
+		BWEM::Map::Instance().OnStaticBuildingDestroyed(unit);
 
 }
 

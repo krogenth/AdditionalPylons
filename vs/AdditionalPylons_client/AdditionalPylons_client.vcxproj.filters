@@ -22,6 +22,12 @@
     <Filter Include="Source Files\UnitWrapper">
       <UniqueIdentifier>{15066c72-73cf-4e1b-8e25-9d7a48e6de0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BWEM-community">
+      <UniqueIdentifier>{0ded6fa6-175c-43c9-a315-cb07fdd788ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BWEB">
+      <UniqueIdentifier>{ea020aea-f088-4655-a350-eb208ebae9c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp">
@@ -35,6 +41,63 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
       <Filter>Source Files\Map\MapTile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\area.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\base.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\bwapiExt.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\bwem.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\cp.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\graph.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\gridMap.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\map.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapDrawer.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapImpl.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapPrinter.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\neutral.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\tiles.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\utils.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Block.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\BWEB.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\PathFind.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Station.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Wall.cpp">
+      <Filter>BWEB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
