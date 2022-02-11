@@ -1,3 +1,4 @@
+#pragma once
 // Opt for 4 pool on small maps
 // https://liquipedia.net/starcraft/4/5_Pool
 std::initializer_list<std::pair<BWAPI::UnitType, int>> terran_smallest = {
