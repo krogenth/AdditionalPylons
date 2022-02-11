@@ -174,13 +174,9 @@
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\tiles.cpp" />
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\utils.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
-    <ClCompile Include="..\..\src\Map\MapSingleton.cpp" />
-    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
-    <ClInclude Include="..\..\src\Map\MapSingleton.h" />
-    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h" />
     <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h" />
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h" />
   </ItemGroup>
