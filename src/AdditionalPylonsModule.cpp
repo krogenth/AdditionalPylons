@@ -1,5 +1,5 @@
 #include "./AdditionalPylonsModule.h"
-
+#include "./Players/Player.h"
 #include "./Map/MapSingleton.h"
 
 static auto& map = MapSingleton::getInstance();
@@ -11,7 +11,8 @@ void AdditionalPylonsModule::onStart() {
 	//	set UserInput Flag so BWAPI::Broodwar->getScreenPosition() will return valid BWAPI::TilePositions for drawing
 	BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
 	map.onStart(BWAPI::BroodwarPtr);
-
+	player.onStart(BWAPI::Broodwar->self()->getRace());
+	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
 }
 
 void AdditionalPylonsModule::onEnd(bool isWinner) {
@@ -21,9 +22,9 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
-
+	player.displayInfo(400);
+	enemy.displayInfo(530);
 	map.draw();
-
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {
@@ -51,9 +52,7 @@ void AdditionalPylonsModule::onNukeDetect(BWAPI::Position target) {
 }
 
 void AdditionalPylonsModule::onUnitDiscover(BWAPI::Unit unit) {
-
-
-
+	onUnitCreate(unit);
 }
 
 void AdditionalPylonsModule::onUnitEvade(BWAPI::Unit unit) {
@@ -63,27 +62,31 @@ void AdditionalPylonsModule::onUnitEvade(BWAPI::Unit unit) {
 }
 
 void AdditionalPylonsModule::onUnitShow(BWAPI::Unit unit) {
-
-
-
+	onUnitCreate(unit);
 }
 
 void AdditionalPylonsModule::onUnitHide(BWAPI::Unit unit) {
-
+	
 
 
 }
 
 void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
-
-
-
+	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
+		player.onUnitCreate(unit);
+	}
+	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
+		enemy.onUnitCreate(unit);
+	}
 }
 
 void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
-
-
-
+	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
+		player.onUnitDestroy(unit);
+	}
+	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
+		enemy.onUnitDestroy(unit);
+	}
 }
 
 void AdditionalPylonsModule::onUnitMorph(BWAPI::Unit unit) {
