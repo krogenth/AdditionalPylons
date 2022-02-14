@@ -101,7 +101,6 @@
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
 	  </ClInclude>
-    </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
