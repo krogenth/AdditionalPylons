@@ -15,7 +15,7 @@
     </Filter>
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{b8de3c3b-8fed-43a5-b0a8-9ccd2dcd6fb9}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{faf0197b-5fbc-4d88-a944-7b61afaa8a92}</UniqueIdentifier>
     </Filter>
@@ -35,7 +35,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files\Players</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
@@ -49,7 +49,7 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
-	  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\src\Map\MapSingleton.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
@@ -60,6 +60,9 @@
       <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
+      <Filter>Source Files\UnitWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\BuildingWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
   </ItemGroup>

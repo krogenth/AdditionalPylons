@@ -16,9 +16,9 @@ public:
     };
 
     virtual bool isBusy() = 0;
-    virtual void OnFrame() = 0;
+    virtual void onFrame() = 0;
 
-    void Draw()
+    virtual void displayInfo()
     {
         if (!queue.empty())
         { //team fortress 2 is the best game ever
