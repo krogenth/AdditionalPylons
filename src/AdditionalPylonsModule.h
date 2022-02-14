@@ -2,11 +2,9 @@
 #define ADDITIONAL_PYLONS_MODULE_H
 
 #include <BWAPI.h>
-
 class AdditionalPylonsModule : public BWAPI::AIModule
 {
 public:
-
     void onStart() override;
     void onEnd(bool isWinner) override;
     void onFrame() override;

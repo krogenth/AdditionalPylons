@@ -175,8 +175,10 @@
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\utils.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp" />
+    <ClCompile Include="..\..\src\Players\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Players\Player.h" />
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
     <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h" />
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h" />

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Players">
+      <UniqueIdentifier>{b8de3c3b-8fed-43a5-b0a8-9ccd2dcd6fb9}</UniqueIdentifier>
+	  </Filter>
     <Filter Include="Source Files\UnitWrapper">
       <UniqueIdentifier>{15066c72-73cf-4e1b-8e25-9d7a48e6de0a}</UniqueIdentifier>
     </Filter>
@@ -30,6 +33,9 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Players\Player.cpp">
+      <Filter>Source Files\Players</Filter>
+	  </ClCompile>
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\area.cpp">
       <Filter>BWEM-community</Filter>
     </ClCompile>
@@ -92,8 +98,9 @@
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
-      <Filter>Source Files\UnitWrapper</Filter>
+    <ClInclude Include="..\..\src\Players\Player.h">
+      <Filter>Source Files\Players</Filter>
+	  </ClInclude>
     </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>
