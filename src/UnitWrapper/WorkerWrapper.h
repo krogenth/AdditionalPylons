@@ -13,13 +13,13 @@ enum class Jobs
 class WorkerWrapper : public UnitWrapper
 {
 protected:
-    Jobs CurrJob = Jobs::None;
+    Jobs currJob = Jobs::None;
 
 public:
     WorkerWrapper(BWAPI::Unit u) : UnitWrapper(u){};
     bool isBusy()
     {
-        if (CurrJob == Jobs::None)
+        if (currJob == Jobs::None)
         {
             return true;
         }
@@ -33,7 +33,7 @@ public:
     {
         BWAPI::Unit closest = nullptr;
         int smallestDistance = INT32_MAX;
-        if (CurrJob == Jobs::None)
+        if (currJob == Jobs::None)
         {
             for (const auto &i : BWAPI::Broodwar->getMinerals())
             {
