@@ -106,6 +106,10 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 		
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		player.onUnitDestroy(unit);
+
+		if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord) {
+			Strategist::getInstance().decrementSupply();
+		}
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		enemy.onUnitDestroy(unit);
