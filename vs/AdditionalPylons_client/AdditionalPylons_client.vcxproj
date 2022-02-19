@@ -176,10 +176,16 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
+    <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Players\Player.h" />
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\Strategist.h" />
     <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h" />
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h" />
   </ItemGroup>

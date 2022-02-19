@@ -1,6 +1,7 @@
 #pragma once
 #include <BWAPI.h>
 #include <queue>
+#include <optional>
 
 enum MapSize { smallest, medium, large };
 
@@ -22,6 +23,7 @@ public:
 
     void determineMapSize();
 
+    std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
     
         
 private:
@@ -31,6 +33,7 @@ private:
     void updateUnitQueue();
 
     int minerals_spent = 0;
+    int gas_spent = 0;
     int supply_total;
   
     std::queue<BWAPI::UnitType> larva_queue;
