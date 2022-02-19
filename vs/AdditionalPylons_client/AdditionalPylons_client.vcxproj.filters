@@ -15,7 +15,7 @@
     </Filter>
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{b8de3c3b-8fed-43a5-b0a8-9ccd2dcd6fb9}</UniqueIdentifier>
-	  </Filter>
+    </Filter>
     <Filter Include="Source Files\UnitWrapper">
       <UniqueIdentifier>{15066c72-73cf-4e1b-8e25-9d7a48e6de0a}</UniqueIdentifier>
     </Filter>
@@ -24,6 +24,12 @@
     </Filter>
     <Filter Include="BWEB">
       <UniqueIdentifier>{ea020aea-f088-4655-a350-eb208ebae9c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategist">
+      <UniqueIdentifier>{8a07ffb9-df93-4566-9704-c6ed6990fd96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategist\BuildOrders">
+      <UniqueIdentifier>{356ce3ff-9e70-4bf4-95df-bf849fc18838}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,7 +41,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files\Players</Filter>
-	  </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\area.cpp">
       <Filter>BWEM-community</Filter>
     </ClCompile>
@@ -93,6 +99,9 @@
     <ClCompile Include="..\..\libs\BWEB\Source\Wall.cpp">
       <Filter>BWEB</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\Strategist.cpp">
+      <Filter>Source Files\Strategist</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -100,9 +109,27 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
-	  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\Strategist.h">
+      <Filter>Source Files\Strategist</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "BWEB.h"
 
 #include "./Players/Player.h"
+#include "./Strategist/Strategist.h"
 
 void AdditionalPylonsModule::onStart() {
 	//	initialize BWEM
@@ -23,6 +24,8 @@ void AdditionalPylonsModule::onStart() {
 
 	player.onStart(BWAPI::Broodwar->self()->getRace());
 	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
+
+	Strategist::getInstance().onStart();
 }
 	
 
@@ -38,6 +41,8 @@ void AdditionalPylonsModule::onFrame() {
 
 	player.displayInfo(400);
 	enemy.displayInfo(530);
+
+	Strategist::getInstance().onFrame();
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {
@@ -101,6 +106,10 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 		
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		player.onUnitDestroy(unit);
+
+		if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord) {
+			Strategist::getInstance().decrementSupply();
+		}
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		enemy.onUnitDestroy(unit);
