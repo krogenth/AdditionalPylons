@@ -1,4 +1,5 @@
 #include "Strategist.h"
+#include "../Players/Player.h"
 #include "./BuildOrders/UnknownBuildOrders.h"
 #include "./BuildOrders/ZergBuildOrders.h"
 #include "./BuildOrders/TerranBuildOrders.h"
@@ -7,13 +8,13 @@
 void Strategist::onStart() {
     // Get initial gamestate information
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
-    enemy_race = BWAPI::Broodwar->enemy()->getRace(); // Try to get enemy race on startup.  If the enemy chose random race, unknown will be returned.
+    enemy_race = enemy.returnRace();
     chooseOpeningBuildOrder();
 }
 
 void Strategist::onFrame(){
     // Check if we need to add something to the queue
-    if (build_order_queue.empty() == false) {
+    if (!build_order_queue.empty()) {
         updateUnitQueue();
     }
 }
@@ -34,12 +35,26 @@ void Strategist::determineMapSize(){
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type){
     std::optional<BWAPI::UnitType> unit = std::nullopt;
 
-    switch (type.whatBuilds().first) {
-    case BWAPI::UnitTypes::Zerg_Larva: unit = larva_queue.front(); larva_queue.pop();  break;
-    case BWAPI::UnitTypes::Zerg_Drone: unit = drone_queue.front(); drone_queue.pop(); break;
-    case BWAPI::UnitTypes::Zerg_Hatchery: unit = hatchery_queue.front(); hatchery_queue.pop(); break;
+    switch (type) {
+    case BWAPI::UnitTypes::Zerg_Larva: 
+        if (!larva_queue.empty()) {
+            unit = larva_queue.front(); 
+            larva_queue.pop();
+        }
+        break;
+    case BWAPI::UnitTypes::Zerg_Drone:
+        if (!drone_queue.empty()) {
+            unit = drone_queue.front();
+            drone_queue.pop();
+        }
+        break;
+    case BWAPI::UnitTypes::Zerg_Hatchery: 
+        if (!hatchery_queue.empty()) {
+            unit = hatchery_queue.front(); 
+            hatchery_queue.pop();
+        }
+        break;
     }
-    
     return unit;
 }
 
@@ -49,50 +64,30 @@ void Strategist::chooseOpeningBuildOrder(){
     // race_mapsize
     // example: protoss_smallest
 
-    // Check by race first
-    if (enemy_race == BWAPI::Races::Protoss) {
-        // Check map size
-        if (map_size == smallest) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest);
+    switch (enemy_race) {
+    case BWAPI::Races::Protoss:
+        switch (map_size) {
+        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
+        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
+        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
         }
-        else if (map_size == medium) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium);
+    case BWAPI::Races::Terran: 
+        switch (map_size) {
+        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
+        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
+        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large); break;
         }
-        else {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large);
+    case BWAPI::Races::Zerg:
+        switch (map_size) {
+        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest); break;
+        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium); break;
+        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large); break;
         }
-    }
-    else if (enemy_race == BWAPI::Races::Terran) {
-        if (map_size == smallest) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest);
-        }
-        else if (map_size == medium) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium);
-        }
-        else {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large);
-        }
-    }
-    else if (enemy_race == BWAPI::Races::Zerg) {
-        if (map_size == smallest) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest);
-        }
-        else if (map_size == medium) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium);
-        }
-        else {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large);
-        }
-    }
-    else { // Enemy race is unknown to us
-        if (map_size == smallest) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest);
-        }
-        else if (map_size == medium) {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium);
-        }
-        else {
-            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large);
+    default:
+        switch (map_size) {
+        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest); break;
+        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium); break;
+        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
         }
     }
 }
@@ -103,12 +98,11 @@ void Strategist::updateUnitQueue(){
     int frame_gas_spent = 0;
     int frame_supply_used = 0;
 
-    // Check if we have the resources to build + correct supply count
-    bool gasRequired = BWAPI::Broodwar->self()->gas() >= build_order_queue.front().first.gasPrice();
-    bool mineralsRequired = BWAPI::Broodwar->self()->minerals() >= build_order_queue.front().first.mineralPrice();
-    bool supplyAvailable = BWAPI::Broodwar->self()->supplyUsed() >= build_order_queue.front().second;
+    while(((BWAPI::Broodwar->self()->gas() - frame_gas_spent) >= build_order_queue.front().first.gasPrice()) && 
+        ((BWAPI::Broodwar->self()->minerals() - frame_minerals_spent) >= build_order_queue.front().first.mineralPrice()) &&
+        ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= build_order_queue.front().second)) {
+        // Sufficient minerals, gas, and proper supply to build the unit
 
-    while (gasRequired && mineralsRequired && supplyAvailable) {
         switch(build_order_queue.front().first.whatBuilds().first){
             case BWAPI::UnitTypes::Zerg_Larva: larva_queue.push(build_order_queue.front().first); break;
             case BWAPI::UnitTypes::Zerg_Drone: drone_queue.push(build_order_queue.front().first); break;
@@ -128,10 +122,5 @@ void Strategist::updateUnitQueue(){
 
         // Pop from build_order_queue
         build_order_queue.pop();
-
-        // check to see if we can build the next unit in queue
-        gasRequired = (BWAPI::Broodwar->self()->gas() - frame_gas_spent) >= build_order_queue.front().first.gasPrice();
-        mineralsRequired = (BWAPI::Broodwar->self()->minerals() - frame_minerals_spent) >= build_order_queue.front().first.mineralPrice();
-        supplyAvailable = (BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= build_order_queue.front().second;
     }
 }
