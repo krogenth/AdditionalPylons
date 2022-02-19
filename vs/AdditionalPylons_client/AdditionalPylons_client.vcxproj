@@ -156,15 +156,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp" />
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.cpp" />
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.cpp" />
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.cpp" />
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
-    <ClInclude Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />

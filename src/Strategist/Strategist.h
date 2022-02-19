@@ -1,10 +1,6 @@
 #pragma once
 #include <BWAPI.h>
 #include <queue>
-#include "./BuildOrders/DefaultBuildOrders.h"
-#include "./BuildOrders/ZergBuildOrders.h"
-#include "./BuildOrders/TerranBuildOrders.h"
-#include "./BuildOrders/ProtossBuildOrders.h"
 
 enum MapSize { smallest, medium, large };
 
@@ -24,7 +20,7 @@ public:
     void incrementSupply();
     void decrementSupply();
 
-    void DetermineMapSize();
+    void determineMapSize();
 
     
         
@@ -34,7 +30,7 @@ private:
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
 
-    int minerals_spent;
+    int minerals_spent = 0;
     int supply_total;
   
     std::queue<BWAPI::UnitType> larva_queue;
@@ -44,6 +40,5 @@ private:
     BWAPI::Race enemy_race;
     MapSize map_size;
 
-    std::initializer_list<std::pair<BWAPI::UnitType, int>> build_order_list;
     std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;
 };

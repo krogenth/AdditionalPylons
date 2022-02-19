@@ -1,8 +1,11 @@
 #include "Strategist.h"
+#include "./BuildOrders/UnknownBuildOrders.h"
+#include "./BuildOrders/ZergBuildOrders.h"
+#include "./BuildOrders/TerranBuildOrders.h"
+#include "./BuildOrders/ProtossBuildOrders.h"
 
 void Strategist::onStart() {
     // Get initial gamestate information
-    minerals_spent = 0;
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
     enemy_race = BWAPI::Broodwar->enemy()->getRace(); // Try to get enemy race on startup.  If the enemy chose random race, unknown will be returned.
     chooseOpeningBuildOrder();
@@ -24,15 +27,62 @@ void Strategist::decrementSupply(){
     supply_total -= 16;// supply provided by an overlord, should trigger on overlord death.
 }
 
-void Strategist::DetermineMapSize(){
+void Strategist::determineMapSize(){
     // Need to figure out how we want to determine this, or if we even want to determine it in the strategist.
     map_size = smallest;
 }
 
 void Strategist::chooseOpeningBuildOrder(){
-    // For now, simply populate the queue.
-    for (auto it = build_order_list.begin(); it != build_order_list.end(); ++it){
-        build_order_queue.push(*it);
+
+    // BuildOrder lists are named with the convention
+    // race_mapsize
+    // example: protoss_smallest
+
+    // Check by race first
+    if (enemy_race == BWAPI::Races::Protoss) {
+        // Check map size
+        if (map_size == smallest) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest);
+        }
+        else if (map_size == medium) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium);
+        }
+        else {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large);
+        }
+    }
+    else if (enemy_race == BWAPI::Races::Terran) {
+        if (map_size == smallest) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest);
+        }
+        else if (map_size == medium) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium);
+        }
+        else {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large);
+        }
+    }
+    else if (enemy_race == BWAPI::Races::Zerg) {
+        if (map_size == smallest) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest);
+        }
+        else if (map_size == medium) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium);
+        }
+        else {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large);
+        }
+    }
+    else { // Enemy race is unknown to us
+        if (map_size == smallest) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest);
+        }
+        else if (map_size == medium) {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium);
+        }
+        else {
+            build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large);
+        }
     }
 }
 

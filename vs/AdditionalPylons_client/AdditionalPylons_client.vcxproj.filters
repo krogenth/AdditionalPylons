@@ -30,18 +30,6 @@
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp">
       <Filter>Source Files\Strategist</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.cpp">
-      <Filter>Source Files\Strategist\BuildOrders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.cpp">
-      <Filter>Source Files\Strategist\BuildOrders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.cpp">
-      <Filter>Source Files\Strategist\BuildOrders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.cpp">
-      <Filter>Source Files\Strategist\BuildOrders</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -50,9 +38,6 @@
     <ClInclude Include="..\..\src\Strategist\Strategist.h">
       <Filter>Source Files\Strategist</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Strategist\BuildOrders\DefaultBuildOrders.h">
-      <Filter>Source Files\Strategist\BuildOrders</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h">
       <Filter>Source Files\Strategist\BuildOrders</Filter>
     </ClInclude>
@@ -60,6 +45,9 @@
       <Filter>Source Files\Strategist\BuildOrders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h">
       <Filter>Source Files\Strategist\BuildOrders</Filter>
     </ClInclude>
   </ItemGroup>
