@@ -4,7 +4,7 @@
 
 // Opt for 5 pool on small maps
 // https://liquipedia.net/starcraft/4/5_Pool
-extern const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_smallest = {
+const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_smallest = {
     {BWAPI::UnitTypes::Zerg_Drone, 8},
     {BWAPI::UnitTypes::Zerg_Spawning_Pool, 10},
     {BWAPI::UnitTypes::Zerg_Drone, 8},
@@ -17,7 +17,7 @@ extern const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_smal
 
 // 9 pool on medium maps
 // https://liquipedia.net/starcraft/9_Pool_(vs._Protoss)
-extern const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_medium = {
+const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_medium = {
     {BWAPI::UnitTypes::Zerg_Drone, 8},
     {BWAPI::UnitTypes::Zerg_Drone, 10},
     {BWAPI::UnitTypes::Zerg_Drone, 12},
@@ -35,7 +35,7 @@ extern const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_medi
 
 // 12 hatch on large maps
 // https://liquipedia.net/starcraft/12_Hatch_(vs._Protoss)
-extern const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_large = {
+const std::initializer_list<std::pair<BWAPI::UnitType, int>> protoss_large = {
     {BWAPI::UnitTypes::Zerg_Drone, 8},
     {BWAPI::UnitTypes::Zerg_Drone, 10},
     {BWAPI::UnitTypes::Zerg_Drone, 12},

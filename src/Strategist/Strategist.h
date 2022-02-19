@@ -40,7 +40,6 @@ private:
     std::queue<BWAPI::UnitType> drone_queue;
     std::queue<BWAPI::UnitType> hatchery_queue;
 
-    BWAPI::Race enemy_race;
     MapSize map_size;
 
     std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;

@@ -8,7 +8,6 @@
 void Strategist::onStart() {
     // Get initial gamestate information
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
-    enemy_race = enemy.returnRace();
     chooseOpeningBuildOrder();
 }
 
@@ -24,7 +23,7 @@ void Strategist::incrementSupply(){
 }
 
 void Strategist::decrementSupply(){
-    supply_total -= 16;// supply provided by an overlord, should trigger on overlord death.
+    supply_total -= 16; // supply provided by an overlord, should trigger on overlord death.
 }
 
 void Strategist::determineMapSize(){
@@ -64,7 +63,7 @@ void Strategist::chooseOpeningBuildOrder(){
     // race_mapsize
     // example: protoss_smallest
 
-    switch (enemy_race) {
+    switch (enemy.returnRace()) {
     case BWAPI::Races::Protoss:
         switch (map_size) {
         case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
