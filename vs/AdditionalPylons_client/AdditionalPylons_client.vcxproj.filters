@@ -16,14 +16,20 @@
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{b8de3c3b-8fed-43a5-b0a8-9ccd2dcd6fb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Map">
-      <UniqueIdentifier>{faf0197b-5fbc-4d88-a944-7b61afaa8a92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Map\MapTile">
-      <UniqueIdentifier>{143ba86c-5f0c-4743-a069-768cbd5cf1a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\UnitWrapper">
       <UniqueIdentifier>{15066c72-73cf-4e1b-8e25-9d7a48e6de0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BWEM-community">
+      <UniqueIdentifier>{0ded6fa6-175c-43c9-a315-cb07fdd788ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BWEB">
+      <UniqueIdentifier>{ea020aea-f088-4655-a350-eb208ebae9c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategist">
+      <UniqueIdentifier>{8a07ffb9-df93-4566-9704-c6ed6990fd96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategist\BuildOrders">
+      <UniqueIdentifier>{356ce3ff-9e70-4bf4-95df-bf849fc18838}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,11 +42,65 @@
     <ClCompile Include="..\..\src\Players\Player.cpp">
       <Filter>Source Files\Players</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\MapSingleton.cpp">
-      <Filter>Source Files\Map</Filter>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\area.cpp">
+      <Filter>BWEM-community</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\MapTile\MapTile.cpp">
-      <Filter>Source Files\Map\MapTile</Filter>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\base.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\bwapiExt.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\bwem.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\cp.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\graph.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\gridMap.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\map.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapDrawer.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapImpl.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\mapPrinter.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\neutral.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\tiles.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\utils.cpp">
+      <Filter>BWEM-community</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Block.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\BWEB.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\PathFind.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Station.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\BWEB\Source\Wall.cpp">
+      <Filter>BWEB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\Strategist.cpp">
+      <Filter>Source Files\Strategist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,17 +110,26 @@
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\MapSingleton.h">
-      <Filter>Source Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Map\MapTile\MapTile.h">
-      <Filter>Source Files\Map\MapTile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
-      <Filter>Source Files\UnitWrapper</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>
+    </ClInclude>
+    <ClInclude>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h">
+      <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\Strategist.h">
+      <Filter>Source Files\Strategist</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\UnitWrapper\BuildingWrapper.h">
       <Filter>Source Files\UnitWrapper</Filter>

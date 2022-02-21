@@ -13,5 +13,5 @@ if(!$?) {
 }
 msbuild /m /verbosity:detailed /p:Configuration=Release /p:Platform=x86 ./vs/AdditionalPylons.sln
 if(!$?) {
-   throw "Failed to build AdditionalPylons Release"
+    throw "Failed to build AdditionalPylons Release"
 }
