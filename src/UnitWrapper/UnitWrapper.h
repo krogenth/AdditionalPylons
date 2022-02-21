@@ -21,7 +21,7 @@ public:
     void Draw()
     {
         if (!queue.empty())
-        { //team fortress 2 is the best game ever
+        { //team fortress 2 is the best game ever no cap
             BWAPI::Broodwar->drawLineMap(BWAPI::Position(unit->getTilePosition()), BWAPI::Position(queue.back()), BWAPI::Colors::White);
         }
     };
