@@ -5,6 +5,7 @@
 class UnitWrapper {
 public:
     UnitWrapper(BWAPI::Unit u) : unit(u), unitID(u->getID()), type(u->getType()) {}
+    ~UnitWrapper() = default;
 
     BWAPI::Unit getUnit() { return this->unit; }
     BWAPI::UnitType getUnitType() { return this->type; }
@@ -18,8 +19,8 @@ public:
             return true;
         return false;
     }
-    virtual void OnFrame() {}
-    virtual void displayInfo() {}
+    virtual void onFrame() {}
+    virtual void displayInfo() { BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "UnitWrapper"); }
 
 protected:
     std::queue<BWAPI::TilePosition> queue;

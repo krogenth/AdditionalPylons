@@ -4,4 +4,5 @@
 class NonArmyWrapper : public UnitWrapper {
 public:
 	NonArmyWrapper(BWAPI::Unit u) : UnitWrapper(u) {};
+	~NonArmyWrapper() = default;
 };

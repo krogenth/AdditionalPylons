@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Players">
       <UniqueIdentifier>{f38c9a84-39f3-48c4-9caa-763afff53e44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\UnitWrapper">
-      <UniqueIdentifier>{e9656b00-98a4-4369-84e3-38ab36f3f6f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BWEM-community">
       <UniqueIdentifier>{2f15a297-cd8b-4f83-8965-473b0b4e6dc9}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,18 @@
     </Filter>
     <Filter Include="Source Files\Strategist\BuildOrders">
       <UniqueIdentifier>{5042b86f-7d68-4709-8347-3b0f428b60d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Units">
+      <UniqueIdentifier>{5efe790f-31b4-4f12-8c27-231244a43db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Units\ArmyWrappers">
+      <UniqueIdentifier>{e79a9f5a-6fba-454c-89a7-65c1ee9a8e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Units\BuildingWrappers">
+      <UniqueIdentifier>{b3d5c224-5e01-4bea-adb0-e88119eb3074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Units\NonArmyWrappers">
+      <UniqueIdentifier>{d6e6c18e-6ca5-4cd4-8cfd-0e6eb408abe3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +108,15 @@
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp">
       <Filter>Source Files\Strategist</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.cpp">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.cpp">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp">
+      <Filter>Source Files\Units\BuildingWrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -106,12 +124,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Player.h">
       <Filter>Source Files\Players</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h">
-      <Filter>Source Files\UnitWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h">
-      <Filter>Source Files\UnitWrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Strategist\Strategist.h">
       <Filter>Source Files\Strategist</Filter>
@@ -127,6 +139,27 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h">
       <Filter>Source Files\Strategist\BuildOrders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\Units.h">
+      <Filter>Source Files\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\UnitWrapper.h">
+      <Filter>Source Files\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.h">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\NonArmyWrapper.h">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.h">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.h">
+      <Filter>Source Files\Units\BuildingWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,13 +2,28 @@
 
 //Auto assigns this player's race and sets enemies race to unknown
 void Player::onStart(BWAPI::Race race) {
-	this->units.clear();
-	this->buildings.clear();
+	this->armyUnits.clear();
+	this->nonArmyUnits.clear();
+	this->buildingUnits.clear();
+	this->allUnits.clear();
 	this->playerRace = race;
 }
 
 void Player::onFrame() {
-
+	for (auto& [key, value] : this->armyUnits) {
+		value->onFrame();
+		value->displayInfo();
+	}
+		
+	for (auto& [key, value] : this->nonArmyUnits) {
+		value->onFrame();
+		value->displayInfo();
+	}
+		
+	for (auto& [key, value] : this->buildingUnits) {
+		value->onFrame();
+		value->displayInfo();
+	}
 }
 
 void Player::onNukeDetect(BWAPI::Position target) {
@@ -25,28 +40,32 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 
 //When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
-
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
 	if (this->playerRace == BWAPI::Races::Unknown)
 		this->playerRace = unit->getType().getRace();
 
-	if (unit->getType().isBuilding()) {
-		this->buildings[unit->getID()] = unit;
-	}
-	else if (unit->getType().isWorker()) {
-		this->units[unit->getID()] = unit;
-	}
+	if (unit->getType().isBuilding())
+		this->buildingUnits[unit->getID()] = std::make_unique<BuildingWrapper>(BuildingWrapper(unit));
+	else if (unit->getType().isWorker())
+		this->nonArmyUnits[unit->getID()] = std::make_unique<WorkerWrapper>(WorkerWrapper(unit));
+	else if (unit->getType() == BWAPI::UnitTypes::Zerg_Larva)
+		this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit));
+	else if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord)
+		this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit));
+	else
+		this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit));
+	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
 //When a unit is destroyed, removes unit from maps corresponding type
 void Player::onUnitDestroy(BWAPI::Unit unit) {
-	if (unit->getType().isBuilding()) {
-		this->buildings.erase(unit->getID());
-	}
-
-	else if (unit->getType().isWorker()) {
-		this->units.erase(unit->getID());
-	}
+	if (unit->getType().isBuilding())
+		this->buildingUnits.erase(unit->getID());
+	else if (unit->getType().isWorker() || unit->getType() == BWAPI::UnitTypes::Zerg_Larva || unit->getType() == BWAPI::UnitTypes::Zerg_Overlord)
+		this->nonArmyUnits.erase(unit->getID());
+	else
+		this->armyUnits.erase(unit->getID());
+	this->allUnits.erase(unit->getID());
 }
 
 void Player::onUnitMorph(BWAPI::Unit unit) {
@@ -78,7 +97,7 @@ void Player::displayInfo(int x) {
 
 	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
 	BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
-	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->units.size());
-	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildings.size());
+	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
+	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildingUnits.size());
 	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }

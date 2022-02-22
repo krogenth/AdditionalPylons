@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 #include <BWAPI.h>
 
@@ -8,8 +9,10 @@
 
 class Player {
 private:
-    std::unordered_map<int, BWAPI::Unit> units;
-    std::unordered_map<int, BWAPI::Unit> buildings;
+    std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
+    std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
+    std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
+    std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
     BWAPI::Race playerRace;
 
 public:

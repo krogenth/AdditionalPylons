@@ -19,6 +19,7 @@ void WorkerWrapper::onFrame() {
 }
 
 void WorkerWrapper::displayInfo() {
+    BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "WorkerWrapper");
     if (!this->queue.empty())
         BWAPI::Broodwar->drawLineMap(BWAPI::Position(this->unit->getTilePosition()), BWAPI::Position(this->queue.back()), BWAPI::Colors::White);
 }

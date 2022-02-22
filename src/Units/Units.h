@@ -9,3 +9,4 @@
 //	Non Army Wrapper Includes
 #include "./NonArmyWrappers/LarvaWrapper.h"
 #include "./NonArmyWrappers/WorkerWrapper.h"
+#include "./NonArmyWrappers/OverlordWrapper.h"

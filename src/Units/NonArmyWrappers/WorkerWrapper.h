@@ -13,9 +13,10 @@ enum class Jobs
 class WorkerWrapper : public NonArmyWrapper {
 public:
     WorkerWrapper(BWAPI::Unit u) : NonArmyWrapper(u){};
+    ~WorkerWrapper() = default;
 
-    virtual void onFrame();
-    virtual void displayInfo();
+    void onFrame() override;
+    void displayInfo() override;
 
 protected:
     Jobs currJob = Jobs::None;

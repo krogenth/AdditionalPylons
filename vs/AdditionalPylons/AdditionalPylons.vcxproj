@@ -176,6 +176,9 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
+    <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Players\Player.h" />
@@ -185,8 +188,13 @@
     <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\Strategist.h" />
-    <ClInclude Include="..\..\src\UnitWrapper\UnitWrapper.h" />
-    <ClInclude Include="..\..\src\UnitWrapper\WorkerWrapper.h" />
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h" />
+    <ClInclude Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.h" />
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.h" />
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\NonArmyWrapper.h" />
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.h" />
+    <ClInclude Include="..\..\src\Units\Units.h" />
+    <ClInclude Include="..\..\src\Units\UnitWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

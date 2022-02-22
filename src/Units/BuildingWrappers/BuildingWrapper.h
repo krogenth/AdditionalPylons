@@ -4,7 +4,8 @@
 class BuildingWrapper : public UnitWrapper {
 public:
     BuildingWrapper(BWAPI::Unit u) : UnitWrapper(u) {};
+    ~BuildingWrapper() = default;
 
-    virtual void onFrame();
-    virtual void displayInfo();
+    virtual void onFrame() override;
+    virtual void displayInfo() override;
 };

@@ -35,6 +35,8 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 void AdditionalPylonsModule::onFrame() {
 	BWEB::Map::draw();
 
+	player.onFrame();
+
 	player.displayInfo(400);
 	enemy.displayInfo(530);
 

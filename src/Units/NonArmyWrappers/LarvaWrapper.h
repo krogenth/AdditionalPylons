@@ -4,7 +4,8 @@
 class LarvaWrapper : public NonArmyWrapper {
 public:
     LarvaWrapper(BWAPI::Unit u) : NonArmyWrapper(u) {};
+    ~LarvaWrapper() = default;
 
-    virtual void onFrame();
-    virtual void displayInfo() {};
+    virtual void onFrame() override;
+    virtual void displayInfo() override;
 };
