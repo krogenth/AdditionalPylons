@@ -1,16 +1,19 @@
 #pragma once
-
-#include <BWAPI.h>
 #include <unordered_map>
 #include <string>
+#include <memory>
 
-class Player
-{
+#include <BWAPI.h>
+
+#include "../Units/Units.h"
+
+class Player {
 private:
-    std::unordered_map<int, BWAPI::Unit> units;
-    std::unordered_map<int, BWAPI::Unit> buildings;
-    BWAPI::Race ourRace;
-    //BWAPI::Race enemyRace;
+    std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
+    std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
+    std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
+    std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
+    BWAPI::Race playerRace;
 
 public:
     void onStart(BWAPI::Race race);
@@ -24,7 +27,7 @@ public:
     void onUnitRenegade(BWAPI::Unit unit);
     void onUnitComplete(BWAPI::Unit unit);
     void onUnitDiscover(BWAPI::Unit unit);
-    BWAPI::Race returnRace();
+    BWAPI::Race getRace() { return this->playerRace; }
     void displayInfo(int x);
 };
 

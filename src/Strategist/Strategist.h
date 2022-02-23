@@ -21,14 +21,18 @@ public:
     void incrementSupply();
     void decrementSupply();
 
-    void determineMapSize();
-
+    /*
+    Returns the next build order by the requesters unit type, if there is one
+    @returns
+        @retval std::optional<BWAPI::UnitType>
+    */
     std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
     
         
 private:
     Strategist() = default;
 
+    void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
 
