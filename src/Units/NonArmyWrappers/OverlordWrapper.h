@@ -8,6 +8,4 @@ public:
 
     void onFrame() override;
     void displayInfo() override;
-
-protected:
 };

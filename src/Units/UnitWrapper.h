@@ -27,4 +27,5 @@ protected:
     int unitID;
     BWAPI::Unit unit;
     BWAPI::UnitType type;
+    BWAPI::UnitType buildOrder = BWAPI::UnitTypes::Unknown;
 };

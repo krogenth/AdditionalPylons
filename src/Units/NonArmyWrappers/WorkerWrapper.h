@@ -20,5 +20,4 @@ public:
 
 protected:
     Jobs currJob = Jobs::None;
-    BWAPI::UnitType buildOrder = BWAPI::UnitTypes::Unknown;
 };

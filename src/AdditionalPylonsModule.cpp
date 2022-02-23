@@ -33,14 +33,14 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
+Strategist::getInstance().onFrame();
+
 	BWEB::Map::draw();
 
 	player.onFrame();
 
 	player.displayInfo(400);
 	enemy.displayInfo(530);
-
-	Strategist::getInstance().onFrame();
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {
