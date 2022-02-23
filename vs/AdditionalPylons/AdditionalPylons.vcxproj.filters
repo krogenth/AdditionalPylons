@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp">
       <Filter>Source Files\Units\BuildingWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.cpp">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.h">
+      <Filter>Source Files\Units\NonArmyWrappers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

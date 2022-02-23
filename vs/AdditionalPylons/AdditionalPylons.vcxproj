@@ -178,6 +178,7 @@
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
     <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +193,7 @@
     <ClInclude Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.h" />
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.h" />
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\NonArmyWrapper.h" />
+    <ClInclude Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.h" />
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.h" />
     <ClInclude Include="..\..\src\Units\Units.h" />
     <ClInclude Include="..\..\src\Units\UnitWrapper.h" />
