@@ -69,7 +69,11 @@ void Player::onUnitDestroy(BWAPI::Unit unit) {
 }
 
 void Player::onUnitMorph(BWAPI::Unit unit) {
-
+	this->buildingUnits.erase(unit->getID());
+	this->nonArmyUnits.erase(unit->getID());
+	this->armyUnits.erase(unit->getID());
+	this->allUnits.erase(unit->getID());
+	onUnitCreate(unit);
 }
 
 void Player::onUnitRenegade(BWAPI::Unit unit) {
