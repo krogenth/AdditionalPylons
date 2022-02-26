@@ -103,7 +103,12 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 }
 
 void AdditionalPylonsModule::onUnitMorph(BWAPI::Unit unit) {
-
+	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
+		player.onUnitMorph(unit);
+	}
+	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
+		enemy.onUnitMorph(unit);
+	}
 }
 
 void AdditionalPylonsModule::onUnitRenegade(BWAPI::Unit unit) {
