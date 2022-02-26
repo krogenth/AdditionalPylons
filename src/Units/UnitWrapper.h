@@ -15,7 +15,8 @@ public:
             this->unit->isCarryingMinerals() ||
             this->unit->isCarryingGas() ||
             this->unit->isMorphing() ||
-            this->unit->isConstructing())
+            this->unit->isConstructing() ||
+            this->unit->isUpgrading())
             return true;
         return false;
     }
