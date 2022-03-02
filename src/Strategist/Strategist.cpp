@@ -93,13 +93,11 @@ void Strategist::chooseOpeningBuildOrder() {
 
 void Strategist::updateUnitQueue() {
     // Need to track the amount of gas / minerals spent each frame in order to be able to queue multiple units on a single frame
-    int frame_minerals_spent = 0;
-    int frame_gas_spent = 0;
     int frame_supply_used = 0;
 
     while(!build_order_queue.empty() && 
-        ((BWAPI::Broodwar->self()->gas() - frame_gas_spent) >= build_order_queue.front().first.gasPrice()) && 
-        ((BWAPI::Broodwar->self()->minerals() - frame_minerals_spent) >= build_order_queue.front().first.mineralPrice()) &&
+        ((BWAPI::Broodwar->self()->gatheredGas() - this->gas_spent) >= build_order_queue.front().first.gasPrice()) && 
+        ((BWAPI::Broodwar->self()->gatheredMinerals() - this->minerals_spent) >= build_order_queue.front().first.mineralPrice()) &&
         ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= build_order_queue.front().second)) {
         // Sufficient minerals, gas, and proper supply to build the unit
 
@@ -113,10 +111,7 @@ void Strategist::updateUnitQueue() {
         }
         // update spent minerals + gas + supply
         minerals_spent += build_order_queue.front().first.mineralPrice();
-        frame_minerals_spent += build_order_queue.front().first.mineralPrice();
-
         gas_spent += build_order_queue.front().first.gasPrice();
-        frame_gas_spent += build_order_queue.front().first.gasPrice();
 
         frame_supply_used += (build_order_queue.front().first == BWAPI::UnitTypes::Zerg_Zergling) ? (build_order_queue.front().first.supplyRequired() * 2) : build_order_queue.front().first.supplyRequired();
 
