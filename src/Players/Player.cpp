@@ -88,6 +88,23 @@ void Player::onUnitDiscover(BWAPI::Unit unit) {
 
 }
 
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
+	std::unordered_map<int, BWAPI::Unit> specUnits;
+	if (type == BWAPI::UnitTypes::Unknown) {
+		for (auto& [key, value] : this->allUnits) {
+			specUnits[value->getID()] = value->getUnit();
+		}
+	}
+	else {
+		for (auto& [key, value] : this->allUnits) {
+			if (value->getUnitType() == type)
+				specUnits[value->getID()] = value->getUnit();
+		}
+	}
+
+	return specUnits;
+}
+
 //Displays player info (race, # of units, # of buildings)
 void Player::displayInfo(int x) {
 	std::string race;
@@ -104,4 +121,18 @@ void Player::displayInfo(int x) {
 	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
 	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildingUnits.size());
 	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
+}
+
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight) {
+	std::unordered_map<int, BWAPI::Unit> areaUnits;
+	for (auto& [key, value] : this->allUnits) {
+		BWAPI::Position unitPos = value->getUnit()->getPosition();
+		if (((topLeft == unitPos) || (topLeft < unitPos)) &&
+			((unitPos == botRight) || (unitPos < botRight)))
+			areaUnits[value->getID()] = value->getUnit();
+		else
+			continue;
+	}
+
+	return areaUnits;
 }

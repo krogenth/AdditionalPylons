@@ -29,6 +29,19 @@ public:
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race getRace() { return this->playerRace; }
     void displayInfo(int x);
+    /*
+    Returns a map of all units in a specified area
+    @returns
+        @retval std::unordered_map<int, BWAPI::Unit> map of units in given area
+    */
+    std::unordered_map<int, BWAPI::Unit> getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight);
+    /*
+    Returns a map of all units of a specified type
+    Returns all units if type is BWAPI::UnitTypes::Unknown
+    @returns
+        @retval std::unordered_map<int, BWAPI::Unit> map of units by unit type
+    */
+    std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
 };
 
 static Player player = Player();
