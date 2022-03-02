@@ -4,10 +4,6 @@
 
 void WorkerWrapper::onFrame()
 {
-
-    BWAPI::Unit closest = nullptr;
-    int smallestDistance = INT32_MAX;
-
     // if not busy or working
     if (this->currJob == Jobs::None || !this->isBusy())
     { // get command from strategist
@@ -35,20 +31,18 @@ void WorkerWrapper::onFrame()
     }
     else if (this->currJob == Jobs::None)
     { // if slacking, go dig
+        BWAPI::Unit closest = nullptr;
+
         for (const auto &i : BWAPI::Broodwar->getMinerals())
         { // find closest mineral
-            if (this->unit->getDistance(i) < smallestDistance)
+            if ((closest != nullptr && this->unit->getDistance(i) < this->unit->getDistance(closest)) || closest == nullptr)
             {
-                smallestDistance = this->unit->getDistance(i);
                 closest = i;
             }
         }
-        if (closest)
+        if (closest && this->unit->gather(closest))
         { // ROCK AND STONE
-            if (this->unit->gather(closest))
-            {//if rock and stone doesn't fail. store it
-                currJob = Jobs::MineMinerals;
-            }
+            currJob = Jobs::MineMinerals;
         }
     }
 }
