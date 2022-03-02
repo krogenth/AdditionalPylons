@@ -24,8 +24,9 @@ void WorkerWrapper::onFrame()
         if (tile != BWAPI::TilePositions::Invalid)
         {
             if (!this->unit->build(this->buildOrder, tile))
-            { // move to the tile
-                this->unit->move(BWAPI::Position(tile));
+            { // build failed, move to center of build location
+                BWAPI::TilePosition offset(this->buildOrder.tileWidth() / 2, this->buildOrder.tileHeight() / 2);
+                this->unit->move(BWAPI::Position(tile + offset));
             }
         }
     }
