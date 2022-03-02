@@ -120,9 +120,6 @@ void Player::displayInfo(int x) {
 	BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
 	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
 	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildingUnits.size());
-	std::unordered_map<int, BWAPI::Unit> areaUnits = getUnitsByArea(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()), BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation() + BWAPI::TilePosition(4, 4)));
-	BWAPI::Broodwar->drawTextScreen(x, 100, "Area: %d", areaUnits.size());
-	BWAPI::Broodwar->drawBoxMap(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()), BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation() + BWAPI::TilePosition(4, 4)), BWAPI::Colors::Black);
 	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }
 
