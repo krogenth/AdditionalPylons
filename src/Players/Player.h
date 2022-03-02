@@ -14,6 +14,7 @@ private:
     std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
     std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
     BWAPI::Race playerRace;
+    std::unordered_map<int, BWAPI::Unit> getSpecUnits(BWAPI::UnitType type);
 
 public:
     void onStart(BWAPI::Race race);
@@ -29,6 +30,7 @@ public:
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race getRace() { return this->playerRace; }
     void displayInfo(int x);
+    std::unordered_map<int, BWAPI::Unit> getAreaUnits(BWAPI::Position topLeft, BWAPI::Position botRight);
 };
 
 static Player player = Player();

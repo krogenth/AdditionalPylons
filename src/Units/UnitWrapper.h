@@ -9,6 +9,7 @@ public:
 
     BWAPI::Unit getUnit() { return this->unit; }
     BWAPI::UnitType getUnitType() { return this->type; }
+    int getID() { return this->unitID; }
 
     virtual bool isBusy() {
         if (!this->unit->isCompleted() ||
