@@ -37,8 +37,9 @@ public:
     std::unordered_map<int, BWAPI::Unit> getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight);
     /*
     Returns a map of all units of a specified type
+    Returns all units if type is BWAPI::UnitTypes::Unknown
     @returns
-        @retval std::unordered_map<int, BWAPI::Unit> map of units by type
+        @retval std::unordered_map<int, BWAPI::Unit> map of units by unit type
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
 };
