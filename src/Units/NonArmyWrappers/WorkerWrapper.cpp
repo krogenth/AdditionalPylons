@@ -1,5 +1,6 @@
 #include "./WorkerWrapper.h"
 #include "../../Strategist/Strategist.h"
+#include <algorithm>
 #include "BWEB.h"
 
 void WorkerWrapper::onFrame()
@@ -19,13 +20,12 @@ void WorkerWrapper::onFrame()
     // not busy + build order
     if (this->buildOrder != BWAPI::UnitTypes::Unknown && !this->isBusy())
     { // get closest bweb block to the starting location of the right size
-        auto tiles = BWEB::Blocks::getClosestBlock(BWAPI::Broodwar->self()->getStartLocation())->getPlacements(this->buildOrder);
-        if (tiles.size() > 0)
-        { // tileset not empty
-            // attempt to build, if fail
-            if (!this->unit->build(this->buildOrder, *(tiles.begin())))
+        auto tile = getBlockOfSize(this->buildOrder, BWAPI::Broodwar->self()->getStartLocation());
+        if (tile != BWAPI::TilePositions::Invalid)
+        {
+            if (!this->unit->build(this->buildOrder, tile))
             { // move to the tile
-                this->unit->move(BWAPI::Position(*(tiles.begin())));
+                this->unit->move(BWAPI::Position(tile));
             }
         }
     }
@@ -45,6 +45,27 @@ void WorkerWrapper::onFrame()
             currJob = Jobs::MineMinerals;
         }
     }
+}
+
+BWAPI::TilePosition WorkerWrapper::getBlockOfSize(BWAPI::UnitType type, BWAPI::TilePosition pos)
+{
+    std::vector<BWEB::Block> blocks = BWEB::Blocks::getBlocks();
+
+    std::sort(blocks.begin(), blocks.end(),
+              [pos](BWEB::Block a, BWEB::Block b)
+              {
+                  return a.getTilePosition().getApproxDistance(pos) < b.getTilePosition().getApproxDistance(pos);
+              });
+
+    for (auto &b : blocks)
+    {
+        auto placements = b.getPlacements(type);
+        if (placements.size() && BWAPI::Broodwar->canBuildHere(*placements.begin(), type, this->unit))
+        {
+            return *placements.begin();
+        }
+    }
+    return BWAPI::TilePositions::Invalid;
 }
 
 void WorkerWrapper::displayInfo()
