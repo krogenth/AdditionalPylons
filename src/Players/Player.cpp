@@ -88,7 +88,7 @@ void Player::onUnitDiscover(BWAPI::Unit unit) {
 
 }
 
-std::unordered_map<int, BWAPI::Unit> Player::getSpecUnits(BWAPI::UnitType type) {
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
 	std::unordered_map<int, BWAPI::Unit> specUnits;
 	if (type == BWAPI::UnitTypes::Unknown) {
 		for (auto& [key, value] : this->allUnits) {
@@ -123,7 +123,7 @@ void Player::displayInfo(int x) {
 	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }
 
-std::unordered_map<int, BWAPI::Unit> Player::getAreaUnits(BWAPI::Position topLeft, BWAPI::Position botRight) {
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight) {
 	std::unordered_map<int, BWAPI::Unit> areaUnits;
 	for (auto& [key, value] : this->allUnits) {
 		BWAPI::Position unitPos = value->getUnit()->getPosition();
