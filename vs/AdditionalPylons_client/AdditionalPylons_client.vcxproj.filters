@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Units\BuildingWrappers">
       <UniqueIdentifier>{4428e8a8-261c-4d36-b1d6-284937f14695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Strategist\CombatEngine">
+      <UniqueIdentifier>{3dff0625-53b7-4823-bf5f-4655b15ad2a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp">
@@ -123,6 +126,9 @@
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.cpp">
       <Filter>Source Files\Units\NonArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\CombatEngine\CombatEngine.cpp">
+      <Filter>Source Files\Strategist\CombatEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -169,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.h">
       <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\CombatEngine\CombatEngine.h">
+      <Filter>Source Files\Strategist\CombatEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

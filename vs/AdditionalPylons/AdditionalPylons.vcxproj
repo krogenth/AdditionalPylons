@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\libs\BWEM-community\BWEM\src\utils.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
+    <ClCompile Include="..\..\src\Strategist\CombatEngine\CombatEngine.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
     <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\CombatEngine\CombatEngine.h" />
     <ClInclude Include="..\..\src\Strategist\Strategist.h" />
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h" />
     <ClInclude Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.h" />
