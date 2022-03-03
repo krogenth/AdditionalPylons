@@ -176,6 +176,10 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\MustaliskWrapper.cpp" />
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.cpp" />
@@ -190,6 +194,10 @@
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\Strategist.h" />
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h" />
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.h" />
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.h" />
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\MutaliskWrapper.h" />
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.h" />
     <ClInclude Include="..\..\src\Units\BuildingWrappers\BuildingWrapper.h" />
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\LarvaWrapper.h" />
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\NonArmyWrapper.h" />
