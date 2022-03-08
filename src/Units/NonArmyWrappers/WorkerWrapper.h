@@ -17,7 +17,7 @@ public:
 
     void onFrame() override;
     void displayInfo() override;
-
 protected:
+    BWAPI::TilePosition getBlockOfSize(BWAPI::UnitType type, BWAPI::TilePosition pos);
     Jobs currJob = Jobs::None;
 };

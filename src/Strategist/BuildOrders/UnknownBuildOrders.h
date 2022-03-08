@@ -1,7 +1,6 @@
 #pragma once
 #include<utility>
 #include<BWAPI.h>
-
 // Opt for 5 pool on small maps
 // https://liquipedia.net/starcraft/4/5_Pool
 const std::initializer_list<std::pair<BWAPI::UnitType, int>> unknown_smallest = {
