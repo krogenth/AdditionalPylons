@@ -1,7 +1,10 @@
 #pragma once
 
 //	Army Wrapper Includes
-#include "./ArmyWrappers/ArmyWrapper.h"
+#include "./ArmyWrappers/ZerglingWrapper.h"
+#include "./ArmyWrappers/HydraliskWrapper.h"
+#include "./ArmyWrappers/LurkerWrapper.h"
+#include "./ArmyWrappers/MutaliskWrapper.h"
 
 //	Building Wrapper Includes
 #include "./BuildingWrappers/BuildingWrapper.h"

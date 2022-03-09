@@ -123,6 +123,18 @@
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.cpp">
       <Filter>Source Files\Units\NonArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\MustaliskWrapper.cpp">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.cpp">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.cpp">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -169,6 +181,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\NonArmyWrappers\OverlordWrapper.h">
       <Filter>Source Files\Units\NonArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.h">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.h">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.h">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Units\ArmyWrappers\MutaliskWrapper.h">
+      <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

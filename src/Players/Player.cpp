@@ -48,12 +48,17 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 		this->buildingUnits[unit->getID()] = std::make_unique<BuildingWrapper>(BuildingWrapper(unit));
 	else if (unit->getType().isWorker())
 		this->nonArmyUnits[unit->getID()] = std::make_unique<WorkerWrapper>(WorkerWrapper(unit));
-	else if (unit->getType() == BWAPI::UnitTypes::Zerg_Larva)
-		this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit));
-	else if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord)
-		this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit));
-	else
-		this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit));
+	else {
+		switch (unit->getType()) {
+		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_unique<ZerglingWrapper>(ZerglingWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_unique<HydraliskWrapper>(HydraliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_unique<LurkerWrapper>(LurkerWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_unique<MutaliskWrapper>(MutaliskWrapper(unit)); break;
+		default: this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit)); break;
+		}
+	}
 	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
