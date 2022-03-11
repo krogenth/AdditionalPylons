@@ -22,7 +22,6 @@ void Strategist::onFrame() {
     if (!foundBase && foundEnemyBase()) {
         playDecision = PlayDecision::none;
         foundBase = true;
-        std::cout << "found enemy base" << std::endl;
     }
 }
 
@@ -36,7 +35,7 @@ void Strategist::decrementSupply() {
 
 void Strategist::determineMapSize() {
     // Need to figure out how we want to determine this, or if we even want to determine it in the strategist.
-    map_size = smallest;
+    map_size = MapSize::smallest;
 }
 
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
@@ -71,30 +70,30 @@ void Strategist::chooseOpeningBuildOrder() {
     // race_mapsize
     // example: protoss_smallest
 
-    switch (enemy.getRace()) {
+    switch (Player::getEnemyInstance().getRace()) {
     case BWAPI::Races::Protoss:
         switch (map_size) {
-        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
-        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
-        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
+        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
+        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
+        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
         }
     case BWAPI::Races::Terran: 
         switch (map_size) {
-        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
-        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
-        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large); break;
+        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
+        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
+        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large); break;
         }
     case BWAPI::Races::Zerg:
         switch (map_size) {
-        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest); break;
-        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium); break;
-        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large); break;
+        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest); break;
+        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium); break;
+        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large); break;
         }
     default:
         switch (map_size) {
-        case smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest); break;
-        case medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium); break;
-        case large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
+        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest); break;
+        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium); break;
+        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
         }
     }
 }
@@ -129,6 +128,19 @@ void Strategist::updateUnitQueue() {
 }
 
 bool Strategist::foundEnemyBase() {
-    std::unordered_map<int, BWAPI::Unit> depot = enemy.getUnitsByType(BWAPI::UnitTypes::Buildings);
+    std::unordered_map<int, BWAPI::Unit> depot = Player::getEnemyInstance().getUnitsByType(Player::getEnemyInstance().getRace().getResourceDepot());
     return(!depot.empty());
+}
+
+void Strategist::displayInfo(int x) {
+    std::string play = "";
+    switch (playDecision) {
+        case PlayDecision::scout: play = "Scout"; break;
+        case PlayDecision::attack: play = "Attack"; break;
+        case PlayDecision::defend: play = "Defend"; break;
+        default: play = "None"; break;
+    }
+    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
+    BWAPI::Broodwar->drawTextScreen(x, 95, "Play: %s", play.c_str());
+    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }

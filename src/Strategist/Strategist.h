@@ -3,7 +3,7 @@
 #include <queue>
 #include <optional>
 
-enum MapSize { smallest, medium, large };
+enum class MapSize { smallest, medium, large };
 enum class PlayDecision { none, scout, attack, defend };
 class Strategist {
 public:
@@ -20,7 +20,7 @@ public:
     void onFrame();
     void incrementSupply();
     void decrementSupply();
-    bool foundBase;
+    void displayInfo(int x);
     /*
     Returns the next build order by the requesters unit type, if there is one
     @returns
@@ -35,8 +35,14 @@ private:
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
+    /*
+    Returns if we have found an enemy resource depot
+    @returns
+        @retval bool true if map is not empty
+    */
     bool foundEnemyBase();
 
+    bool foundBase;
     int minerals_spent = 0;
     int gas_spent = 0;
     int supply_total;
