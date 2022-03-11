@@ -19,8 +19,6 @@ private:
 public:
     Player(const Player&) = delete;
     Player(const Player&&) = delete;
-    Player operator=(const Player&) = delete;
-    Player& operator=(const Player&&) = delete;
     /*
     Returns the current instance of the player's instance
     @returns
