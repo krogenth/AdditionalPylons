@@ -1,9 +1,11 @@
 #pragma once
-#include <BWAPI.h>
+#include <map>
 #include <queue>
 #include <optional>
 
-enum MapSize { smallest, medium, large };
+#include <BWAPI.h>
+
+enum class MapSize { smallest, medium, large };
 
 class Strategist {
 public:
@@ -18,16 +20,21 @@ public:
 
     void onStart();
     void onFrame();
-    void incrementSupply();
-    void decrementSupply();
+    void adjustTotalSupply(int supply) { this->totalSupply += supply; }
 
     /*
-    Returns the next build order by the requesters unit type, if there is one
+    Returns the next build order by the requesters BWAPI::UnitType, if there is one
     @returns
         @retval std::optional<BWAPI::UnitType>
     */
     std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
     
+    /*
+    Returns the next upgrade order by the requesters BWAPI::UnitType, if there is one
+    @returns
+        @retval std::optional<BWAPI::UpgradeType>
+    */
+    std::optional<BWAPI::UpgradeType> getUnitUpgradeOrder(BWAPI::UnitType type);
         
 private:
     Strategist() = default;
@@ -36,15 +43,15 @@ private:
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
 
-    int minerals_spent = 0;
-    int gas_spent = 0;
-    int supply_total;
-  
-    std::queue<BWAPI::UnitType> larva_queue;
-    std::queue<BWAPI::UnitType> drone_queue;
-    std::queue<BWAPI::UnitType> hatchery_queue;
+    int spentMinerals = 0;
+    int spentGas = 0;
+    int totalSupply = 0;
 
-    MapSize map_size;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::UnitType>> buildOrders;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::UpgradeType>> upgradeOrders;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::TechType>> researchOrders;
 
-    std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;
+    MapSize mapSize = MapSize::smallest;
+
+    std::queue<std::pair<BWAPI::UnitType, int>> startingBuildQueue;
 };

@@ -1,28 +1,34 @@
 #include "./Player.h"
 
 //Auto assigns this player's race and sets enemies race to unknown
-void Player::onStart(BWAPI::Race race) {
+void Player::onStart(BWAPI::Player player) {
 	this->armyUnits.clear();
 	this->nonArmyUnits.clear();
 	this->buildingUnits.clear();
 	this->allUnits.clear();
-	this->playerRace = race;
+	this->player = player;
+	this->playerRace = player->getRace();
+	this->upgrades.onStart(player);
 }
 
 void Player::onFrame() {
-	for (auto& [key, value] : this->armyUnits) {
-		value->onFrame();
-		value->displayInfo();
-	}
-		
-	for (auto& [key, value] : this->nonArmyUnits) {
-		value->onFrame();
-		value->displayInfo();
-	}
-		
-	for (auto& [key, value] : this->buildingUnits) {
-		value->onFrame();
-		value->displayInfo();
+	this->upgrades.onFrame();
+
+	if (this->player == BWAPI::Broodwar->self()) {
+		for (auto& [key, value] : this->armyUnits) {
+			value->onFrame();
+			value->displayInfo();
+		}
+
+		for (auto& [key, value] : this->nonArmyUnits) {
+			value->onFrame();
+			value->displayInfo();
+		}
+
+		for (auto& [key, value] : this->buildingUnits) {
+			value->onFrame();
+			value->displayInfo();
+		}
 	}
 }
 
@@ -38,7 +44,6 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 
 }
 
-//When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
 	if (this->playerRace == BWAPI::Races::Unknown)
@@ -62,7 +67,6 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
-//When a unit is destroyed, removes unit from maps corresponding type
 void Player::onUnitDestroy(BWAPI::Unit unit) {
 	if (unit->getType().isBuilding())
 		this->buildingUnits.erase(unit->getID());
@@ -78,7 +82,7 @@ void Player::onUnitMorph(BWAPI::Unit unit) {
 	this->nonArmyUnits.erase(unit->getID());
 	this->armyUnits.erase(unit->getID());
 	this->allUnits.erase(unit->getID());
-	onUnitCreate(unit);
+	this->onUnitCreate(unit);
 }
 
 void Player::onUnitRenegade(BWAPI::Unit unit) {
@@ -91,23 +95,6 @@ void Player::onUnitComplete(BWAPI::Unit unit) {
 
 void Player::onUnitDiscover(BWAPI::Unit unit) {
 
-}
-
-std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
-	std::unordered_map<int, BWAPI::Unit> specUnits;
-	if (type == BWAPI::UnitTypes::Unknown) {
-		for (auto& [key, value] : this->allUnits) {
-			specUnits[value->getID()] = value->getUnit();
-		}
-	}
-	else {
-		for (auto& [key, value] : this->allUnits) {
-			if (value->getUnitType() == type)
-				specUnits[value->getID()] = value->getUnit();
-		}
-	}
-
-	return specUnits;
 }
 
 //Displays player info (race, # of units, # of buildings)
@@ -140,4 +127,21 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topL
 	}
 
 	return areaUnits;
+}
+
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
+	std::unordered_map<int, BWAPI::Unit> specUnits;
+	if (type == BWAPI::UnitTypes::Unknown) {
+		for (auto& [key, value] : this->allUnits) {
+			specUnits[value->getID()] = value->getUnit();
+		}
+	}
+	else {
+		for (auto& [key, value] : this->allUnits) {
+			if (value->getUnitType() == type)
+				specUnits[value->getID()] = value->getUnit();
+		}
+	}
+
+	return specUnits;
 }

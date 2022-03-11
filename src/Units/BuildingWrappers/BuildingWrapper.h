@@ -8,4 +8,9 @@ public:
 
     virtual void onFrame() override;
     virtual void displayInfo() override;
+    
+protected:
+    bool hasOrder();
+
+    BWAPI::UpgradeType upgradeOrder;
 };

@@ -5,18 +5,12 @@
 
 #include <BWAPI.h>
 
+#include "./Upgrades/Upgrades.h"
 #include "../Units/Units.h"
 
 class Player {
-private:
-    std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
-    std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
-    std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
-    std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
-    BWAPI::Race playerRace;
-
 public:
-    void onStart(BWAPI::Race race);
+    void onStart(BWAPI::Player player);
     void onFrame();
     void onNukeDetect(BWAPI::Position target);
     void onUnitEvade(BWAPI::Unit unit);
@@ -29,12 +23,14 @@ public:
     void onUnitDiscover(BWAPI::Unit unit);
     BWAPI::Race getRace() { return this->playerRace; }
     void displayInfo(int x);
+
     /*
     Returns a map of all units in a specified area
     @returns
         @retval std::unordered_map<int, BWAPI::Unit> map of units in given area
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight);
+
     /*
     Returns a map of all units of a specified type
     Returns all units if type is BWAPI::UnitTypes::Unknown
@@ -42,6 +38,71 @@ public:
         @retval std::unordered_map<int, BWAPI::Unit> map of units by unit type
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
+
+	/*
+	Returns the damage of the specified BWAPI::WeaponType
+	@returns
+		@retval int of the weapon's damage
+	*/
+	int getWeaponDamage(BWAPI::WeaponType weapon) { this->upgrades.getWeaponDamage(weapon); };
+
+	/*
+	Returns the range of the specified BWAPI::WeaponType
+	@returns
+		@retval int of the weapon's range
+	*/
+	int getWeaponRange(BWAPI::WeaponType weapon) { this->upgrades.getWeaponRange(weapon); };
+
+	/*
+	Returns the weapon cooldown of the specified BWAPI::UnitType
+	@returns
+		@retval int of the unit's weapon cooldown
+	*/
+	int getUnitCooldown(BWAPI::UnitType type) { this->upgrades.getUnitCooldown(type); };
+
+	/*
+	Returns the armor of the specified BWAPI::UnitType
+	@returns
+		@retval int of the unit's armor
+	*/
+	int getUnitArmor(BWAPI::UnitType type) { this->upgrades.getUnitArmor(type); };
+
+	/*
+	Returns the sight range of the specified BWAPI::UnitType
+	@returns
+		@retval int of the unit's sight range
+	*/
+	int getUnitSight(BWAPI::UnitType type) { this->upgrades.getUnitSight(type); };
+
+	/*
+	Returns the maximum movement speed of the specified BWAPI::UnitType
+	@returns
+		@retval int of the unit's maximum movement speed
+	*/
+	double getUnitSpeed(BWAPI::UnitType type) { this->upgrades.getUnitSpeed(type); };
+
+	/*
+	Returns if the specified BWAPI::TechType has been researched
+	@returns
+		@retval bool on if the specified player has researched the specified tech
+	*/
+	bool hasResearchedTech(BWAPI::TechType tech) { this->upgrades.hasResearchedTech(tech); };
+
+	/*
+	Returns the upgrade level of the specified BWAPI::UpgradeType
+	@returns
+		@retval int of the upgrade's level
+	*/
+	int getUpgradeLevel(BWAPI::UpgradeType upgrade) { this->upgrades.getUpgradeLevel(upgrade); };
+
+protected:
+    Upgrades upgrades = Upgrades();
+    std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
+    std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
+    std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
+    std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
+    BWAPI::Player player = nullptr;
+    BWAPI::Race playerRace;
 };
 
 static Player player = Player();
