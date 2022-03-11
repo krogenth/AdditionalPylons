@@ -9,12 +9,20 @@ void Strategist::onStart() {
     // Get initial gamestate information
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
     chooseOpeningBuildOrder();
+    playDecision = PlayDecision::scout;
+    foundBase = false;
 }
 
 void Strategist::onFrame() {
     // Check if we need to add something to the queue
     if (!build_order_queue.empty()) {
         updateUnitQueue();
+    }
+
+    if (!foundBase && foundEnemyBase()) {
+        playDecision = PlayDecision::none;
+        foundBase = true;
+        std::cout << "found enemy base" << std::endl;
     }
 }
 
@@ -118,4 +126,9 @@ void Strategist::updateUnitQueue() {
         // Pop from build_order_queue
         build_order_queue.pop();
     }
+}
+
+bool Strategist::foundEnemyBase() {
+    std::unordered_map<int, BWAPI::Unit> depot = enemy.getUnitsByType(BWAPI::UnitTypes::Buildings);
+    return(!depot.empty());
 }
