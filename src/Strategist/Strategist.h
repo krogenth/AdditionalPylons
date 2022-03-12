@@ -42,7 +42,6 @@ private:
     */
     bool foundEnemyBase();
 
-    bool foundBase;
     int minerals_spent = 0;
     int gas_spent = 0;
     int supply_total;

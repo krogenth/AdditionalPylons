@@ -10,7 +10,6 @@ void Strategist::onStart() {
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
     chooseOpeningBuildOrder();
     playDecision = PlayDecision::scout;
-    foundBase = false;
 }
 
 void Strategist::onFrame() {
@@ -19,9 +18,8 @@ void Strategist::onFrame() {
         updateUnitQueue();
     }
 
-    if (!foundBase && foundEnemyBase()) {
+    if (playDecision == PlayDecision::scout && foundEnemyBase()) {
         playDecision = PlayDecision::none;
-        foundBase = true;
     }
 }
 
