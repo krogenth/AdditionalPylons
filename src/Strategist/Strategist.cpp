@@ -86,28 +86,26 @@ void Strategist::chooseOpeningBuildOrder() {
 void Strategist::updateUnitQueue() {
     // Need to track the amount of gas / minerals spent each frame in order to be able to queue multiple units on a single frame
     int frame_supply_used = 0;
-    auto order = this->startingBuildQueue.front();
 
     // Sufficient minerals, gas, and proper supply to build the unit
     while(!this->startingBuildQueue.empty() &&
-        ((BWAPI::Broodwar->self()->gatheredGas() - this->spentGas) >= order.first.gasPrice()) &&
-        ((BWAPI::Broodwar->self()->gatheredMinerals() - this->spentMinerals) >= order.first.mineralPrice()) &&
-        ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= order.second)) {
+        ((BWAPI::Broodwar->self()->gatheredGas() - this->spentGas) >= this->startingBuildQueue.front().first.gasPrice()) &&
+        ((BWAPI::Broodwar->self()->gatheredMinerals() - this->spentMinerals) >= this->startingBuildQueue.front().first.mineralPrice()) &&
+        ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= this->startingBuildQueue.front().second)) {
         
-        if (this->buildOrders.find(order.first.whatBuilds().first) == this->buildOrders.end())
-            this->buildOrders[order.first.whatBuilds().first] = std::queue<BWAPI::UnitType>{};
-        this->buildOrders[order.first.whatBuilds().first].push(order.first);
+        if (this->buildOrders.find(this->startingBuildQueue.front().first.whatBuilds().first) == this->buildOrders.end())
+            this->buildOrders[this->startingBuildQueue.front().first.whatBuilds().first] = std::queue<BWAPI::UnitType>{};
+        this->buildOrders[this->startingBuildQueue.front().first.whatBuilds().first].push(this->startingBuildQueue.front().first);
 
-        this->adjustTotalSupply(order.first.supplyProvided());
+        this->adjustTotalSupply(this->startingBuildQueue.front().first.supplyProvided());
 
         // update spent minerals + gas + supply
-        this->spentMinerals += order.first.mineralPrice();
-        this->spentGas += order.first.gasPrice();
+        this->spentMinerals += this->startingBuildQueue.front().first.mineralPrice();
+        this->spentGas += this->startingBuildQueue.front().first.gasPrice();
 
-        frame_supply_used += (order.first == BWAPI::UnitTypes::Zerg_Zergling) ? (order.first.supplyRequired() * 2) : order.first.supplyRequired();
+        frame_supply_used += (this->startingBuildQueue.front().first == BWAPI::UnitTypes::Zerg_Zergling) ? (this->startingBuildQueue.front().first.supplyRequired() * 2) : this->startingBuildQueue.front().first.supplyRequired();
 
         // Pop from build_order_queue
         this->startingBuildQueue.pop();
-        order = this->startingBuildQueue.front();
     }
 }
