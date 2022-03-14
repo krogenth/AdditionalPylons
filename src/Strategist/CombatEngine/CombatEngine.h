@@ -5,20 +5,25 @@
 
 struct combatStats {
 	int numTroops=0;
-	int maxHealth=0;
-	int currHealth=0;
-	int maxShield=0;
-	int currShield=0;
+	double maxHealth=0;
+	double currHealth=0;
+	double maxShield=0;
+	double currShield=0;
 	int avgArmor=0;
 	int avgAlt=0;
 	double airDPS=0;
 	double groundDPS=0;
 };
 
+struct playerStats {
+	combatStats air;
+	combatStats ground;
+};
+
 class CombatEngine {	
 	
+	
 public:
-	CombatEngine();
 	/*
 		Sets the combatStats for enemy units and player units
 	 */
@@ -30,8 +35,8 @@ public:
 			@retval bool false if enemy should win
 	*/
 	bool playerWins(const BWAPI::Position& center, const int radius);
-	static combatStats enemyAir;
-	static combatStats enemyGround;
-	static combatStats myAir;
-	static combatStats myGround;
+
+	std::tuple<double,double> calcDPS(BWAPI::UnitType troop);	
+	playerStats playerSt;
+	playerStats enemySt;
 };

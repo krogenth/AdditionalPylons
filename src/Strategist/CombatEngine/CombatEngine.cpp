@@ -1,6 +1,15 @@
 #include "./CombatEngine.h"
 
-void setCombatStats(const BWAPI::Position& center, const int radius) {
+std::tuple<double,double> CombatEngine::calcDPS(BWAPI::UnitType troop) {
+	BWAPI::WeaponType airWeapon = troop.airWeapon();
+	BWAPI::WeaponType groundWeapon = troop.groundWeapon();
+	double airDps = ((airWeapon.damageAmount() * airWeapon.damageFactor()) / airWeapon.damageCooldown());
+	double groundDps = ((groundWeapon.damageAmount() * groundWeapon.damageFactor()) / groundWeapon.damageCooldown());
+	auto retVal = std::make_tuple(airDps,groundDps);
+	return retVal;
+}
+
+void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radius) {
 	if (center.isValid()) {
 		int topx = center.x - radius;
 		int topy = center.y + radius;
@@ -11,66 +20,48 @@ void setCombatStats(const BWAPI::Position& center, const int radius) {
 		if (topLeft.isValid() && botRight.isValid()) {
 			std::unordered_map<int, BWAPI::Unit> enemyTroops = enemy.getUnitsByArea(topLeft, botRight);
 			std::unordered_map<int, BWAPI::Unit> myTroops = player.getUnitsByArea(topLeft, botRight);
-			std::unordered_map<int, BWAPI::Unit>::iterator it = enemyTroops.begin();
-			while (it != enemyTroops.end()) {
-				if (it->second->isFlying()) {
-					CombatEngine::enemyAir.numTroops++;
-					BWAPI::UnitType troop = it->second->getType();
-					BWAPI::WeaponType airWeapon = troop.airWeapon();
-					BWAPI::WeaponType groundWeapon = troop.groundWeapon();
-					int airDps = ((airWeapon.damageAmount() * airWeapon.damageFactor()) / airWeapon.damageCooldown());
-					int groundDps = ((groundWeapon.damageAmount() * groundWeapon.damageFactor()) / groundWeapon.damageCooldown());
-					CombatEngine::enemyAir.airDPS += airDps;
-					CombatEngine::enemyAir.groundDPS += groundDps;
-					CombatEngine::enemyAir.maxShield += troop.maxShields();
-					CombatEngine::enemyAir.maxHealth += troop.maxHitPoints();
-					CombatEngine::enemyAir.currHealth += it->second->getHitPoints();
-					CombatEngine::enemyAir.currShield += it->second->getShields();
+			for (const auto& [key, value] : enemyTroops){
+				BWAPI::UnitType troop = value->getType();
+				auto dpsVals = calcDPS(troop);
+				if (value->isFlying()) {
+					CombatEngine::enemySt.air.numTroops++;
+					CombatEngine::enemySt.air.airDPS += std::get<0>(dpsVals);
+					CombatEngine::enemySt.air.groundDPS += std::get<1>(dpsVals);
+					CombatEngine::enemySt.air.maxShield += troop.maxShields();
+					CombatEngine::enemySt.air.maxHealth += troop.maxHitPoints();
+					CombatEngine::enemySt.air.currHealth += value->getHitPoints();
+					CombatEngine::enemySt.air.currShield += value->getShields();
 				}
 				else {
-					CombatEngine::enemyGround.numTroops++;
-					BWAPI::UnitType troop = it->second->getType();
-					BWAPI::WeaponType airWeapon = troop.airWeapon();
-					BWAPI::WeaponType groundWeapon = troop.groundWeapon();
-					int airDps = ((airWeapon.damageAmount() * airWeapon.damageFactor()) / airWeapon.damageCooldown());
-					int groundDps = ((groundWeapon.damageAmount() * groundWeapon.damageFactor()) / groundWeapon.damageCooldown());
-					CombatEngine::enemyGround.airDPS += airDps;
-					CombatEngine::enemyGround.groundDPS += groundDps;
-					CombatEngine::enemyGround.maxShield += troop.maxShields();
-					CombatEngine::enemyGround.maxHealth += troop.maxHitPoints();
-					CombatEngine::enemyGround.currHealth += it->second->getHitPoints();
-					CombatEngine::enemyGround.currShield += it->second->getShields();
+					CombatEngine::enemySt.ground.numTroops++;
+					CombatEngine::enemySt.ground.airDPS += std::get<0>(dpsVals);
+					CombatEngine::enemySt.ground.groundDPS += std::get<1>(dpsVals);
+					CombatEngine::enemySt.ground.maxShield += troop.maxShields();
+					CombatEngine::enemySt.ground.maxHealth += troop.maxHitPoints();
+					CombatEngine::enemySt.ground.currHealth += value->getHitPoints();
+					CombatEngine::enemySt.ground.currShield += value->getShields();
 				}
 			}
-			it = myTroops.begin();
-			while (it != myTroops.end()) {
-				if (it->second->isFlying()) {
-					CombatEngine::myAir.numTroops++;
-					BWAPI::UnitType troop = it->second->getType();
-					BWAPI::WeaponType airWeapon = troop.airWeapon();
-					BWAPI::WeaponType groundWeapon = troop.groundWeapon();
-					int airDps = ((airWeapon.damageAmount() * airWeapon.damageFactor()) / airWeapon.damageCooldown());
-					int groundDps = ((groundWeapon.damageAmount() * groundWeapon.damageFactor()) / groundWeapon.damageCooldown());
-					CombatEngine::myAir.airDPS += airDps;
-					CombatEngine::myAir.groundDPS += groundDps;
-					CombatEngine::myAir.maxShield += troop.maxShields();
-					CombatEngine::myAir.maxHealth += troop.maxHitPoints();
-					CombatEngine::myAir.currHealth += it->second->getHitPoints();
-					CombatEngine::myAir.currShield += it->second->getShields();
+			for (const auto& [key, value] : myTroops) {
+				BWAPI::UnitType troop = value->getType();
+				auto dpsVals = calcDPS(troop);
+				if (value->isFlying()) {
+					CombatEngine::playerSt.air.numTroops++;
+					CombatEngine::playerSt.air.airDPS += std::get<0>(dpsVals);
+					CombatEngine::playerSt.air.groundDPS += std::get<1>(dpsVals);
+					CombatEngine::playerSt.air.maxShield += troop.maxShields();
+					CombatEngine::playerSt.air.maxHealth += troop.maxHitPoints();
+					CombatEngine::playerSt.air.currHealth += value->getHitPoints();
+					CombatEngine::playerSt.air.currShield += value->getShields();
 				}
 				else {
-					CombatEngine::myGround.numTroops++;
-					BWAPI::UnitType troop = it->second->getType();
-					BWAPI::WeaponType airWeapon = troop.airWeapon();
-					BWAPI::WeaponType groundWeapon = troop.groundWeapon();
-					int airDps = ((airWeapon.damageAmount() * airWeapon.damageFactor()) / airWeapon.damageCooldown());
-					int groundDps = ((groundWeapon.damageAmount() * groundWeapon.damageFactor()) / groundWeapon.damageCooldown());
-					CombatEngine::myGround.airDPS += airDps;
-					CombatEngine::myGround.groundDPS += groundDps;
-					CombatEngine::myGround.maxShield += troop.maxShields();
-					CombatEngine::myGround.maxHealth += troop.maxHitPoints();
-					CombatEngine::myGround.currHealth += it->second->getHitPoints();
-					CombatEngine::myGround.currShield += it->second->getShields();
+					CombatEngine::playerSt.ground.numTroops++;
+					CombatEngine::playerSt.ground.airDPS += std::get<0>(dpsVals);
+					CombatEngine::playerSt.ground.groundDPS += std::get<1>(dpsVals);
+					CombatEngine::playerSt.ground.maxShield += troop.maxShields();
+					CombatEngine::playerSt.ground.maxHealth += troop.maxHitPoints();
+					CombatEngine::playerSt.ground.currHealth += value->getHitPoints();
+					CombatEngine::playerSt.ground.currShield += value->getShields();
 				}
 			}
 		}
@@ -83,26 +74,27 @@ void setCombatStats(const BWAPI::Position& center, const int radius) {
 	}
 }
 
-bool playerWins(const BWAPI::Position& center, const int radius) {
+bool CombatEngine::playerWins(const BWAPI::Position& center, const int radius) {
 	setCombatStats(center, radius);
-	int enemyTotalGroundDPS = CombatEngine::enemyGround.groundDPS + CombatEngine::enemyAir.groundDPS;
-	int enemyTotalAirDPS = CombatEngine::enemyGround.airDPS + CombatEngine::enemyAir.airDPS;
-	int myTotalGroundDPS = CombatEngine::myGround.groundDPS + CombatEngine::myAir.groundDPS;
-	int myTotalAirDPS = CombatEngine::myGround.airDPS + CombatEngine::myAir.airDPS;
+	double enemyTotalGroundDPS = CombatEngine::enemySt.ground.groundDPS + CombatEngine::enemySt.air.groundDPS;
+	double enemyTotalAirDPS = CombatEngine::enemySt.ground.airDPS + CombatEngine::enemySt.air.airDPS;
+	double myTotalGroundDPS = CombatEngine::playerSt.ground.groundDPS + CombatEngine::playerSt.air.groundDPS;
+	double myTotalAirDPS = CombatEngine::playerSt.ground.airDPS + CombatEngine::playerSt.air.airDPS;
 	//for now we'll treat the shields as part of the current health bar since we are handling damage for them the same way
-	CombatEngine::myGround.currHealth += CombatEngine::myGround.currShield;
-	CombatEngine::myAir.currHealth += CombatEngine::myAir.currShield;
-	CombatEngine::enemyGround.currHealth += CombatEngine::enemyGround.currShield;
-	CombatEngine::enemyAir.currHealth += CombatEngine::enemyAir.currShield;
-	while (!(CombatEngine::myAir.currHealth <= 0) || !(CombatEngine::myGround.currHealth <= 0)) {
-		if (CombatEngine::enemyAir.currHealth <= 0 && CombatEngine::enemyGround.currHealth <= 0) {
+	CombatEngine::playerSt.ground.currHealth += CombatEngine::playerSt.ground.currShield;
+	CombatEngine::playerSt.air.currHealth += CombatEngine::playerSt.air.currShield;
+	CombatEngine::enemySt.ground.currHealth += CombatEngine::enemySt.ground.currShield;
+	CombatEngine::enemySt.air.currHealth += CombatEngine::enemySt.air.currShield;
+	while (!(CombatEngine::playerSt.air.currHealth <= 0) || !(CombatEngine::playerSt.ground.currHealth <= 0)) {
+		if (CombatEngine::enemySt.air.currHealth <= 0 && CombatEngine::enemySt.ground.currHealth <= 0) {
 			return true;
 		}
-		CombatEngine::myGround.currHealth -= enemyTotalGroundDPS;
-		CombatEngine::myAir.currHealth -= enemyTotalAirDPS;
-		CombatEngine::enemyGround.currHealth -= myTotalGroundDPS;
-		CombatEngine::enemyAir.currHealth -= myTotalAirDPS;
+		CombatEngine::playerSt.ground.currHealth -= enemyTotalGroundDPS;
+		CombatEngine::playerSt.air.currHealth -= enemyTotalAirDPS;
+		CombatEngine::enemySt.ground.currHealth -= myTotalGroundDPS;
+		CombatEngine::enemySt.air.currHealth -= myTotalAirDPS;
 		
 	}
 	return false;
 }
+
