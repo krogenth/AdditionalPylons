@@ -127,7 +127,7 @@ double Upgrades::getUnitSpeed(BWAPI::UnitType type) {
 bool Upgrades::hasResearchedTech(BWAPI::TechType tech) {
 	auto techIter = this->researchedTech.find(tech);
 	if (techIter != this->researchedTech.end())
-		return true;
+		return techIter->second;
 	bool researched = this->player->hasResearched(tech);
 	this->researchedTech[tech] = researched;
 	return researched;
