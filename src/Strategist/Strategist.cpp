@@ -31,6 +31,56 @@ void Strategist::determineMapSize() {
     map_size = smallest;
 }
 
+void Strategist::swapBuildOrder() {
+    // Note: swapBuildOrder() function should only be called when we first discover enemy race
+
+    int dronesMorphed = 0;
+    std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
+
+    // UnitType key, int value
+    // Value tracks the count of those units we currently possess
+    std::map<BWAPI::UnitType, int> unitsByCount = player.getUnitCount();
+
+    // Adjust for starting units
+    unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
+    unitsByCount[BWAPI::UnitTypes::Zerg_Hatchery] -= 1;
+
+    // Update build_order_queue and begin comparison to what we have
+    this->chooseOpeningBuildOrder();
+
+    while (!build_order_queue.empty()) {
+        // Check if UnitType we are checking for is valid / has been built
+        if (unitsByCount.count(build_order_queue.front().first) > 0) {
+            if (unitsByCount[(build_order_queue.front().first)] > 0) {
+                // Remove from build order queue and decrement counter
+                build_order_queue.pop();
+                unitsByCount[(build_order_queue.front().first)]--;
+            }
+            else if (unitsByCount[(build_order_queue.front().first)] <= 0 && (build_order_queue.front().first == BWAPI::UnitTypes::Zerg_Drone)) {
+                // Check if the drone we're missing could be a building
+                if (dronesMorphed > 0) {
+                    dronesMorphed--;
+                    build_order_queue.pop();
+                }
+                else {
+                    newBuildQueue.push(build_order_queue.front());
+                    build_order_queue.pop();
+                }
+            }
+            else {
+                newBuildQueue.push(build_order_queue.front());
+                build_order_queue.pop();
+            }
+        }
+        else {
+            newBuildQueue.push(build_order_queue.front());
+            build_order_queue.pop();
+        }
+    }
+
+    build_order_queue.swap(newBuildQueue);
+}
+
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
     std::optional<BWAPI::UnitType> unit = std::nullopt;
 

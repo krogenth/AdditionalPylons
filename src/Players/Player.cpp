@@ -141,3 +141,15 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topL
 
 	return areaUnits;
 }
+
+std::map<BWAPI::UnitType, int> Player::getUnitCount() {
+	std::map<BWAPI::UnitType, int> counts;
+	for (const auto& [key, value] : this->allUnits) {
+		auto countIter = counts.find(value->getUnitType());
+		if (countIter != counts.end())
+			countIter->second++;
+		else
+			counts[value->getUnitType()] = 1;
+	}
+	return counts;
+}
