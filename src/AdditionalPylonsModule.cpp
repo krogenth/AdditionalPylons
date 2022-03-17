@@ -22,8 +22,8 @@ void AdditionalPylonsModule::onStart() {
 	BWAPI::Broodwar->setLocalSpeed(10);
 	BWAPI::Broodwar->setFrameSkip(0);
 
-	player.onStart(BWAPI::Broodwar->self()->getRace());
-	enemy.onStart(BWAPI::Broodwar->enemy()->getRace());
+	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
+	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
 
 	Strategist::getInstance().onStart();
 }
@@ -37,10 +37,11 @@ Strategist::getInstance().onFrame();
 
 	BWEB::Map::draw();
 
-	player.onFrame();
+	Player::getPlayerInstance().onFrame();
 
-	player.displayInfo(400);
-	enemy.displayInfo(530);
+	Player::getPlayerInstance().displayInfo(400);
+	Player::getEnemyInstance().displayInfo(530);
+	Strategist::getInstance().displayInfo(400);
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {
@@ -77,10 +78,10 @@ void AdditionalPylonsModule::onUnitHide(BWAPI::Unit unit) {
 
 void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
-		player.onUnitCreate(unit);
+		Player::getPlayerInstance().onUnitCreate(unit);
 	}
 	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
-		enemy.onUnitCreate(unit);
+		Player::getEnemyInstance().onUnitCreate(unit);
 	}
 }
 
@@ -91,23 +92,23 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 		BWEM::Map::Instance().OnStaticBuildingDestroyed(unit);
 		
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
-		player.onUnitDestroy(unit);
+		Player::getPlayerInstance().onUnitDestroy(unit);
 
 		if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord) {
 			Strategist::getInstance().decrementSupply();
 		}
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
-		enemy.onUnitDestroy(unit);
+		Player::getEnemyInstance().onUnitDestroy(unit);
 	}
 }
 
 void AdditionalPylonsModule::onUnitMorph(BWAPI::Unit unit) {
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
-		player.onUnitMorph(unit);
+		Player::getPlayerInstance().onUnitMorph(unit);
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
-		enemy.onUnitMorph(unit);
+		Player::getEnemyInstance().onUnitMorph(unit);
 	}
 }
 

@@ -3,8 +3,8 @@
 #include <queue>
 #include <optional>
 
-enum MapSize { smallest, medium, large };
-
+enum class MapSize { smallest, medium, large };
+enum class PlayDecision { none, scout, attack, defend };
 class Strategist {
 public:
     Strategist(const Strategist&) = delete;
@@ -20,7 +20,7 @@ public:
     void onFrame();
     void incrementSupply();
     void decrementSupply();
-
+    void displayInfo(int x);
     /*
     Returns the next build order by the requesters unit type, if there is one
     @returns
@@ -35,6 +35,12 @@ private:
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
+    /*
+    Returns if we have found an enemy resource depot
+    @returns
+        @retval bool true if map is not empty
+    */
+    bool foundEnemyBase();
 
     int minerals_spent = 0;
     int gas_spent = 0;
@@ -45,6 +51,7 @@ private:
     std::queue<BWAPI::UnitType> hatchery_queue;
 
     MapSize map_size;
+    PlayDecision playDecision;
 
     std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;
 };

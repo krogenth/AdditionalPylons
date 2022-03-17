@@ -14,8 +14,29 @@ private:
     std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
     std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
     BWAPI::Race playerRace;
+    Player() = default;
 
 public:
+    Player(const Player&) = delete;
+    Player(const Player&&) = delete;
+    /*
+    Returns the current instance of the player's instance
+    @returns
+        @retval Player& player instance reference
+    */
+    static Player& getPlayerInstance() {
+        static Player instance;
+        return instance;
+    }
+    /*
+    Returns the current instance of the enemy's instance
+    @returns
+        @retval Player& enemy instance reference
+    */
+    static Player& getEnemyInstance() {
+        static Player instance;
+        return instance;
+    }
     void onStart(BWAPI::Race race);
     void onFrame();
     void onNukeDetect(BWAPI::Position target);
@@ -43,6 +64,3 @@ public:
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
 };
-
-static Player player = Player();
-static Player enemy = Player();
