@@ -80,13 +80,7 @@ void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 		player.onUnitCreate(unit);
 	}
 	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
-		if (unit->getPlayer()->getRace() != enemy.getRace()) {
-			enemy.onUnitCreate(unit);
-			Strategist::getInstance().swapBuildOrder();
-		}
-		else {
-			enemy.onUnitCreate(unit);
-		}
+		enemy.onUnitCreate(unit);
 	}
 }
 

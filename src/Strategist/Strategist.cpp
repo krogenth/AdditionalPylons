@@ -27,23 +27,34 @@ void Strategist::decrementSupply() {
 }
 
 void Strategist::determineMapSize() {
-    // Need to figure out how we want to determine this, or if we even want to determine it in the strategist.
-    map_size = smallest;
+    // For now, we determine map size based off # of spawn locations
+    if (BWAPI::Broodwar->getStartLocations().size() <= 4) {
+        map_size = smallest;
+    }
+    else if (BWAPI::Broodwar->getStartLocations().size() <= 6) {
+        map_size = medium;
+    }
+    else {
+        map_size = large;
+    }
 }
 
 void Strategist::swapBuildOrder() {
     // Note: swapBuildOrder() function should only be called when we first discover enemy race
 
-    int dronesMorphed = 0;
     std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
-
-    // UnitType key, int value
-    // Value tracks the count of those units we currently possess
-    std::map<BWAPI::UnitType, int> unitsByCount = player.getUnitCount();
+    auto unitsByCount = player.getUnitCount();
 
     // Adjust for starting units
     unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
     unitsByCount[BWAPI::UnitTypes::Zerg_Hatchery] -= 1;
+
+    // Adjust for drones morphed into buildings
+    for (auto& [key, value] : unitsByCount) {
+        if (key.whatBuilds().first == BWAPI::UnitTypes::Zerg_Drone) {
+            unitsByCount[BWAPI::UnitTypes::Zerg_Drone] += value;
+        }
+    }
 
     // Update build_order_queue and begin comparison to what we have
     this->chooseOpeningBuildOrder();
@@ -55,17 +66,6 @@ void Strategist::swapBuildOrder() {
                 // Remove from build order queue and decrement counter
                 build_order_queue.pop();
                 unitsByCount[(build_order_queue.front().first)]--;
-            }
-            else if (unitsByCount[(build_order_queue.front().first)] <= 0 && (build_order_queue.front().first == BWAPI::UnitTypes::Zerg_Drone)) {
-                // Check if the drone we're missing could be a building
-                if (dronesMorphed > 0) {
-                    dronesMorphed--;
-                    build_order_queue.pop();
-                }
-                else {
-                    newBuildQueue.push(build_order_queue.front());
-                    build_order_queue.pop();
-                }
             }
             else {
                 newBuildQueue.push(build_order_queue.front());
