@@ -20,7 +20,7 @@ void WorkerWrapper::onFrame() {
     if (this->buildOrder != BWAPI::UnitTypes::Unknown && !this->isBusy()) {  // get closest bweb block to the starting location of the right size
         BWAPI::TilePosition tile = BWAPI::TilePositions::Invalid;
         if (this->buildOrder == BWAPI::UnitTypes::Zerg_Extractor) {
-            for (const auto& key : player.getBuildingAreas()) {
+            for (const auto& key : Player::getPlayerInstance().getBuildingAreas()) {
                 for (const auto& geyser : key->Geysers()) {
                     if(BWAPI::Broodwar->canBuildHere(geyser->TopLeft(), this->buildOrder)){
                         tile = geyser->TopLeft();
