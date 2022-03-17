@@ -11,7 +11,8 @@ const std::initializer_list<std::pair<BWAPI::UnitType, int>> unknown_smallest = 
     {BWAPI::UnitTypes::Zerg_Zergling, 12},
     {BWAPI::UnitTypes::Zerg_Zergling, 14},
     {BWAPI::UnitTypes::Zerg_Zergling, 16},
-    {BWAPI::UnitTypes::Zerg_Overlord, 18}
+    {BWAPI::UnitTypes::Zerg_Overlord, 18},
+    {BWAPI::UnitTypes::Zerg_Extractor, 0}
 };
 
 // 9 pool on medium maps

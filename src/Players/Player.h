@@ -2,8 +2,10 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
-
+#include <set>
+#include<bwem.h>
 #include <BWAPI.h>
+#include <map>
 
 #include "../Units/Units.h"
 
@@ -13,6 +15,9 @@ private:
     std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
     std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
     std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
+    std::map<BWEM::Ressource*, int> allGeysers;
+    std::map<BWEM::Ressource*, int> allMinerals;
+    std::set<const BWEM::Area*> buildingAreas;
     BWAPI::Race playerRace;
     Player() = default;
 
@@ -63,4 +68,8 @@ public:
         @retval std::unordered_map<int, BWAPI::Unit> map of units by unit type
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
+
+    const std::set<const BWEM::Area*>& getBuildingAreas(){ return buildingAreas;};
+    
+    //BWEB::Pathfind
 };

@@ -44,10 +44,23 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 	if (this->playerRace == BWAPI::Races::Unknown)
 		this->playerRace = unit->getType().getRace();
 
-	if (unit->getType().isBuilding())
+	if (unit->getType().isBuilding()){
+		auto area = BWEM::Map::Instance().GetArea(unit->getTilePosition());
+		if(area){
+			if(buildingAreas.insert(area).second){
+				for(auto& mineral: area->Minerals()){
+					allMinerals[mineral] = 0;
+				}
+				for(auto& geyser: area->Geysers()){
+					allGeysers[geyser] = 0;
+				}
+			}
+		}
 		this->buildingUnits[unit->getID()] = std::make_unique<BuildingWrapper>(BuildingWrapper(unit));
-	else if (unit->getType().isWorker())
+	}
+	else if (unit->getType().isWorker()){
 		this->nonArmyUnits[unit->getID()] = std::make_unique<WorkerWrapper>(WorkerWrapper(unit));
+	}
 	else {
 		switch (unit->getType()) {
 		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit)); break;
@@ -64,12 +77,14 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 
 //When a unit is destroyed, removes unit from maps corresponding type
 void Player::onUnitDestroy(BWAPI::Unit unit) {
-	if (unit->getType().isBuilding())
+	//TO-DO not forget what TO-DO
+	if (unit->getType().isBuilding()){
 		this->buildingUnits.erase(unit->getID());
+		}
 	else if (unit->getType().isWorker() || unit->getType() == BWAPI::UnitTypes::Zerg_Larva || unit->getType() == BWAPI::UnitTypes::Zerg_Overlord)
-		this->nonArmyUnits.erase(unit->getID());
+		{this->nonArmyUnits.erase(unit->getID());}
 	else
-		this->armyUnits.erase(unit->getID());
+		{this->armyUnits.erase(unit->getID());}
 	this->allUnits.erase(unit->getID());
 }
 
