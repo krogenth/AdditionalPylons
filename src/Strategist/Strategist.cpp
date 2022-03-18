@@ -16,6 +16,10 @@ void Strategist::onFrame() {
     if (!this->startingBuildQueue.empty()) {
         this->updateUnitQueue();
     }
+
+    if (playDecision == PlayDecision::scout && foundEnemyBase()) {
+        playDecision = PlayDecision::none;
+    }
 }
 
 void Strategist::determineMapSize() {
@@ -55,7 +59,7 @@ void Strategist::chooseOpeningBuildOrder() {
     // race_mapsize
     // example: protoss_smallest
 
-    switch (enemy.getRace()) {
+    switch (Player::getEnemyInstance().getRace()) {
     case BWAPI::Races::Protoss:
         switch (this->mapSize) {
         case MapSize::smallest: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
@@ -108,4 +112,22 @@ void Strategist::updateUnitQueue() {
         // Pop from build_order_queue
         this->startingBuildQueue.pop();
     }
+}
+
+bool Strategist::foundEnemyBase() {
+    std::unordered_map<int, BWAPI::Unit> depot = Player::getEnemyInstance().getUnitsByType(Player::getEnemyInstance().getRace().getResourceDepot());
+    return(!depot.empty());
+}
+
+void Strategist::displayInfo(int x) {
+    std::string play = "";
+    switch (playDecision) {
+        case PlayDecision::scout: play = "Scout"; break;
+        case PlayDecision::attack: play = "Attack"; break;
+        case PlayDecision::defend: play = "Defend"; break;
+        default: play = "None"; break;
+    }
+    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
+    BWAPI::Broodwar->drawTextScreen(x, 95, "Play: %s", play.c_str());
+    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
 }

@@ -6,7 +6,7 @@
 #include <BWAPI.h>
 
 enum class MapSize { smallest, medium, large };
-
+enum class PlayDecision { none, scout, attack, defend };
 class Strategist {
 public:
     Strategist(const Strategist&) = delete;
@@ -21,6 +21,7 @@ public:
     void onStart();
     void onFrame();
     void adjustTotalSupply(int supply) { this->totalSupply += supply; }
+    void displayInfo(int x);
 
     /*
     Returns the next build order by the requesters BWAPI::UnitType, if there is one
@@ -42,6 +43,12 @@ private:
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
+    /*
+    Returns if we have found an enemy resource depot
+    @returns
+        @retval bool true if map is not empty
+    */
+    bool foundEnemyBase();
 
     int spentMinerals = 0;
     int spentGas = 0;
@@ -51,7 +58,8 @@ private:
     std::map<BWAPI::UnitType, std::queue<BWAPI::UpgradeType>> upgradeOrders;
     std::map<BWAPI::UnitType, std::queue<BWAPI::TechType>> researchOrders;
 
-    MapSize mapSize = MapSize::smallest;
-
     std::queue<std::pair<BWAPI::UnitType, int>> startingBuildQueue;
+
+    MapSize mapSize = MapSize::smallest;
+    PlayDecision playDecision = PlayDecision::scout;
 };

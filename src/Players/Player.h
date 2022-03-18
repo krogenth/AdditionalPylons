@@ -10,6 +10,26 @@
 
 class Player {
 public:
+    Player(const Player&) = delete;
+    Player(const Player&&) = delete;
+    /*
+    Returns the current instance of the player's instance
+    @returns
+        @retval Player& player instance reference
+    */
+    static Player& getPlayerInstance() {
+        static Player instance;
+        return instance;
+    }
+    /*
+    Returns the current instance of the enemy's instance
+    @returns
+        @retval Player& enemy instance reference
+    */
+    static Player& getEnemyInstance() {
+        static Player instance;
+        return instance;
+    }
     void onStart(BWAPI::Player player);
     void onFrame();
     void onNukeDetect(BWAPI::Position target);
@@ -96,6 +116,8 @@ public:
 	int getUpgradeLevel(BWAPI::UpgradeType upgrade) { this->upgrades.getUpgradeLevel(upgrade); };
 
 protected:
+    Player() = default;
+
     Upgrades upgrades = Upgrades();
     std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
     std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
@@ -104,6 +126,3 @@ protected:
     BWAPI::Player player = nullptr;
     BWAPI::Race playerRace;
 };
-
-static Player player = Player();
-static Player enemy = Player();
