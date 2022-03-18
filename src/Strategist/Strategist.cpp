@@ -51,7 +51,7 @@ void Strategist::swapBuildOrder() {
 
     // Adjust for drones morphed into buildings
     for (auto& [key, value] : unitsByCount) {
-        if (key.whatBuilds().first == BWAPI::UnitTypes::Zerg_Drone) {
+        if (key.isBuilding()) {
             unitsByCount[BWAPI::UnitTypes::Zerg_Drone] += value;
         }
     }
