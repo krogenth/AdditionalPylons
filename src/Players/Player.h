@@ -71,6 +71,3 @@ public:
     */
     std::map<BWAPI::UnitType, int> getUnitCount();
 };
-
-static Player player = Player();
-static Player enemy = Player();
