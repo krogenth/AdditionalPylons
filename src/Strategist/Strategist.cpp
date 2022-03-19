@@ -34,13 +34,13 @@ void Strategist::decrementSupply() {
 void Strategist::determineMapSize() {
     // For now, we determine map size based off # of spawn locations
     if (BWAPI::Broodwar->getStartLocations().size() <= 4) {
-        map_size = smallest;
+        map_size = MapSize::smallest;
     }
     else if (BWAPI::Broodwar->getStartLocations().size() <= 6) {
-        map_size = medium;
+        map_size = MapSize::medium;
     }
     else {
-        map_size = large;
+        map_size = MapSize::large;
     }
 }
 
@@ -48,7 +48,7 @@ void Strategist::swapBuildOrder() {
     // Note: swapBuildOrder() function should only be called when we first discover enemy race
 
     std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
-    auto unitsByCount = player.getUnitCount();
+    auto unitsByCount = Player::getPlayerInstance().getUnitCount();
 
     // Adjust for starting units
     unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
