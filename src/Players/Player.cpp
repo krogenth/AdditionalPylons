@@ -1,4 +1,5 @@
 #include "./Player.h"
+#include "../Strategist/Strategist.h"
 
 //Auto assigns this player's race and sets enemies race to unknown
 void Player::onStart(BWAPI::Race race) {
@@ -41,8 +42,10 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 //When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
-	if (this->playerRace == BWAPI::Races::Unknown)
+	if (this->playerRace == BWAPI::Races::Unknown) {
 		this->playerRace = unit->getType().getRace();
+		Strategist::getInstance().swapBuildOrder();
+	}
 
 	if (unit->getType().isBuilding())
 		this->buildingUnits[unit->getID()] = std::make_unique<BuildingWrapper>(BuildingWrapper(unit));
@@ -140,4 +143,16 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topL
 	}
 
 	return areaUnits;
+}
+
+std::map<BWAPI::UnitType, int> Player::getUnitCount() {
+	std::map<BWAPI::UnitType, int> counts;
+	for (const auto& [key, value] : this->allUnits) {
+		auto countIter = counts.find(value->getUnitType());
+		if (countIter != counts.end())
+			countIter->second++;
+		else
+			counts[value->getUnitType()] = 1;
+	}
+	return counts;
 }

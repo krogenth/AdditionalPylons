@@ -22,6 +22,14 @@ public:
     void decrementSupply();
     void displayInfo(int x);
     /*
+    Update our build order queue to better fit the enemies race once scouted.
+    Should only be called if our enemies race is initially Unknown.
+    @returns
+        none
+    */
+    void swapBuildOrder();
+
+    /*
     Returns the next build order by the requesters unit type, if there is one
     @returns
         @retval std::optional<BWAPI::UnitType>
