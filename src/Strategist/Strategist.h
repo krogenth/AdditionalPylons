@@ -3,6 +3,8 @@
 #include <queue>
 #include <optional>
 
+#include "./ScoutEngine/ScoutEngine.h"
+
 enum class MapSize { smallest, medium, large };
 enum class PlayDecision { none, scout, attack, defend };
 class Strategist {
@@ -28,19 +30,36 @@ public:
     */
     std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
     
-        
+    /*
+    Update our build order queue to better fit the enemies race once scouted.
+    Should only be called if our enemies race is initially Unknown.
+    @returns
+        none
+    */
+    void swapBuildOrder();
+
+    PlayDecision getPlayDecision();
+
+    void setScout(BWAPI::Unit unit);
+    void onPossibleScoutDestroy(BWAPI::Unit unit);
+
+    PlayDecision getPlayDecision();
+
 private:
     Strategist() = default;
 
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
+
     /*
     Returns if we have found an enemy resource depot
     @returns
         @retval bool true if map is not empty
     */
     bool foundEnemyBase();
+
+    ScoutEngine scoutEngine = ScoutEngine();
 
     int minerals_spent = 0;
     int gas_spent = 0;

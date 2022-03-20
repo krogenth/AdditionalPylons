@@ -10,6 +10,7 @@ void Strategist::onStart() {
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
     chooseOpeningBuildOrder();
     playDecision = PlayDecision::scout;
+    this->scoutEngine.onStart();
 }
 
 void Strategist::onFrame() {
@@ -40,7 +41,7 @@ std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
     std::optional<BWAPI::UnitType> unit = std::nullopt;
 
     switch (type) {
-    case BWAPI::UnitTypes::Zerg_Larva: 
+    case BWAPI::UnitTypes::Zerg_Larva:
         if (!larva_queue.empty()) {
             unit = larva_queue.front(); 
             larva_queue.pop();
@@ -52,7 +53,7 @@ std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
             drone_queue.pop();
         }
         break;
-    case BWAPI::UnitTypes::Zerg_Hatchery: 
+    case BWAPI::UnitTypes::Zerg_Hatchery:
         if (!hatchery_queue.empty()) {
             unit = hatchery_queue.front(); 
             hatchery_queue.pop();
@@ -75,7 +76,7 @@ void Strategist::chooseOpeningBuildOrder() {
         case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
         case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
         }
-    case BWAPI::Races::Terran: 
+    case BWAPI::Races::Terran:
         switch (map_size) {
         case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
         case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
@@ -94,6 +95,43 @@ void Strategist::chooseOpeningBuildOrder() {
         case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
         }
     }
+}
+
+void Strategist::swapBuildOrder() {
+
+    // Note: swapBuildOrder() function should only be called when we first discover enemy race
+
+    std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
+    auto unitsByCount = Player::getPlayerInstance().getUnitCount();
+
+    // Adjust for starting units
+    unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
+    unitsByCount[BWAPI::UnitTypes::Zerg_Hatchery] -= 1;
+
+    // Adjust for drones morphed into buildings
+    for (auto& [key, value] : unitsByCount) {
+        if (key.isBuilding()) {
+            unitsByCount[BWAPI::UnitTypes::Zerg_Drone] += value;
+        }
+    }
+
+    // Update build_order_queue and begin comparison to what we have
+    this->chooseOpeningBuildOrder();
+
+    while (!build_order_queue.empty()) {
+        // check that BWAPI::UnitType exists, and the count is above 0
+        if (unitsByCount.find(build_order_queue.front().first) != unitsByCount.end() &&
+            unitsByCount[build_order_queue.front().first] > 0) {
+            unitsByCount[build_order_queue.front().first]--;
+        }
+        // else, add it to the new queue
+        else {
+            newBuildQueue.push(build_order_queue.front());
+        }
+        build_order_queue.pop();
+    }
+
+    build_order_queue.swap(newBuildQueue);
 }
 
 void Strategist::updateUnitQueue() {

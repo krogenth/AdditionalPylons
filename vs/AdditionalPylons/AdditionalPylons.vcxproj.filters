@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Units\NonArmyWrappers">
       <UniqueIdentifier>{d6e6c18e-6ca5-4cd4-8cfd-0e6eb408abe3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Strategist\ScoutEngine">
+      <UniqueIdentifier>{13e8452c-af72-4143-9938-f9c922c89c55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
@@ -132,6 +135,9 @@
     <ClCompile Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.cpp">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.h">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.h">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
