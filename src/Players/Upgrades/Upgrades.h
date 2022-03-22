@@ -5,9 +5,8 @@
 
 class Upgrades {
 public:
-	Upgrades() {};
+	Upgrades(BWAPI::Player _player);
 
-	void onStart(BWAPI::Player _player);
 	void onFrame();
 
 	/*

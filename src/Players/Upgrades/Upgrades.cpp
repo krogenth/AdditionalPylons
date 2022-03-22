@@ -1,6 +1,6 @@
 #include "./Upgrades.h"
 
-void Upgrades::onStart(BWAPI::Player _player) {
+Upgrades::Upgrades(BWAPI::Player _player) {
 	this->player = _player;
 	this->weaponDamage.clear();
 	this->weaponRange.clear();
