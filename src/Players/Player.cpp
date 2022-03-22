@@ -8,11 +8,9 @@ void Player::onStart(BWAPI::Player player) {
 	this->allUnits.clear();
 	this->player = player;
 	this->playerRace = player->getRace();
-	this->upgrades.onStart(player);
 }
 
 void Player::onFrame() {
-	this->upgrades.onFrame();
 
 	if (this->player == BWAPI::Broodwar->self()) {
 		for (auto& [key, value] : this->armyUnits) {
@@ -145,3 +143,21 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type
 
 	return specUnits;
 }
+
+namespace PlayerUpgrades {
+	std::map<BWAPI::Player, std::shared_ptr<Upgrades>> playerUpgradesMap;
+
+	void onFrame() {
+		for (const auto& playerUpgrades : playerUpgradesMap)
+			playerUpgrades.second.get()->onFrame();
+	}
+
+	std::shared_ptr<Upgrades> getPlayerUpgrades(BWAPI::Player player) {
+		auto upgradesIter = playerUpgradesMap.find(player);
+		if (upgradesIter != playerUpgradesMap.end())
+			return upgradesIter->second;
+		auto upgrades = std::make_shared<Upgrades>(player);
+		playerUpgradesMap[player] = upgrades;
+		return upgrades;
+	}
+};
