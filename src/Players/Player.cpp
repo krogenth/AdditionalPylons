@@ -2,32 +2,29 @@
 #include "../Strategist/Strategist.h"
 
 //Auto assigns this player's race and sets enemies race to unknown
-void Player::onStart(BWAPI::Player player) {
+void Player::onStart(BWAPI::Race race) {
 	this->armyUnits.clear();
 	this->nonArmyUnits.clear();
 	this->buildingUnits.clear();
 	this->allUnits.clear();
-	this->player = player;
-	this->playerRace = player->getRace();
+	this->playerRace = race;
 }
 
 void Player::onFrame() {
 
-	if (this->player == BWAPI::Broodwar->self()) {
-		for (auto& [key, value] : this->armyUnits) {
-			value->onFrame();
-			value->displayInfo();
-		}
+	for (auto& [key, value] : this->armyUnits) {
+		value->onFrame();
+		value->displayInfo();
+	}
 
-		for (auto& [key, value] : this->nonArmyUnits) {
-			value->onFrame();
-			value->displayInfo();
-		}
+	for (auto& [key, value] : this->nonArmyUnits) {
+		value->onFrame();
+		value->displayInfo();
+	}
 
-		for (auto& [key, value] : this->buildingUnits) {
-			value->onFrame();
-			value->displayInfo();
-		}
+	for (auto& [key, value] : this->buildingUnits) {
+		value->onFrame();
+		value->displayInfo();
 	}
 }
 

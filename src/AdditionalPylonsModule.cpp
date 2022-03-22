@@ -22,8 +22,8 @@ void AdditionalPylonsModule::onStart() {
 	BWAPI::Broodwar->setLocalSpeed(10);
 	BWAPI::Broodwar->setFrameSkip(0);
 
-	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self());
-	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy());
+	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
+	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
 
 	Strategist::getInstance().onStart();
 }

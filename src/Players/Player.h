@@ -30,7 +30,7 @@ public:
         static Player instance;
         return instance;
     }
-    void onStart(BWAPI::Player player);
+    void onStart(BWAPI::Race race);
     void onFrame();
     void onNukeDetect(BWAPI::Position target);
     void onUnitEvade(BWAPI::Unit unit);
@@ -73,7 +73,6 @@ protected:
     std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
     std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
     std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
-    BWAPI::Player player = nullptr;
     BWAPI::Race playerRace;
 };
 
