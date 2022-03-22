@@ -59,6 +59,13 @@ public:
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
 
+    /*
+    Returns a map of count of each BWAPI::UnitType owned by the player
+    @returns
+        @retval std::map<BWAPI::UnitType, int> map of count of each BWAPI::UnitType
+    */
+    std::map<BWAPI::UnitType, int> getUnitCount();
+
 protected:
     Player() = default;
 

@@ -23,8 +23,52 @@ void Strategist::onFrame() {
 }
 
 void Strategist::determineMapSize() {
-    // Need to figure out how we want to determine this, or if we even want to determine it in the strategist.
-    this->mapSize = MapSize::smallest;
+    // For now, we determine map size based off # of spawn locations
+    if (BWAPI::Broodwar->getStartLocations().size() <= 4) {
+        this->mapSize = MapSize::smallest;
+    }
+    else if (BWAPI::Broodwar->getStartLocations().size() <= 6) {
+        this->mapSize = MapSize::medium;
+    }
+    else {
+        this->mapSize = MapSize::large;
+    }
+}
+
+void Strategist::swapBuildOrder() {
+    // Note: swapBuildOrder() function should only be called when we first discover enemy race
+
+    std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
+    auto unitsByCount = Player::getPlayerInstance().getUnitCount();
+
+    // Adjust for starting units
+    unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
+    unitsByCount[BWAPI::UnitTypes::Zerg_Hatchery] -= 1;
+
+    // Adjust for drones morphed into buildings
+    for (auto& [key, value] : unitsByCount) {
+        if (key.isBuilding()) {
+            unitsByCount[BWAPI::UnitTypes::Zerg_Drone] += value;
+        }
+    }
+
+    // Update build_order_queue and begin comparison to what we have
+    this->chooseOpeningBuildOrder();
+
+    while (!this->startingBuildQueue.empty()) {
+        // check that BWAPI::UnitType exists, and the count is above 0
+        if (unitsByCount.find(this->startingBuildQueue.front().first) != unitsByCount.end() &&
+            unitsByCount[this->startingBuildQueue.front().first] > 0) {
+            unitsByCount[this->startingBuildQueue.front().first]--;
+        }
+        // else, add it to the new queue
+        else {
+            newBuildQueue.push(this->startingBuildQueue.front());
+        }
+        this->startingBuildQueue.pop();
+    }
+
+    this->startingBuildQueue.swap(newBuildQueue);
 }
 
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
