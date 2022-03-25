@@ -68,16 +68,6 @@ void WorkerWrapper::onFrame() {
                 currRes = res;
             }
         }
-        // BWAPI::Unit closest = nullptr;
-
-        // for (const auto& i : BWAPI::Broodwar->getMinerals()) {  // find closest mineral
-        //     if ((closest != nullptr && this->unit->getDistance(i) < this->unit->getDistance(closest)) || closest == nullptr) {
-        //         closest = i;
-        //     }
-        // }
-        // if (closest && this->unit->gather(closest)) {  // ROCK AND STONE
-        //     currJob = Jobs::MineMinerals;
-        // }
     }
 }
 

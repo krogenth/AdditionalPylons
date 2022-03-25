@@ -93,7 +93,8 @@ class Player {
     */
     float MineralGasRatio();
     /*
-    
+    Adjusts the amount of workers for a given resource.
+    res as the resource, val as the amount to adjust it by.
     */
     void AdjResWorkCount(BWEM::Ressource* res, int val);
 };
