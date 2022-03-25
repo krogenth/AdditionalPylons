@@ -18,6 +18,10 @@ void WorkerWrapper::onFrame() {
 
     // not busy + build order
     if (this->buildOrder != BWAPI::UnitTypes::Unknown && !this->isBusy()) {  // get closest bweb block to the starting location of the right size
+        if(!currRes){
+            Player::getPlayerInstance().AdjResWorkCount(currRes, -1);
+            currRes = nullptr;
+        }
         BWAPI::TilePosition tile = BWAPI::TilePositions::Invalid;
         if (this->buildOrder == BWAPI::UnitTypes::Zerg_Extractor) {
             for (const auto& key : Player::getPlayerInstance().getBuildingAreas()) {
@@ -40,17 +44,40 @@ void WorkerWrapper::onFrame() {
                 this->unit->move(BWAPI::Position(tile + offset));
             }
         }
-    } else if (this->currJob == Jobs::None) {  // if slacking, go dig
-        BWAPI::Unit closest = nullptr;
-
-        for (const auto& i : BWAPI::Broodwar->getMinerals()) {  // find closest mineral
-            if ((closest != nullptr && this->unit->getDistance(i) < this->unit->getDistance(closest)) || closest == nullptr) {
-                closest = i;
+    } else if (this->currJob == Jobs::None) {  // if slacking, go dig rew
+        BWEM::Ressource* res = nullptr;
+        if(Player::getPlayerInstance().MineralGasRatio() > 1.0){
+            res = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
+            if(!res){
+                res = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
+            }
+        }else{
+            res = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
+            if(!res){
+                res = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
             }
         }
-        if (closest && this->unit->gather(closest)) {  // ROCK AND STONE
-            currJob = Jobs::MineMinerals;
+        if(res){
+            if(this->unit->gather(res->Unit())){
+                if(res->Unit()->getType().isMineralField()){
+                    this->currJob = Jobs::MineMinerals;
+                }else{
+                    this->currJob = Jobs::ExtractGas;
+                }
+                Player::getPlayerInstance().AdjResWorkCount(res, 1);
+                currRes = res;
+            }
         }
+        // BWAPI::Unit closest = nullptr;
+
+        // for (const auto& i : BWAPI::Broodwar->getMinerals()) {  // find closest mineral
+        //     if ((closest != nullptr && this->unit->getDistance(i) < this->unit->getDistance(closest)) || closest == nullptr) {
+        //         closest = i;
+        //     }
+        // }
+        // if (closest && this->unit->gather(closest)) {  // ROCK AND STONE
+        //     currJob = Jobs::MineMinerals;
+        // }
     }
 }
 

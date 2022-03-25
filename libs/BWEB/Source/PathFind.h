@@ -67,7 +67,7 @@ namespace BWEB
         /// <summary> Creates a path from the source to the target using BFS with your provided walkable function. </summary>
         void generateBFS(std::function <bool(const BWAPI::TilePosition&)>);
 
-        /// <summary> Creates a path from the source to the target using A* with your provided walkable function. </summary>
+        /// <summary> Creates a path from the source to the target using A* with your provided walkable function. </summary> 
         void generateAS(std::function <double(const BWAPI::TilePosition&)>);
 
         /// <summary> Returns true if the TilePosition is walkable (does not include any buildings). </summary>

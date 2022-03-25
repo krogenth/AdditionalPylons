@@ -1,16 +1,17 @@
 #pragma once
-#include <unordered_map>
-#include <string>
+#include <BWAPI.h>
+#include <BWEB.h>
+#include <bwem.h>
+#include <map>
 #include <memory>
 #include <set>
-#include<bwem.h>
-#include <BWAPI.h>
-#include <map>
+#include <string>
+#include <unordered_map>
 
 #include "../Units/Units.h"
 
 class Player {
-private:
+   private:
     std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
     std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
     std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
@@ -21,7 +22,7 @@ private:
     BWAPI::Race playerRace;
     Player() = default;
 
-public:
+   public:
     Player(const Player&) = delete;
     Player(const Player&&) = delete;
     /*
@@ -69,7 +70,30 @@ public:
     */
     std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
 
-    const std::set<const BWEM::Area*>& getBuildingAreas(){ return buildingAreas;};
+    const std::set<const BWEM::Area*>& getBuildingAreas() { return buildingAreas; };
+
+    /*
+    Returns the closest geyser or nullptr if no geyser found
+    @returns
+        @retval BWEM::Ressource* of the closest geyser or nullptr if no geyser found
+    */
+    BWEM::Ressource* getClosestGeyser(BWAPI::Position pos);
+
+     /*
+    Returns the closest mineral or nullptr if no mineral found
+    @returns
+        @retval BWEM::Ressource* of the closest mineral or nullptr if no mineral found
+    */
+    BWEM::Ressource* getClosestMineral(BWAPI::Position pos);
+
+     /*
+    Returns the ratio of allMinerals/allGeysers or float_max if allGeysers is 0
+    @returns
+        @retval float of the ratio of allMinerals/allGeysers or float_max if allGeysers is 0
+    */
+    float MineralGasRatio();
+    /*
     
-    //BWEB::Pathfind
+    */
+    void AdjResWorkCount(BWEM::Ressource* res, int val);
 };
