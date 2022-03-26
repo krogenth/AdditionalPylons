@@ -221,7 +221,6 @@ void Player::adjustResourceWorkerCount(BWEM::Ressource* res, int val) {
 }
 
 BWEM::Ressource* getClosestResource(BWAPI::Position pos, const std::map<BWEM::Ressource*, int>& resources) {
-    std::map<BWEM::Ressource*, int> resources;
     BWEM::Ressource* closest = nullptr;
     size_t closestDistance = SIZE_MAX;
 
