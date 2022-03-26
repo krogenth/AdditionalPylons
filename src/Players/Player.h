@@ -1,12 +1,13 @@
 #pragma once
-#include <BWAPI.h>
-#include <BWEB.h>
-#include <bwem.h>
 #include <map>
 #include <memory>
 #include <set>
 #include <string>
 #include <unordered_map>
+
+#include <BWAPI.h>
+#include <BWEB.h>
+#include <bwem.h>
 
 #include "../Units/Units.h"
 
