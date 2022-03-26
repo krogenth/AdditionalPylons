@@ -95,7 +95,7 @@ void Player::onUnitDestroy(BWAPI::Unit unit) {
 			auto worker = static_cast<WorkerWrapper*>(unitIter->second.get());
 			auto res = worker->getCurrentResource();
 			if(res){
-				this->AdjResWorkCount(res, -1);
+				this->adjustResourceWorkerCount(res, -1);
 			}
 		}
 		this->nonArmyUnits.erase(unit->getID());
@@ -181,91 +181,67 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topL
     return areaUnits;
 }
 
-	//We iterate through all known geyser positions, and if they are reachable
-	//compare their distance. return the shortest one
-    BWEM::Ressource* Player::getClosestGeyser(BWAPI::Position pos) {
+BWEM::Ressource* Player::getClosestGeyser(BWAPI::Position pos) {
+    return this->getClosestResource(pos, this->allGeysers);
+}
 
-        BWEM::Ressource* closest = nullptr;
-        size_t closestDistance = INT_MAX;
+BWEM::Ressource* Player::getClosestMineral(BWAPI::Position pos) {
+    return this->getClosestResource(pos, this->allMinerals);
+}
 
-        for (auto& [key, value] : allGeysers) {
-
-            auto path = BWEB::Path(pos, key->Pos(), BWAPI::UnitTypes::Zerg_Drone);
-
-            path.generateJPS([&](const BWAPI::TilePosition& pos) {
-                BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
-                for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
-                    walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
-                    if (!BWAPI::Broodwar->isWalkable(walkPos))
-                        return false;
-                }
-                return true;
-            });
-
-            if(path.isReachable() && path.getTiles().size() < closestDistance){
-                closest = key;
-                closestDistance = path.getTiles().size();
-            }
-        }
-        return closest;
+// We iterate through both the known geysers and the known minerals.
+// sum up the amount of workers on each resource.
+// and return either their ratio of gas:minerals or FLOAT_MAX if there are no mineral workers
+float Player::getGasToMineralWorkerRatio() {
+    int totalGeyserWorkers = 0;
+    int totalMineralWorkers = 0;
+    for (auto& [key, value] : this->allGeysers) {
+        totalGeyserWorkers += value;
     }
-
-    //We iterate through all known mineral positions, and if they are reachable
-	//compare their distance. return the shortest one
-    BWEM::Ressource* Player::getClosestMineral(BWAPI::Position pos) {
-
-        BWEM::Ressource* closest = nullptr;
-        size_t closestDistance = INT_MAX;
-
-        for (auto& [key, value] : allMinerals) {
-
-            auto path = BWEB::Path(pos, key->Pos(), BWAPI::UnitTypes::Zerg_Drone);
-
-            path.generateJPS([&](const BWAPI::TilePosition& pos) {
-                BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
-                for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
-                    walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
-                    if (!BWAPI::Broodwar->isWalkable(walkPos))
-                        return false;
-                }
-                return true;
-            });
-
-            if(path.isReachable() && path.getTiles().size() < closestDistance){
-                closest = key;
-                closestDistance = path.getTiles().size();
-            }
-        }
-        return closest;
+    for (auto& [key, value] : this->allMinerals) {
+        totalMineralWorkers += value;
     }
+    return totalMineralWorkers != 0 ? (float)totalGeyserWorkers / (float)totalMineralWorkers : std::numeric_limits<float>::max();
+}
 
-    // We iterate through both the known geysers and the known minerals.
-	//sum up the amount of workers on each resource.
-	//and return either their ratio of minerals/gas or 0 if there are no geyser workers
-    float Player::MineralGasRatio() {
-        int totalGey = 0;
-        int totalMin = 0;
-        for (auto& [key, value] : this->allGeysers) {
-            totalGey += value;
+// We determine if a given resource is a mineralfield or a geyser.
+// If we can find the resource in our resource maps, adjust the worker count for that resource
+void Player::adjustResourceWorkerCount(BWEM::Ressource* res, int val) {
+    if (res->Unit()->getType().isMineralField()) {
+        auto mineralIter = allMinerals.find(res);
+        if(mineralIter != allMinerals.end()) {
+            mineralIter->second += val;
         }
-        for (auto& [key, value] : this->allMinerals) {
-            totalMin += value;
+    } else {
+        auto geyserIter = allGeysers.find(res);
+        if(geyserIter != allGeysers.end()) {
+            geyserIter->second += val;
         }
-        return totalGey != 0 ? (float)totalMin / (float)totalGey : std::numeric_limits<float>::max();
-    }
-
-	//We determine if a given resource is a mineralfield or a geyser.
-	//If we can find the resource in our resource maps, adjust the worker count for that resource
-	void Player::AdjResWorkCount(BWEM::Ressource* res, int val){
-        if(res->Unit()->getType().isMineralField()){
-            auto mineralIter = allMinerals.find(res);
-            if(mineralIter != allMinerals.end()){
-                mineralIter->second += val;
-            }
-        }else{
-            auto geyserIter = allGeysers.find(res);
-            if(geyserIter != allGeysers.end()){
-                geyserIter->second += val;
-            }
-		}
 	}
+}
+
+BWEM::Ressource* getClosestResource(BWAPI::Position pos, const std::map<BWEM::Ressource*, int>& resources) {
+    std::map<BWEM::Ressource*, int> resources;
+    BWEM::Ressource* closest = nullptr;
+    size_t closestDistance = SIZE_MAX;
+
+    for (auto& [key, value] : resources) {
+        if (value >= 3)
+            continue;
+        auto path = BWEB::Path(pos, key->Pos(), BWAPI::UnitTypes::Zerg_Drone);
+        path.generateJPS([&](const BWAPI::TilePosition& pos) {
+            BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
+            for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
+                walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
+                if (!BWAPI::Broodwar->isWalkable(walkPos))
+                    return false;
+            }
+             return true;
+        });
+        if(path.isReachable() && path.getTiles().size() < closestDistance){
+            closest = key;
+            closestDistance = path.getTiles().size();
+        }
+    }
+    return closest;
+}

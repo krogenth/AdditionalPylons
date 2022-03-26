@@ -13,15 +13,15 @@ void WorkerWrapper::onFrame() {
         {                       // store results
             this->buildOrder = order.value();
             this->currJob = Jobs::MorphIntoNewBuildings;
+            if(!this->currRes) {
+                Player::getPlayerInstance().adjustResourceWorkerCount(currRes, -1);
+                currRes = nullptr;
+            }
         }
     }
 
     // not busy + build order
-    if (this->buildOrder != BWAPI::UnitTypes::Unknown && !this->isBusy()) {  // get closest bweb block to the starting location of the right size
-        if(!currRes){
-            Player::getPlayerInstance().AdjResWorkCount(currRes, -1);
-            currRes = nullptr;
-        }
+    if (this->buildOrder != BWAPI::UnitTypes::Unknown && !this->isBusy()) {  // get closest BWEB block to the starting location of the right size
         BWAPI::TilePosition tile = BWAPI::TilePositions::Invalid;
         if (this->buildOrder == BWAPI::UnitTypes::Zerg_Extractor) {
             for (const auto& key : Player::getPlayerInstance().getBuildingAreas()) {
@@ -31,42 +31,43 @@ void WorkerWrapper::onFrame() {
                         break;
                     }
                 }
-                if(tile != BWAPI::TilePositions::Invalid){
+                if(tile != BWAPI::TilePositions::Invalid) {
                     break;
                 }
             }
         } else {
             tile = getBlockOfSize(this->buildOrder, BWAPI::Broodwar->self()->getStartLocation());
         }
+
         if (tile != BWAPI::TilePositions::Invalid) {
             if (!this->unit->build(this->buildOrder, tile)) {  // build failed, move to center of build location
                 BWAPI::TilePosition offset(this->buildOrder.tileWidth() / 2, this->buildOrder.tileHeight() / 2);
                 this->unit->move(BWAPI::Position(tile + offset));
             }
         }
-    } else if (this->currJob == Jobs::None) {  // if slacking, go dig rew
-        BWEM::Ressource* res = nullptr;
-        if(Player::getPlayerInstance().MineralGasRatio() > 1.0){
-            res = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
-            if(!res){
-                res = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
-            }
-        }else{
-            res = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
-            if(!res){
-                res = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
-            }
+    } else if (this->currJob == Jobs::None) {
+        BWEM::Ressource* firstResOption = nullptr;
+        BWEM::Ressource* secondResOption = nullptr;
+
+        // check the ratio of gas to mineral workers we have, if there are too few, try to find a geyser to extract from
+        // use some arbitrary value for what the expected ratio should be, this is definitely too high
+        if(Player::getPlayerInstance().getGasToMineralWorkerRatio() < 0.25f) {
+            firstResOption = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
+            secondResOption = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
+        } else {
+            firstResOption = Player::getPlayerInstance().getClosestMineral(this->unit->getPosition());
+            secondResOption = Player::getPlayerInstance().getClosestGeyser(this->unit->getPosition());
         }
-        if(res){
-            if(this->unit->gather(res->Unit())){
-                if(res->Unit()->getType().isMineralField()){
-                    this->currJob = Jobs::MineMinerals;
-                }else{
-                    this->currJob = Jobs::ExtractGas;
-                }
-                Player::getPlayerInstance().AdjResWorkCount(res, 1);
-                currRes = res;
-            }
+
+        // attempt to assign the worker to gather from either a mineral or geyser
+        if (firstResOption && this->unit->gather(firstResOption->Unit())) {
+            this->currJob = firstResOption->Unit()->getType().isMineralField() ? Jobs::MineMinerals : Jobs::ExtractGas;
+            Player::getPlayerInstance().adjustResourceWorkerCount(firstResOption, 1);
+            this->currRes = firstResOption;
+        } else if (secondResOption && this->unit->gather(secondResOption->Unit())) {
+            this->currJob = secondResOption->Unit()->getType().isMineralField() ? Jobs::MineMinerals : Jobs::ExtractGas;
+            Player::getPlayerInstance().adjustResourceWorkerCount(secondResOption, 1);
+            this->currRes = secondResOption;
         }
     }
 }
