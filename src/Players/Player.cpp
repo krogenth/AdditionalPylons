@@ -159,6 +159,10 @@ std::map<BWAPI::UnitType, int> Player::getUnitCount() {
 namespace PlayerUpgrades {
 	std::map<BWAPI::Player, std::shared_ptr<Upgrades>> playerUpgradesMap;
 
+    void onStart() {
+        playerUpgradesMap.clear();
+    }
+
 	void onFrame() {
 		for (const auto& playerUpgrades : playerUpgradesMap)
 			playerUpgrades.second.get()->onFrame();

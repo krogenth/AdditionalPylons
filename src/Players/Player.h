@@ -77,6 +77,7 @@ protected:
 };
 
 namespace PlayerUpgrades {
+    void onStart();
     void onFrame();
     /*
     Returns an Upgrades tracking class pointer based on the BWAPI::Player given

@@ -24,6 +24,7 @@ void AdditionalPylonsModule::onStart() {
 
 	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
 	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
+	PlayerUpgrades::onStart();
 
 	Strategist::getInstance().onStart();
 }
