@@ -22,9 +22,10 @@ void AdditionalPylonsModule::onStart() {
 	BWAPI::Broodwar->setLocalSpeed(10);
 	BWAPI::Broodwar->setFrameSkip(0);
 
+	PlayerUpgrades::onStart();
 	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
 	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
-	PlayerUpgrades::onStart();
+	
 
 	Strategist::getInstance().onStart();
 }
@@ -38,6 +39,7 @@ void AdditionalPylonsModule::onFrame() {
 
 	BWEB::Map::draw();
 
+	PlayerUpgrades::onFrame();
 	Player::getPlayerInstance().onFrame();
 
 	Player::getPlayerInstance().displayInfo(400);
