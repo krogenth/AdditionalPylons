@@ -34,7 +34,7 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
-Strategist::getInstance().onFrame();
+	Strategist::getInstance().onFrame();
 
 	BWEB::Map::draw();
 
