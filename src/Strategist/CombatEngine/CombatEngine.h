@@ -7,6 +7,9 @@ struct combatStats {
 	int numTroops = 0;
 	double currHealth = 0;
 	double currShield = 0;
+	double avgHealth = 0;
+	double avgShield = 0;
+	double damageTaken = 0;
 	int totalArmor = 0;
 	double avgAlt = 0;
 	double airDPS = 0;
