@@ -16,7 +16,11 @@ struct combatStats {
 	double groundDPS = 0;
 	int groundNumHits = 0;
 	int airNumHits = 0;
-	double avgRange = 0;
+	double avgAirRange = 0;
+	double avgGroundRange = 0;
+	double avgAirDist = 0;
+	double avgGroundDist = 0;
+	double avgSpeed = 0;
 };
 
 struct playerStats {

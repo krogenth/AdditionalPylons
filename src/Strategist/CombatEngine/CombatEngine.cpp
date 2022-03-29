@@ -23,7 +23,11 @@ void CombatEngine::resetCombatStats(combatStats stats)
 	stats.groundDPS = 0;
 	stats.groundNumHits = 0;
 	stats.airNumHits = 0;
-	stats.avgRange = 0;
+	stats.avgAirRange = 0;
+	stats.avgGroundRange = 0;
+	stats.avgAirDist = 0;
+	stats.avgGroundDist = 0;
+	stats.avgSpeed = 0;
 }
 
 void CombatEngine::applyHitChance()
@@ -83,6 +87,9 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 					enemySt.air.groundNumHits += troop.groundWeapon().damageFactor();
 					enemySt.air.totalArmor += troop.armor();
 					enemySt.air.avgAlt += BWAPI::Broodwar->getGroundHeight(value->getTilePosition());
+					enemySt.air.avgSpeed += troop.topSpeed();
+					enemySt.air.avgAirRange += troop.airWeapon().maxRange();
+					enemySt.air.avgGroundRange += troop.groundWeapon().maxRange();
 				}
 				else {
 					enemySt.ground.numTroops++;
@@ -94,6 +101,9 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 					enemySt.ground.groundNumHits += troop.groundWeapon().damageFactor();
 					enemySt.ground.totalArmor += troop.armor();
 					enemySt.ground.avgAlt += BWAPI::Broodwar->getGroundHeight(value->getTilePosition());
+					enemySt.ground.avgSpeed += troop.topSpeed();
+					enemySt.ground.avgAirRange += troop.airWeapon().maxRange();
+					enemySt.ground.avgGroundRange += troop.groundWeapon().maxRange();
 				}
 			}
 			enemySt.air.avgAlt /= enemySt.air.numTroops;
@@ -102,7 +112,15 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 			enemySt.ground.avgHealth = enemySt.ground.currHealth / enemySt.ground.numTroops;
 			enemySt.air.avgShield = enemySt.air.currShield / enemySt.air.numTroops;
 			enemySt.ground.avgShield = enemySt.ground.currShield / enemySt.ground.numTroops;
+			enemySt.air.avgSpeed /= enemySt.air.numTroops;
+			enemySt.ground.avgSpeed /= enemySt.ground.numTroops;
+			enemySt.air.avgAirRange /= enemySt.air.numTroops;
+			enemySt.ground.avgAirRange /= enemySt.ground.numTroops;
+			enemySt.air.avgGroundRange /= enemySt.air.numTroops;			
+			enemySt.ground.avgGroundRange /= enemySt.ground.numTroops;
 			for (const auto& [key, value] : myTroops) {
+				double tempDistAir = 0;
+				double tempDistGround = 0;
 				BWAPI::UnitType troop = value->getType();
 				auto dpsVals = calcDPS(troop);
 				if (value->isFlying()) {
@@ -115,6 +133,19 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 					playerSt.air.groundNumHits += troop.groundWeapon().damageFactor();
 					playerSt.air.totalArmor += troop.armor();
 					playerSt.air.avgAlt += BWAPI::Broodwar->getGroundHeight(value->getTilePosition());
+					playerSt.air.avgSpeed += troop.topSpeed();
+					playerSt.air.avgAirRange += troop.airWeapon().maxRange();
+					playerSt.air.avgGroundRange += troop.groundWeapon().maxRange();
+					for (const auto& [key2, value2] : enemyTroops) {
+						if (value2->isFlying()) {
+							tempDistAir += value->getDistance(value2->getPosition());
+						}
+						else {
+							tempDistGround += value->getDistance(value2->getPosition());
+						}
+					}
+					playerSt.air.avgAirDist += tempDistAir / enemySt.air.numTroops;
+					playerSt.air.avgGroundDist += tempDistGround / enemySt.ground.numTroops;					
 				}
 				else {
 					playerSt.ground.numTroops++;
@@ -126,6 +157,19 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 					playerSt.ground.groundNumHits += troop.groundWeapon().damageFactor();
 					playerSt.ground.totalArmor += troop.armor();
 					playerSt.ground.avgAlt += BWAPI::Broodwar->getGroundHeight(value->getTilePosition());
+					playerSt.ground.avgSpeed += troop.topSpeed();
+					playerSt.ground.avgAirRange += troop.airWeapon().maxRange();
+					playerSt.ground.avgGroundRange += troop.groundWeapon().maxRange();
+					for (const auto& [key2, value2] : enemyTroops) {
+						if (value2->isFlying()) {
+							tempDistAir += value->getDistance(value2->getPosition());
+						}
+						else {
+							tempDistGround += value->getDistance(value2->getPosition());
+						}
+					}
+					playerSt.ground.avgAirDist += tempDistAir / enemySt.air.numTroops;
+					playerSt.ground.avgGroundDist += tempDistGround / enemySt.ground.numTroops;					
 				}
 			}
 			playerSt.air.avgAlt /= playerSt.air.numTroops;
@@ -134,6 +178,21 @@ void CombatEngine::setCombatStats(const BWAPI::Position& center, const int radiu
 			playerSt.ground.avgHealth = playerSt.ground.currHealth / playerSt.ground.numTroops;
 			playerSt.air.avgShield = playerSt.air.currShield / playerSt.air.numTroops;
 			playerSt.ground.avgShield = playerSt.ground.currShield / playerSt.ground.numTroops;
+			playerSt.air.avgSpeed /= playerSt.air.numTroops;
+			playerSt.ground.avgSpeed /= playerSt.ground.numTroops;
+			playerSt.air.avgAirRange /= playerSt.air.numTroops;
+			playerSt.ground.avgAirRange /= playerSt.ground.numTroops;
+			playerSt.air.avgGroundRange /= playerSt.air.numTroops;
+			playerSt.ground.avgGroundRange /= playerSt.ground.numTroops;
+
+			playerSt.air.avgAirDist /= playerSt.air.numTroops;
+			enemySt.air.avgAirDist = playerSt.air.avgAirDist;
+			playerSt.ground.avgAirDist /= playerSt.ground.numTroops;
+			enemySt.air.avgGroundDist = playerSt.ground.avgAirDist;
+			playerSt.air.avgGroundDist /= playerSt.air.numTroops;
+			enemySt.ground.avgAirDist = playerSt.air.avgGroundDist;
+			playerSt.ground.avgGroundDist /= playerSt.ground.numTroops;
+			enemySt.ground.avgGroundDist = playerSt.ground.avgGroundDist;
 			//reduce damage from armor
 			playerSt.air.airDPS -= (playerSt.air.airNumHits * enemySt.air.totalArmor);
 			playerSt.ground.airDPS -= (playerSt.ground.airNumHits * enemySt.air.totalArmor);
