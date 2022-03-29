@@ -1,6 +1,9 @@
 #include "./Player.h"
+
 #include <limits>
-// Auto assigns this player's race and sets enemies race to unknown
+
+#include "../Strategist/Strategist.h"
+
 void Player::onStart(BWAPI::Race race) {
     this->armyUnits.clear();
     this->nonArmyUnits.clear();
@@ -37,11 +40,13 @@ void Player::onUnitHide(BWAPI::Unit unit) {
 
 // When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
-    // If this is the first time seeing an enemy unit, we now know what race the enemy is
-    if (this->playerRace == BWAPI::Races::Unknown)
-        this->playerRace = unit->getType().getRace();
+	//If this is the first time seeing an enemy unit, we now know what race the enemy is
+	if (this->playerRace == BWAPI::Races::Unknown) {
+		this->playerRace = unit->getType().getRace();
+		Strategist::getInstance().swapBuildOrder();
+	}
 
-    if (unit->getType().isBuilding()) {
+	if (unit->getType().isBuilding()) {
         auto area = BWEM::Map::Instance().GetArea(unit->getTilePosition());
         if (area) {
             if (buildingAreas.insert(area).second) {
@@ -54,34 +59,22 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
             }
         }
         this->buildingUnits[unit->getID()] = std::make_unique<BuildingWrapper>(BuildingWrapper(unit));
-    } else if (unit->getType().isWorker()) {
-        this->nonArmyUnits[unit->getID()] = std::make_unique<WorkerWrapper>(WorkerWrapper(unit));
-    } else {
-        switch (unit->getType()) {
-            case BWAPI::UnitTypes::Zerg_Larva:
-                this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit));
-                break;
-            case BWAPI::UnitTypes::Zerg_Overlord:
-                this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit));
-                break;
-            case BWAPI::UnitTypes::Zerg_Zergling:
-                this->armyUnits[unit->getID()] = std::make_unique<ZerglingWrapper>(ZerglingWrapper(unit));
-                break;
-            case BWAPI::UnitTypes::Zerg_Hydralisk:
-                this->armyUnits[unit->getID()] = std::make_unique<HydraliskWrapper>(HydraliskWrapper(unit));
-                break;
-            case BWAPI::UnitTypes::Zerg_Lurker:
-                this->armyUnits[unit->getID()] = std::make_unique<LurkerWrapper>(LurkerWrapper(unit));
-                break;
-            case BWAPI::UnitTypes::Zerg_Mutalisk:
-                this->armyUnits[unit->getID()] = std::make_unique<MutaliskWrapper>(MutaliskWrapper(unit));
-                break;
-            default:
-                this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit));
-                break;
-        }
     }
-    this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
+	else if (unit->getType().isWorker()) {
+		this->nonArmyUnits[unit->getID()] = std::make_unique<WorkerWrapper>(WorkerWrapper(unit));
+	}
+	else {
+		switch (unit->getType()) {
+		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_unique<ZerglingWrapper>(ZerglingWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_unique<HydraliskWrapper>(HydraliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_unique<LurkerWrapper>(LurkerWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_unique<MutaliskWrapper>(MutaliskWrapper(unit)); break;
+		default: this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit)); break;
+		}
+	}
+	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
 // When a unit is destroyed, removes unit from maps corresponding type
@@ -179,6 +172,18 @@ std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topL
     }
 
     return areaUnits;
+}
+
+std::map<BWAPI::UnitType, int> Player::getUnitCount() {
+	std::map<BWAPI::UnitType, int> counts;
+	for (const auto& [key, value] : this->allUnits) {
+		auto countIter = counts.find(value->getUnitType());
+		if (countIter != counts.end())
+			countIter->second++;
+		else
+			counts[value->getUnitType()] = 1;
+	}
+	return counts;
 }
 
 BWEM::Ressource* Player::getClosestGeyser(BWAPI::Position pos) {

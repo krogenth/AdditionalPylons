@@ -32,8 +32,58 @@ void Strategist::decrementSupply() {
 }
 
 void Strategist::determineMapSize() {
-    // Need to figure out how we want to determine this, or if we even want to determine it in the strategist.
-    map_size = MapSize::smallest;
+    // For now, we determine map size based off # of spawn locations
+    if (BWAPI::Broodwar->getStartLocations().size() <= 4) {
+        map_size = MapSize::smallest;
+    }
+    else if (BWAPI::Broodwar->getStartLocations().size() <= 6) {
+        map_size = MapSize::medium;
+    }
+    else {
+        map_size = MapSize::large;
+    }
+}
+
+void Strategist::swapBuildOrder() {
+    // Note: swapBuildOrder() function should only be called when we first discover enemy race
+
+    std::queue<std::pair<BWAPI::UnitType, int>> newBuildQueue;
+    auto unitsByCount = Player::getPlayerInstance().getUnitCount();
+
+    // Adjust for starting units
+    unitsByCount[BWAPI::UnitTypes::Zerg_Drone] -= 4;
+    unitsByCount[BWAPI::UnitTypes::Zerg_Hatchery] -= 1;
+
+    // Adjust for drones morphed into buildings
+    for (auto& [key, value] : unitsByCount) {
+        if (key.isBuilding()) {
+            unitsByCount[BWAPI::UnitTypes::Zerg_Drone] += value;
+        }
+    }
+
+    // Update build_order_queue and begin comparison to what we have
+    this->chooseOpeningBuildOrder();
+
+    while (!build_order_queue.empty()) {
+        // Check if UnitType we are checking for is valid / has been built
+        if (unitsByCount.count(build_order_queue.front().first) > 0) {
+            if (unitsByCount[(build_order_queue.front().first)] > 0) {
+                // Remove from build order queue and decrement counter
+                build_order_queue.pop();
+                unitsByCount[(build_order_queue.front().first)]--;
+            }
+            else {
+                newBuildQueue.push(build_order_queue.front());
+                build_order_queue.pop();
+            }
+        }
+        else {
+            newBuildQueue.push(build_order_queue.front());
+            build_order_queue.pop();
+        }
+    }
+
+    build_order_queue.swap(newBuildQueue);
 }
 
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
