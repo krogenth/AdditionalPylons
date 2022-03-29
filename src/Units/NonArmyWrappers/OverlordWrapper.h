@@ -10,7 +10,6 @@ public:
 
     void onFrame() override;
     void displayInfo() override;
-
 private:
-    PlayDecision play = PlayDecision::none;
+    BWAPI::TilePosition scoutLocation = BWAPI::TilePositions::Invalid;
 };

@@ -1,16 +1,22 @@
 #pragma once
-#include <deque>
+#include <set>
 
 #include <BWAPI.h>
 
 class ScoutEngine {
 public:
-	ScoutEngine() = default;
+	ScoutEngine(const ScoutEngine&) = delete;
+    ScoutEngine(const ScoutEngine&&) = delete;
+    ScoutEngine operator=(const ScoutEngine&) = delete;
+    ScoutEngine& operator=(const ScoutEngine&&) = delete;
+
+	static ScoutEngine& getInstance() {
+        static ScoutEngine instance;
+        return instance;
+    }
 
 	void onStart();
 	void onFrame();
-	void setScout(BWAPI::Unit unit);
-	void onUnitDestroy(BWAPI::Unit unit);
 
 	/*
 	Returns the next base location to scout to find the enemy
@@ -20,13 +26,11 @@ public:
 	*/
 	BWAPI::TilePosition getNextBaseToScout();
 
-	/*
-	Returns if we currently have a unit assigned to scout
-	@returns
-		@retval bool check on if a BWAPI::Unit is assigned to scout
-	*/
-	bool haveScout() { return this->scout != nullptr; }
+	void displayInfo();
+
 private:
-	std::deque<BWAPI::TilePosition> startingLocations;
+	ScoutEngine() = default;
+
+	std::vector<std::pair<BWAPI::TilePosition, int>> startLocationFrameVisitibilityMap;
 	BWAPI::Unit scout = nullptr;
 };

@@ -10,7 +10,6 @@ void Strategist::onStart() {
     supply_total = BWAPI::Broodwar->self()->supplyTotal();
     chooseOpeningBuildOrder();
     playDecision = PlayDecision::scout;
-    this->scoutEngine.onStart();
 }
 
 void Strategist::onFrame() {
@@ -19,8 +18,10 @@ void Strategist::onFrame() {
         updateUnitQueue();
     }
 
-    if (playDecision == PlayDecision::scout && foundEnemyBase()) {
-        playDecision = PlayDecision::none;
+    if (!this->checkIfEnemyBaseFound()) {
+        this->playDecision = PlayDecision::scout;
+    } else {
+        this->playDecision = PlayDecision::attack;
     }
 }
 
@@ -163,7 +164,7 @@ void Strategist::updateUnitQueue() {
     }
 }
 
-bool Strategist::foundEnemyBase() {
+bool Strategist::checkIfEnemyBaseFound() {
     std::unordered_map<int, BWAPI::Unit> depot = Player::getEnemyInstance().getUnitsByType(Player::getEnemyInstance().getRace().getResourceDepot());
     return(!depot.empty());
 }

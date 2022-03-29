@@ -3,8 +3,6 @@
 #include <queue>
 #include <optional>
 
-#include "./ScoutEngine/ScoutEngine.h"
-
 enum class MapSize { smallest, medium, large };
 enum class PlayDecision { none, scout, attack, defend };
 class Strategist {
@@ -38,12 +36,7 @@ public:
     */
     void swapBuildOrder();
 
-    PlayDecision getPlayDecision();
-
-    void setScout(BWAPI::Unit unit);
-    void onPossibleScoutDestroy(BWAPI::Unit unit);
-
-    PlayDecision getPlayDecision();
+    PlayDecision getPlayDecision() { return this->playDecision; }
 
 private:
     Strategist() = default;
@@ -52,14 +45,8 @@ private:
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
 
-    /*
-    Returns if we have found an enemy resource depot
-    @returns
-        @retval bool true if map is not empty
-    */
-    bool foundEnemyBase();
-
-    ScoutEngine scoutEngine = ScoutEngine();
+    void onStartAttemptFindEnemyStartingBase();
+    bool checkIfEnemyBaseFound();
 
     int minerals_spent = 0;
     int gas_spent = 0;
