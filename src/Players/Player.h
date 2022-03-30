@@ -58,12 +58,12 @@ public:
     std::unordered_map<int, BWAPI::Unit> getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight);
 
     /*
-    Returns a map of all units of a specified type
-    Returns all units if type is BWAPI::UnitTypes::Unknown
+    Returns a map of all units matching some predicate function
+    The Predicate function should return true for units it return, and false for those to be excluded
     @returns
-        @retval std::unordered_map<int, BWAPI::Unit> map of units by unit type
+        @retval std::unordered_map<int, BWAPI::Unit> map of units
     */
-    std::unordered_map<int, BWAPI::Unit> getUnitsByType(BWAPI::UnitType type);
+    std::unordered_map<int, BWAPI::Unit> getUnitsByPredicate(std::function <bool(const BWAPI::Unit&)> predicate);
 
     /*
     Returns a map of count of each BWAPI::UnitType owned by the player
@@ -107,6 +107,17 @@ public:
     res as the resource, val as the amount to adjust it by.
     */
     void adjustResourceWorkerCount(BWEM::Ressource* res, int val);
+
+    /*
+    Returns the number of army units the player instance has
+    @returns
+        @retval int of the number of army units associated with the player
+    */
+    int getArmyUnitCount() { return this->armyUnits.size(); }
+
+    const BWAPI::Unit getClosestUnitTo(BWAPI::Position pos, BWAPI::UnitType type);
+
+    const BWEM::Area* getClosestAreaTo(BWAPI::Position pos, BWAPI::UnitType type);
 
 private:
     Player() = default;

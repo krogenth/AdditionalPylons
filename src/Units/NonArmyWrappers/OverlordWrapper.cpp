@@ -7,27 +7,38 @@
 #include "../../Players/Player.h"
 
 void OverlordWrapper::onFrame() {
-	auto play = Strategist::getInstance().getPlayDecision();
-	if (play == PlayDecision::scout) {
+	if (!this->unit->isCompleted()) return;
+
+	auto enemyAreas = Player::getEnemyInstance().getBuildingAreas();
+
+	switch(Strategist::getInstance().getPlayDecision()) {
+	case PlayDecision::scout:
 		if (this->scoutLocation == BWAPI::TilePositions::Invalid) {
 			this->scoutLocation = ScoutEngine::getInstance().getNextBaseToScout();
 		}
 		if (!BWAPI::Broodwar->isVisible(this->scoutLocation) && this->unit->getLastCommand().getTargetTilePosition() != this->scoutLocation) {
-			this->unit->move(BWAPI::Position(this->scoutLocation));
+			this->unit->move(BWAPI::Position(this->scoutLocation), true);
 		} else if (BWAPI::Broodwar->isVisible(this->scoutLocation)) {
-			auto area = BWEM::Map::Instance().GetArea(this->scoutLocation);
-			auto enemyAreas = Player::getEnemyInstance().getBuildingAreas();
-			// only reset the scout's location if they aren't at the enemy location
-			if (enemyAreas.find(area) == enemyAreas.end()) {
-				this->scoutLocation == BWAPI::TilePositions::Invalid;
+			if (this->scoutLocation.isValid()) {
+				// only reset the scout's location if they aren't at the enemy location
+				if (enemyAreas.find(BWEM::Map::Instance().GetArea(this->scoutLocation)) == enemyAreas.end()) {
+					this->scoutLocation == BWAPI::TilePositions::Invalid;
+				}
 			}
 		}
-	} else {
-		auto area = BWEM::Map::Instance().GetArea(this->unit->getTilePosition());
-		auto enemyAreas = Player::getEnemyInstance().getBuildingAreas();
-		if (enemyAreas.find(area) == enemyAreas.end()) {
-			this->unit->move(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()));
+		break;
+	case PlayDecision::attack:
+		[[fallthrough]];
+	case PlayDecision::defend:
+		[[fallthrough]];
+	case PlayDecision::none:
+		// check where the unit is currently, if it's not at the enemy base, return home
+		if (enemyAreas.find(BWEM::Map::Instance().GetArea(this->unit->getTilePosition())) == enemyAreas.end()) {
+			if (this->unit->getTilePosition() != BWAPI::Broodwar->self()->getStartLocation()) {
+				this->unit->move(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()));
+			}
 		}
+		break;
 	}
 }
 

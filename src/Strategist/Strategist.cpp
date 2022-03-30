@@ -18,7 +18,7 @@ void Strategist::onFrame() {
         updateUnitQueue();
     }
 
-    if (!this->checkIfEnemyBaseFound()) {
+    if (!this->checkIfEnemyBaseFound() && Player::getEnemyInstance().getArmyUnitCount() <= 0) {
         this->playDecision = PlayDecision::scout;
     } else {
         this->playDecision = PlayDecision::attack;
@@ -165,7 +165,9 @@ void Strategist::updateUnitQueue() {
 }
 
 bool Strategist::checkIfEnemyBaseFound() {
-    std::unordered_map<int, BWAPI::Unit> depot = Player::getEnemyInstance().getUnitsByType(Player::getEnemyInstance().getRace().getResourceDepot());
+    auto depot = Player::getEnemyInstance().getUnitsByPredicate([](const BWAPI::Unit& unit) {
+        return unit->getType() == Player::getEnemyInstance().getRace().getResourceDepot();
+    });
     return(!depot.empty());
 }
 

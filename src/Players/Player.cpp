@@ -118,20 +118,14 @@ void Player::onUnitComplete(BWAPI::Unit unit) {
 void Player::onUnitDiscover(BWAPI::Unit unit) {
 }
 
-std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
-    std::unordered_map<int, BWAPI::Unit> specUnits;
-    if (type == BWAPI::UnitTypes::Unknown) {
-        for (auto& [key, value] : this->allUnits) {
-            specUnits[value->getID()] = value->getUnit();
-        }
-    } else {
-        for (auto& [key, value] : this->allUnits) {
-            if (value->getUnitType() == type)
-                specUnits[value->getID()] = value->getUnit();
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByPredicate(std::function <bool(const BWAPI::Unit&)> predicate) {
+    std::unordered_map<int, BWAPI::Unit> units;
+    for (const auto& [key, value] : this->allUnits) {
+        if (predicate(value.get()->getUnit())) {
+            units[key] = value.get()->getUnit();
         }
     }
-
-    return specUnits;
+    return units;
 }
 
 // Displays player info (race, # of units, # of buildings)
@@ -184,6 +178,53 @@ std::map<BWAPI::UnitType, int> Player::getUnitCount() {
 			counts[value->getUnitType()] = 1;
 	}
 	return counts;
+}
+
+const BWAPI::Unit Player::getClosestUnitTo(BWAPI::Position pos, BWAPI::UnitType type) {
+    BWAPI::Unit closestUnit = nullptr;
+    size_t closestUnitPath = SIZE_MAX;
+    for (auto& [key, value] : this->allUnits) {
+        if (!value.get()->getUnit()->isVisible(BWAPI::Broodwar->self())) continue;
+
+        auto path = BWEB::Path(pos, value.get()->getUnit()->getPosition(), type);
+		path.generateJPS([&](const BWAPI::TilePosition& pos) {
+			BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
+			for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
+				walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
+				if (!BWAPI::Broodwar->isWalkable(walkPos))
+					return false;
+				}
+				return true;
+		});
+        if (closestUnitPath > path.getTiles().size()) {
+            closestUnitPath = path.getTiles().size();
+            closestUnit = value.get()->getUnit();
+        }
+    }
+    return closestUnit;
+}
+
+const BWEM::Area* Player::getClosestAreaTo(BWAPI::Position pos, BWAPI::UnitType type) {
+    const BWEM::Area* closestArea = nullptr;
+    size_t closestAreaPath = SIZE_MAX;
+    for (auto& area : this->buildingAreas) {
+        BWAPI::TilePosition areaCenter = (area->TopLeft() + area->BottomRight()) / 2;
+        auto path = BWEB::Path(BWAPI::TilePosition(pos), areaCenter, type);
+		path.generateJPS([&](const BWAPI::TilePosition& pos) {
+			BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
+			for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
+				walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
+				if (!BWAPI::Broodwar->isWalkable(walkPos))
+					return false;
+				}
+				return true;
+		});
+        if (closestAreaPath > path.getTiles().size()) {
+            closestAreaPath = path.getTiles().size();
+            closestArea = area;
+        }
+    }
+    return closestArea;
 }
 
 BWEM::Ressource* Player::getClosestGeyser(BWAPI::Position pos) {
@@ -242,7 +283,7 @@ BWEM::Ressource* Player::getClosestResource(BWAPI::Position pos, const std::map<
             }
              return true;
         });
-        if(path.isReachable() && path.getTiles().size() < closestDistance){
+        if(path.isReachable() && path.getTiles().size() < closestDistance) {
             closest = key;
             closestDistance = path.getTiles().size();
         }
