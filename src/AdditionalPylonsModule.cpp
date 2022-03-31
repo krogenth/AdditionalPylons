@@ -23,8 +23,10 @@ void AdditionalPylonsModule::onStart() {
 	BWAPI::Broodwar->setLocalSpeed(10);
 	BWAPI::Broodwar->setFrameSkip(0);
 
+	PlayerUpgrades::onStart();
 	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
 	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
+	
 
 	Strategist::getInstance().onStart();
 	ScoutEngine::getInstance().onStart();
@@ -41,6 +43,7 @@ void AdditionalPylonsModule::onFrame() {
 
 	BWEB::Map::draw();
 
+	PlayerUpgrades::onFrame();
 	Player::getPlayerInstance().onFrame();
 
 	Player::getPlayerInstance().displayInfo(400);
@@ -84,7 +87,7 @@ void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		Player::getPlayerInstance().onUnitCreate(unit);
 	}
-	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
+	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		Player::getEnemyInstance().onUnitCreate(unit);
 	}
 }
@@ -97,10 +100,7 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 		
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		Player::getPlayerInstance().onUnitDestroy(unit);
-
-		if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord) {
-			Strategist::getInstance().decrementSupply();
-		}
+		Strategist::getInstance().adjustTotalSupply(-unit->getType().supplyProvided());
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		Player::getEnemyInstance().onUnitDestroy(unit);

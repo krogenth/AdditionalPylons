@@ -9,6 +9,7 @@
 #include <BWEB.h>
 #include <bwem.h>
 
+#include "./Upgrades/Upgrades.h"
 #include "../Units/Units.h"
 
 class Player {
@@ -134,4 +135,15 @@ private:
     std::map<BWEM::Ressource*, int> allMinerals;
     std::set<const BWEM::Area*> buildingAreas;
     BWAPI::Race playerRace;
+};
+
+namespace PlayerUpgrades {
+    void onStart();
+    void onFrame();
+    /*
+    Returns an Upgrades tracking class pointer based on the BWAPI::Player given
+    @returns
+        @retval std::shared_ptr<Upgrades> for the BWAPI::Player given
+    */
+    std::shared_ptr<Upgrades> getPlayerUpgrades(BWAPI::Player player);
 };

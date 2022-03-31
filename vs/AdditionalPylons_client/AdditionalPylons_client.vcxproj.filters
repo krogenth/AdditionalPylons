@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Strategist\ScoutEngine">
       <UniqueIdentifier>{2a90743c-5a5e-461e-b5f7-7dcf93b09c86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Players\Upgrades">
+      <UniqueIdentifier>{c956a7c2-e5b4-40fc-823a-ea6410156156}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp">
@@ -150,6 +153,9 @@
     <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp">
       <Filter>Source Files\Strategist\ScoutEngine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
+      <Filter>Source Files\Players\Upgrades</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.h">
       <Filter>Source Files\Strategist\ScoutEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h">
+      <Filter>Source Files\Players\Upgrades</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

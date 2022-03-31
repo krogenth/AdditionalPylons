@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
     <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp" />
+    <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\..\src\Lambdas\Unit\UnitLambdas.h" />
     <ClInclude Include="..\..\src\Players\Player.h" />
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
+    <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />

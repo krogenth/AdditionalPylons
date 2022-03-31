@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Lambdas\Unit">
       <UniqueIdentifier>{0a534a33-0143-4462-be67-ae726a9624ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Players\Upgrades">
+      <UniqueIdentifier>{ec38fccc-15e9-413b-9e2d-d89781d9b595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
@@ -147,6 +150,9 @@
     <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp">
       <Filter>Source Files\Strategist\ScoutEngine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
+      <Filter>Source Files\Players\Upgrades</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -214,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lambdas\Map\MapLambdas.h">
       <Filter>Source Files\Lambdas\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h">
+      <Filter>Source Files\Players\Upgrades</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

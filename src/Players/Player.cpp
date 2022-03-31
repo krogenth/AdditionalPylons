@@ -1,4 +1,5 @@
 #include "./Player.h"
+#include "../Strategist/Strategist.h"
 
 #include <limits>
 
@@ -38,7 +39,6 @@ void Player::onUnitEvade(BWAPI::Unit unit) {
 void Player::onUnitHide(BWAPI::Unit unit) {
 }
 
-// When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
 	if (this->playerRace == BWAPI::Races::Unknown) {
@@ -77,9 +77,7 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
-// When a unit is destroyed, removes unit from maps corresponding type
 void Player::onUnitDestroy(BWAPI::Unit unit) {
-
     if (unit->getType().isBuilding()) {
         this->buildingUnits.erase(unit->getID());
     } else if (unit->getType().isWorker()) {
@@ -243,3 +241,25 @@ BWEM::Ressource* Player::getClosestResource(BWAPI::Position pos, const std::map<
     }
     return closest;
 }
+
+namespace PlayerUpgrades {
+	std::map<BWAPI::Player, std::shared_ptr<Upgrades>> playerUpgradesMap;
+
+    void onStart() {
+        playerUpgradesMap.clear();
+    }
+
+	void onFrame() {
+		for (const auto& playerUpgrades : playerUpgradesMap)
+			playerUpgrades.second.get()->onFrame();
+	}
+
+	std::shared_ptr<Upgrades> getPlayerUpgrades(BWAPI::Player player) {
+		auto upgradesIter = playerUpgradesMap.find(player);
+		if (upgradesIter != playerUpgradesMap.end())
+			return upgradesIter->second;
+		auto upgrades = std::make_shared<Upgrades>(player);
+		playerUpgradesMap[player] = upgrades;
+		return upgrades;
+	}
+};
