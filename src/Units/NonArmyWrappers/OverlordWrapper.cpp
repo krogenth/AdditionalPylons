@@ -40,9 +40,6 @@ void OverlordWrapper::onFrame() {
 }
 
 void OverlordWrapper::displayInfo() {
-	if (this->scoutLocation.isValid()) {
-		BWAPI::Broodwar->drawBoxMap(BWAPI::Position(this->scoutLocation), BWAPI::Position(this->scoutLocation + BWAPI::TilePosition(1, 1)), BWAPI::Colors::Red);
-	}
 	if (this->unit->getLastCommand().getTargetPosition().isValid()) {
 		BWAPI::Broodwar->drawLineMap(this->unit->getPosition(), this->unit->getLastCommand().getTargetPosition(), BWAPI::Colors::White);
 	}
