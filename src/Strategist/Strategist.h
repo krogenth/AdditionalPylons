@@ -1,7 +1,9 @@
 #pragma once
-#include <BWAPI.h>
+#include <map>
 #include <queue>
 #include <optional>
+
+#include <BWAPI.h>
 
 enum class MapSize { smallest, medium, large };
 enum class PlayDecision { none, scout, attack, defend };
@@ -18,9 +20,9 @@ public:
 
     void onStart();
     void onFrame();
-    void incrementSupply();
-    void decrementSupply();
+    void adjustTotalSupply(int supply) { this->totalSupply += supply; }
     void displayInfo(int x);
+
     /*
     Update our build order queue to better fit the enemies race once scouted.
     Should only be called if our enemies race is initially Unknown.
@@ -30,12 +32,18 @@ public:
     void swapBuildOrder();
 
     /*
-    Returns the next build order by the requesters unit type, if there is one
+    Returns the next build order by the requesters BWAPI::UnitType, if there is one
     @returns
         @retval std::optional<BWAPI::UnitType>
     */
     std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
     
+    /*
+    Returns the next upgrade order by the requesters BWAPI::UnitType, if there is one
+    @returns
+        @retval std::optional<BWAPI::UpgradeType>
+    */
+    std::optional<BWAPI::UpgradeType> getUnitUpgradeOrder(BWAPI::UnitType type);
         
 private:
     Strategist() = default;
@@ -50,16 +58,16 @@ private:
     */
     bool foundEnemyBase();
 
-    int minerals_spent = 0;
-    int gas_spent = 0;
-    int supply_total;
-  
-    std::queue<BWAPI::UnitType> larva_queue;
-    std::queue<BWAPI::UnitType> drone_queue;
-    std::queue<BWAPI::UnitType> hatchery_queue;
+    int spentMinerals = 0;
+    int spentGas = 0;
+    int totalSupply = 0;
 
-    MapSize map_size;
-    PlayDecision playDecision;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::UnitType>> buildOrders;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::UpgradeType>> upgradeOrders;
+    std::map<BWAPI::UnitType, std::queue<BWAPI::TechType>> researchOrders;
 
-    std::queue<std::pair<BWAPI::UnitType, int>> build_order_queue;
+    std::queue<std::pair<BWAPI::UnitType, int>> startingBuildQueue;
+
+    MapSize mapSize = MapSize::smallest;
+    PlayDecision playDecision = PlayDecision::scout;
 };

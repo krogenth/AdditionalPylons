@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Units\BuildingWrappers">
       <UniqueIdentifier>{4428e8a8-261c-4d36-b1d6-284937f14695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Players\Upgrades">
+      <UniqueIdentifier>{c956a7c2-e5b4-40fc-823a-ea6410156156}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp">
@@ -135,6 +138,9 @@
     <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
+      <Filter>Source Files\Players\Upgrades</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -193,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\ArmyWrappers\MutaliskWrapper.h">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h">
+      <Filter>Source Files\Players\Upgrades</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
