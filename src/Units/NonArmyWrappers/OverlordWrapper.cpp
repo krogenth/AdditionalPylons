@@ -13,17 +13,15 @@ void OverlordWrapper::onFrame() {
 
 	switch(Strategist::getInstance().getPlayDecision()) {
 	case PlayDecision::scout:
-		if (this->scoutLocation == BWAPI::TilePositions::Invalid) {
+		if (!this->scoutLocation.isValid()) {
 			this->scoutLocation = ScoutEngine::getInstance().getNextBaseToScout();
 		}
-		if (!BWAPI::Broodwar->isVisible(this->scoutLocation) && this->unit->getLastCommand().getTargetTilePosition() != this->scoutLocation) {
-			this->unit->move(BWAPI::Position(this->scoutLocation), true);
+		if (!BWAPI::Broodwar->isVisible(this->scoutLocation) && this->unit->getTargetPosition() != BWAPI::Position(this->scoutLocation)) {
+			this->unit->move(BWAPI::Position(this->scoutLocation));
 		} else if (BWAPI::Broodwar->isVisible(this->scoutLocation)) {
-			if (this->scoutLocation.isValid()) {
-				// only reset the scout's location if they aren't at the enemy location
-				if (enemyAreas.find(BWEM::Map::Instance().GetArea(this->scoutLocation)) == enemyAreas.end()) {
-					this->scoutLocation == BWAPI::TilePositions::Invalid;
-				}
+			// only reset the scout's location if they aren't an enemy base
+			if (enemyAreas.empty() || (enemyAreas.find(BWEM::Map::Instance().GetArea(this->scoutLocation)) == enemyAreas.end())) {
+				this->scoutLocation = BWAPI::TilePositions::Invalid;
 			}
 		}
 		break;
@@ -32,16 +30,20 @@ void OverlordWrapper::onFrame() {
 	case PlayDecision::defend:
 		[[fallthrough]];
 	case PlayDecision::none:
-		// check where the unit is currently, if it's not at the enemy base, return home
-		if (enemyAreas.find(BWEM::Map::Instance().GetArea(this->unit->getTilePosition())) == enemyAreas.end()) {
-			if (this->unit->getTilePosition() != BWAPI::Broodwar->self()->getStartLocation()) {
-				this->unit->move(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()));
-			}
+		// check if the unit is currently going home, if not return home
+		if (this->unit->getLastCommand().getTargetPosition() != BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation())) {
+			this->unit->move(BWAPI::Position(BWAPI::Broodwar->self()->getStartLocation()));
+			this->scoutLocation = BWAPI::TilePositions::Invalid;
 		}
 		break;
 	}
 }
 
 void OverlordWrapper::displayInfo() {
-	BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "OverlordWrapper");
+	if (this->scoutLocation.isValid()) {
+		BWAPI::Broodwar->drawBoxMap(BWAPI::Position(this->scoutLocation), BWAPI::Position(this->scoutLocation + BWAPI::TilePosition(1, 1)), BWAPI::Colors::Red);
+	}
+	if (this->unit->getLastCommand().getTargetPosition().isValid()) {
+		BWAPI::Broodwar->drawLineMap(this->unit->getPosition(), this->unit->getLastCommand().getTargetPosition(), BWAPI::Colors::White);
+	}
 }

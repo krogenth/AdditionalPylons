@@ -28,9 +28,11 @@ public:
 
 	void displayInfo();
 
-private:
+protected:
 	ScoutEngine() = default;
 
-	std::vector<std::pair<BWAPI::TilePosition, int>> startLocationFrameVisitibilityMap;
+	void sortScoutBases();
+
+	std::vector<std::pair<BWAPI::TilePosition, int>> baseLocationFrameVisitibilityMap;
 	BWAPI::Unit scout = nullptr;
 };

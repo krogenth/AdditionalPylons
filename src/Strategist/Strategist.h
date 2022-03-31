@@ -46,7 +46,7 @@ private:
     void updateUnitQueue();
 
     void onStartAttemptFindEnemyStartingBase();
-    bool checkIfEnemyBaseFound();
+    bool checkIfEnemyFound();
 
     int minerals_spent = 0;
     int gas_spent = 0;

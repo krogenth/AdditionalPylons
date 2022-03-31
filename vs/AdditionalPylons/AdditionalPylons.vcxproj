@@ -187,6 +187,8 @@
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Lambdas\Map\MapLambdas.h" />
+    <ClInclude Include="..\..\src\Lambdas\Unit\UnitLambdas.h" />
     <ClInclude Include="..\..\src\Players\Player.h" />
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ProtossBuildOrders.h" />

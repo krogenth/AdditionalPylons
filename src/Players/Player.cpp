@@ -65,12 +65,12 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 	}
 	else {
 		switch (unit->getType()) {
-		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_unique<ZerglingWrapper>(ZerglingWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_unique<HydraliskWrapper>(HydraliskWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_unique<LurkerWrapper>(LurkerWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_unique<MutaliskWrapper>(MutaliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_shared<LarvaWrapper>(LarvaWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_shared<OverlordWrapper>(OverlordWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_shared<ZerglingWrapper>(ZerglingWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_shared<HydraliskWrapper>(HydraliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_shared<LurkerWrapper>(LurkerWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_shared<MutaliskWrapper>(MutaliskWrapper(unit)); break;
 		default: this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit)); break;
 		}
 	}
@@ -118,11 +118,11 @@ void Player::onUnitComplete(BWAPI::Unit unit) {
 void Player::onUnitDiscover(BWAPI::Unit unit) {
 }
 
-std::unordered_map<int, BWAPI::Unit> Player::getUnitsByPredicate(std::function <bool(const BWAPI::Unit&)> predicate) {
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByPredicate(std::function <bool(const std::shared_ptr<UnitWrapper>)> predicate) {
     std::unordered_map<int, BWAPI::Unit> units;
     for (const auto& [key, value] : this->allUnits) {
-        if (predicate(value.get()->getUnit())) {
-            units[key] = value.get()->getUnit();
+        if (predicate(value)) {
+            units[key] = value->getUnit();
         }
     }
     return units;
@@ -178,53 +178,6 @@ std::map<BWAPI::UnitType, int> Player::getUnitCount() {
 			counts[value->getUnitType()] = 1;
 	}
 	return counts;
-}
-
-const BWAPI::Unit Player::getClosestUnitTo(BWAPI::Position pos, BWAPI::UnitType type) {
-    BWAPI::Unit closestUnit = nullptr;
-    size_t closestUnitPath = SIZE_MAX;
-    for (auto& [key, value] : this->allUnits) {
-        if (!value.get()->getUnit()->isVisible(BWAPI::Broodwar->self())) continue;
-
-        auto path = BWEB::Path(pos, value.get()->getUnit()->getPosition(), type);
-		path.generateJPS([&](const BWAPI::TilePosition& pos) {
-			BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
-			for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
-				walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
-				if (!BWAPI::Broodwar->isWalkable(walkPos))
-					return false;
-				}
-				return true;
-		});
-        if (closestUnitPath > path.getTiles().size()) {
-            closestUnitPath = path.getTiles().size();
-            closestUnit = value.get()->getUnit();
-        }
-    }
-    return closestUnit;
-}
-
-const BWEM::Area* Player::getClosestAreaTo(BWAPI::Position pos, BWAPI::UnitType type) {
-    const BWEM::Area* closestArea = nullptr;
-    size_t closestAreaPath = SIZE_MAX;
-    for (auto& area : this->buildingAreas) {
-        BWAPI::TilePosition areaCenter = (area->TopLeft() + area->BottomRight()) / 2;
-        auto path = BWEB::Path(BWAPI::TilePosition(pos), areaCenter, type);
-		path.generateJPS([&](const BWAPI::TilePosition& pos) {
-			BWAPI::WalkPosition walkPos = BWAPI::WalkPosition(pos);
-			for (int i = 0; i < (BWAPI::TILEPOSITION_SCALE / BWAPI::WALKPOSITION_SCALE); i++) {
-				walkPos = BWAPI::WalkPosition(walkPos.x + (i % 2), walkPos.y + (i / 2));
-				if (!BWAPI::Broodwar->isWalkable(walkPos))
-					return false;
-				}
-				return true;
-		});
-        if (closestAreaPath > path.getTiles().size()) {
-            closestAreaPath = path.getTiles().size();
-            closestArea = area;
-        }
-    }
-    return closestArea;
 }
 
 BWEM::Ressource* Player::getClosestGeyser(BWAPI::Position pos) {

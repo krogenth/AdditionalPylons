@@ -63,7 +63,7 @@ public:
     @returns
         @retval std::unordered_map<int, BWAPI::Unit> map of units
     */
-    std::unordered_map<int, BWAPI::Unit> getUnitsByPredicate(std::function <bool(const BWAPI::Unit&)> predicate);
+    std::unordered_map<int, BWAPI::Unit> getUnitsByPredicate(std::function <bool(const std::shared_ptr<UnitWrapper>)> predicate);
 
     /*
     Returns a map of count of each BWAPI::UnitType owned by the player
@@ -115,10 +115,6 @@ public:
     */
     int getArmyUnitCount() { return this->armyUnits.size(); }
 
-    const BWAPI::Unit getClosestUnitTo(BWAPI::Position pos, BWAPI::UnitType type);
-
-    const BWEM::Area* getClosestAreaTo(BWAPI::Position pos, BWAPI::UnitType type);
-
 private:
     Player() = default;
 
@@ -130,10 +126,10 @@ private:
     */
     BWEM::Ressource* getClosestResource(BWAPI::Position pos, const std::map<BWEM::Ressource*, int>& resources);
 
-    std::unordered_map<int, std::unique_ptr<ArmyWrapper>> armyUnits;
-    std::unordered_map<int, std::unique_ptr<NonArmyWrapper>> nonArmyUnits;
-    std::unordered_map<int, std::unique_ptr<BuildingWrapper>> buildingUnits;
-    std::unordered_map<int, std::unique_ptr<UnitWrapper>> allUnits;
+    std::unordered_map<int, std::shared_ptr<ArmyWrapper>> armyUnits;
+    std::unordered_map<int, std::shared_ptr<NonArmyWrapper>> nonArmyUnits;
+    std::unordered_map<int, std::shared_ptr<BuildingWrapper>> buildingUnits;
+    std::unordered_map<int, std::shared_ptr<UnitWrapper>> allUnits;
     std::map<BWEM::Ressource*, int> allGeysers;
     std::map<BWEM::Ressource*, int> allMinerals;
     std::set<const BWEM::Area*> buildingAreas;

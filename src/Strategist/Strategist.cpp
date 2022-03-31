@@ -1,9 +1,12 @@
 #include "Strategist.h"
-#include "../Players/Player.h"
+
 #include "./BuildOrders/UnknownBuildOrders.h"
 #include "./BuildOrders/ZergBuildOrders.h"
 #include "./BuildOrders/TerranBuildOrders.h"
 #include "./BuildOrders/ProtossBuildOrders.h"
+
+#include "../Players/Player.h"
+#include "../Lambdas/Unit/UnitLambdas.h"
 
 void Strategist::onStart() {
     // Get initial gamestate information
@@ -18,7 +21,7 @@ void Strategist::onFrame() {
         updateUnitQueue();
     }
 
-    if (!this->checkIfEnemyBaseFound() && Player::getEnemyInstance().getArmyUnitCount() <= 0) {
+    if (!this->checkIfEnemyFound()) {
         this->playDecision = PlayDecision::scout;
     } else {
         this->playDecision = PlayDecision::attack;
@@ -164,11 +167,9 @@ void Strategist::updateUnitQueue() {
     }
 }
 
-bool Strategist::checkIfEnemyBaseFound() {
-    auto depot = Player::getEnemyInstance().getUnitsByPredicate([](const BWAPI::Unit& unit) {
-        return unit->getType() == Player::getEnemyInstance().getRace().getResourceDepot();
-    });
-    return(!depot.empty());
+bool Strategist::checkIfEnemyFound() {
+    return(!(Player::getEnemyInstance().getUnitsByPredicate(lambdas::unit::getBuildingsLambda).empty() &&
+        Player::getEnemyInstance().getUnitsByPredicate(lambdas::unit::getVisibleArmyUnitsLambda).empty()));
 }
 
 void Strategist::displayInfo(int x) {
