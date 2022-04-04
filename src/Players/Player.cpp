@@ -1,5 +1,4 @@
 #include "./Player.h"
-#include "../Strategist/Strategist.h"
 
 #include <limits>
 
