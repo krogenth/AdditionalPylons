@@ -37,7 +37,9 @@ public:
         @retval std::optional<BWAPI::UnitType>
     */
     std::optional<BWAPI::UnitType> getUnitOrder(BWAPI::UnitType type);
-    
+
+    PlayDecision getPlayDecision() { return this->playDecision; }
+
     /*
     Returns the next upgrade order by the requesters BWAPI::UnitType, if there is one
     @returns
@@ -51,12 +53,9 @@ private:
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateUnitQueue();
-    /*
-    Returns if we have found an enemy resource depot
-    @returns
-        @retval bool true if map is not empty
-    */
-    bool foundEnemyBase();
+
+    void onStartAttemptFindEnemyStartingBase();
+    bool checkIfEnemyFound();
 
     int spentMinerals = 0;
     int spentGas = 0;

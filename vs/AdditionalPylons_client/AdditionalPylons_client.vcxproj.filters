@@ -40,6 +40,18 @@
     <Filter Include="Source Files\Units\BuildingWrappers">
       <UniqueIdentifier>{4428e8a8-261c-4d36-b1d6-284937f14695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lambdas">
+      <UniqueIdentifier>{6370867e-c1e4-460b-9520-ea2a06112253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lambdas\Map">
+      <UniqueIdentifier>{69952fc4-1ec5-4f80-a0c9-e79a230d11b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lambdas\Unit">
+      <UniqueIdentifier>{8e824ed8-880c-45c6-8b02-568e574c06ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategist\ScoutEngine">
+      <UniqueIdentifier>{2a90743c-5a5e-461e-b5f7-7dcf93b09c86}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Players\Upgrades">
       <UniqueIdentifier>{c956a7c2-e5b4-40fc-823a-ea6410156156}</UniqueIdentifier>
     </Filter>
@@ -138,6 +150,9 @@
     <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
       <Filter>Source Files\Players\Upgrades</Filter>
     </ClCompile>
@@ -199,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\ArmyWrappers\MutaliskWrapper.h">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lambdas\Units\UnitLambdas.h">
+      <Filter>Source Files\Lambdas\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lambdas\Map\MapLambdas.h">
+      <Filter>Source Files\Lambdas\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.h">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h">
       <Filter>Source Files\Players\Upgrades</Filter>

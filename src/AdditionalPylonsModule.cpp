@@ -5,6 +5,7 @@
 
 #include "./Players/Player.h"
 #include "./Strategist/Strategist.h"
+#include "./Strategist/ScoutEngine/ScoutEngine.h"
 
 void AdditionalPylonsModule::onStart() {
 	//	initialize BWEM
@@ -28,6 +29,7 @@ void AdditionalPylonsModule::onStart() {
 	
 
 	Strategist::getInstance().onStart();
+	ScoutEngine::getInstance().onStart();
 }
 	
 void AdditionalPylonsModule::onEnd(bool isWinner) {
@@ -36,6 +38,8 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 
 void AdditionalPylonsModule::onFrame() {
 	Strategist::getInstance().onFrame();
+	ScoutEngine::getInstance().onFrame();
+	ScoutEngine::getInstance().displayInfo();
 
 	BWEB::Map::draw();
 

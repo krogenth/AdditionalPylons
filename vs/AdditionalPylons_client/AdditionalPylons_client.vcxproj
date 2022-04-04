@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp" />
     <ClCompile Include="..\..\src\AdditionalPylonsClient.cpp" />
     <ClCompile Include="..\..\src\Players\Player.cpp" />
+    <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp" />
     <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp" />
@@ -188,6 +189,8 @@
     <ClCompile Include="..\..\src\Units\NonArmyWrappers\WorkerWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Lambdas\Map\MapLambdas.h" />
+    <ClInclude Include="..\..\src\Lambdas\Units\UnitLambdas.h" />
     <ClInclude Include="..\..\src\Players\Player.h" />
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h" />
     <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="..\..\src\Strategist\BuildOrders\TerranBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\UnknownBuildOrders.h" />
     <ClInclude Include="..\..\src\Strategist\BuildOrders\ZergBuildOrders.h" />
+    <ClInclude Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.h" />
     <ClInclude Include="..\..\src\Strategist\Strategist.h" />
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.h" />
     <ClInclude Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.h" />
