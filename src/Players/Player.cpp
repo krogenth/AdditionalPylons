@@ -11,20 +11,31 @@ void Player::onStart(BWAPI::Race race) {
 }
 
 void Player::onFrame() {
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	for (auto& [key, value] : this->armyUnits) {
 		value->onFrame();
-		value->displayInfo();
 	}
-		
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+
+	BWAPI::Broodwar->drawTextScreen(0, 60, "Army time: %d ms", duration1);
+	t1 = std::chrono::high_resolution_clock::now();
 	for (auto& [key, value] : this->nonArmyUnits) {
 		value->onFrame();
-		value->displayInfo();
 	}
-		
+	t2 = std::chrono::high_resolution_clock::now();
+	auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+
+	BWAPI::Broodwar->drawTextScreen(0, 70, "NonArmy time: %d ms", duration2);
+	t1 = std::chrono::high_resolution_clock::now();
 	for (auto& [key, value] : this->buildingUnits) {
 		value->onFrame();
-		value->displayInfo();
 	}
+	t2 = std::chrono::high_resolution_clock::now();
+	auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+
+	BWAPI::Broodwar->drawTextScreen(0, 80, "Building time: %d ms", duration3);
+	BWAPI::Broodwar->drawTextScreen(0, 90, "Per-Unit time: %d ms", ((duration1 + duration2 + duration3) / allUnits.size()));
 }
 
 void Player::onNukeDetect(BWAPI::Position target) {
@@ -124,11 +135,19 @@ void Player::displayInfo(int x) {
 	default: race = "Unknown"; break;
 	}
 
-	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
 	BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
-	BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
-	BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildingUnits.size());
-	BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
+	BWAPI::Broodwar->drawTextScreen(x, 60, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
+	BWAPI::Broodwar->drawTextScreen(x, 70, "Buildings: %d", this->buildingUnits.size());
+
+	for (auto& [key, value] : this->armyUnits) {
+		value->displayInfo();
+	}
+	for (auto& [key, value] : this->nonArmyUnits) {
+		value->displayInfo();
+	}
+	for (auto& [key, value] : this->buildingUnits) {
+		value->displayInfo();
+	}
 }
 
 std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight) {
