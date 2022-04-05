@@ -37,7 +37,6 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
-	Strategist::getInstance().onFrame();
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	Strategist::getInstance().onFrame();
 	ScoutEngine::getInstance().onFrame();
