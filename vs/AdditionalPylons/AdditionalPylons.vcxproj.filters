@@ -153,6 +153,9 @@
     <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
       <Filter>Source Files\Players\Upgrades</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Dll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
