@@ -5,6 +5,7 @@
 
 #include "./Players/Player.h"
 #include "./Strategist/Strategist.h"
+#include "./Strategist/ScoutEngine/ScoutEngine.h"
 
 void AdditionalPylonsModule::onStart() {
 	//	initialize BWEM
@@ -22,10 +23,13 @@ void AdditionalPylonsModule::onStart() {
 	BWAPI::Broodwar->setLocalSpeed(10);
 	BWAPI::Broodwar->setFrameSkip(0);
 
+	PlayerUpgrades::onStart();
 	Player::getPlayerInstance().onStart(BWAPI::Broodwar->self()->getRace());
 	Player::getEnemyInstance().onStart(BWAPI::Broodwar->enemy()->getRace());
+	
 
 	Strategist::getInstance().onStart();
+	ScoutEngine::getInstance().onStart();
 }
 	
 void AdditionalPylonsModule::onEnd(bool isWinner) {
@@ -33,11 +37,15 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
+	Strategist::getInstance().onFrame();
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	Strategist::getInstance().onFrame();
+	ScoutEngine::getInstance().onFrame();
+	ScoutEngine::getInstance().displayInfo();
 
 	BWEB::Map::draw();
 
+	PlayerUpgrades::onFrame();
 	Player::getPlayerInstance().onFrame();
 
 	Player::getPlayerInstance().displayInfo(460);
@@ -85,7 +93,7 @@ void AdditionalPylonsModule::onUnitCreate(BWAPI::Unit unit) {
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		Player::getPlayerInstance().onUnitCreate(unit);
 	}
-	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()){
+	else if(unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		Player::getEnemyInstance().onUnitCreate(unit);
 	}
 }
@@ -98,10 +106,7 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 		
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		Player::getPlayerInstance().onUnitDestroy(unit);
-
-		if (unit->getType() == BWAPI::UnitTypes::Zerg_Overlord) {
-			Strategist::getInstance().decrementSupply();
-		}
+		Strategist::getInstance().adjustTotalSupply(-unit->getType().supplyProvided());
 	}
 	else if (unit->getPlayer() != BWAPI::Broodwar->neutral()) {
 		Player::getEnemyInstance().onUnitDestroy(unit);

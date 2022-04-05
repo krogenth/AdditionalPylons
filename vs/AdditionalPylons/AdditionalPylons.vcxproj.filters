@@ -40,6 +40,21 @@
     <Filter Include="Source Files\Units\NonArmyWrappers">
       <UniqueIdentifier>{d6e6c18e-6ca5-4cd4-8cfd-0e6eb408abe3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Strategist\ScoutEngine">
+      <UniqueIdentifier>{13e8452c-af72-4143-9938-f9c922c89c55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lambdas">
+      <UniqueIdentifier>{6d90999c-f35b-4761-8aec-23c05f151b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lambdas\Map">
+      <UniqueIdentifier>{87634707-98f8-41bd-bbfe-d1733e9c7c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lambdas\Unit">
+      <UniqueIdentifier>{0a534a33-0143-4462-be67-ae726a9624ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Players\Upgrades">
+      <UniqueIdentifier>{ec38fccc-15e9-413b-9e2d-d89781d9b595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdditionalPylonsModule.cpp">
@@ -132,6 +147,15 @@
     <ClCompile Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.cpp">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp">
+      <Filter>Source Files\Players\Upgrades</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Dll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\AdditionalPylonsModule.h">
@@ -190,6 +214,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Units\ArmyWrappers\ZerglingWrapper.h">
       <Filter>Source Files\Units\ArmyWrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.h">
+      <Filter>Source Files\Strategist\ScoutEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lambdas\Unit\UnitLambdas.h">
+      <Filter>Source Files\Lambdas\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lambdas\Map\MapLambdas.h">
+      <Filter>Source Files\Lambdas\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Players\Upgrades\Upgrades.h">
+      <Filter>Source Files\Players\Upgrades</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

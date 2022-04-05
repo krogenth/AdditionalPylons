@@ -1,46 +1,42 @@
 #include "Strategist.h"
-#include "../Players/Player.h"
+
 #include "./BuildOrders/UnknownBuildOrders.h"
 #include "./BuildOrders/ZergBuildOrders.h"
 #include "./BuildOrders/TerranBuildOrders.h"
 #include "./BuildOrders/ProtossBuildOrders.h"
 
+#include "../Players/Player.h"
+#include "../Lambdas/Unit/UnitLambdas.h"
+
 void Strategist::onStart() {
     // Get initial gamestate information
-    supply_total = BWAPI::Broodwar->self()->supplyTotal();
-    chooseOpeningBuildOrder();
-    playDecision = PlayDecision::scout;
+    this->totalSupply = BWAPI::Broodwar->self()->supplyTotal();
+    this->chooseOpeningBuildOrder();
 }
 
 void Strategist::onFrame() {
     // Check if we need to add something to the queue
-    if (!build_order_queue.empty()) {
-        updateUnitQueue();
+    if (!this->startingBuildQueue.empty()) {
+        this->updateUnitQueue();
     }
 
-    if (playDecision == PlayDecision::scout && foundEnemyBase()) {
-        playDecision = PlayDecision::none;
+    if (!this->checkIfEnemyFound()) {
+        this->playDecision = PlayDecision::scout;
+    } else {
+        this->playDecision = PlayDecision::attack;
     }
-}
-
-void Strategist::incrementSupply() {
-    supply_total += 16; // supply provided by an overlord
-}
-
-void Strategist::decrementSupply() {
-    supply_total -= 16; // supply provided by an overlord, should trigger on overlord death.
 }
 
 void Strategist::determineMapSize() {
     // For now, we determine map size based off # of spawn locations
     if (BWAPI::Broodwar->getStartLocations().size() <= 4) {
-        map_size = MapSize::smallest;
+        this->mapSize = MapSize::smallest;
     }
     else if (BWAPI::Broodwar->getStartLocations().size() <= 6) {
-        map_size = MapSize::medium;
+        this->mapSize = MapSize::medium;
     }
     else {
-        map_size = MapSize::large;
+        this->mapSize = MapSize::large;
     }
 }
 
@@ -64,52 +60,46 @@ void Strategist::swapBuildOrder() {
     // Update build_order_queue and begin comparison to what we have
     this->chooseOpeningBuildOrder();
 
-    while (!build_order_queue.empty()) {
-        // Check if UnitType we are checking for is valid / has been built
-        if (unitsByCount.count(build_order_queue.front().first) > 0) {
-            if (unitsByCount[(build_order_queue.front().first)] > 0) {
-                // Remove from build order queue and decrement counter
-                build_order_queue.pop();
-                unitsByCount[(build_order_queue.front().first)]--;
-            }
-            else {
-                newBuildQueue.push(build_order_queue.front());
-                build_order_queue.pop();
-            }
+    while (!this->startingBuildQueue.empty()) {
+        // check that BWAPI::UnitType exists, and the count is above 0
+        if (unitsByCount.find(this->startingBuildQueue.front().first) != unitsByCount.end() &&
+            unitsByCount[this->startingBuildQueue.front().first] > 0) {
+            unitsByCount[this->startingBuildQueue.front().first]--;
         }
+        // else, add it to the new queue
         else {
-            newBuildQueue.push(build_order_queue.front());
-            build_order_queue.pop();
+            newBuildQueue.push(this->startingBuildQueue.front());
         }
+        this->startingBuildQueue.pop();
     }
 
-    build_order_queue.swap(newBuildQueue);
+    this->startingBuildQueue.swap(newBuildQueue);
 }
 
 std::optional<BWAPI::UnitType> Strategist::getUnitOrder(BWAPI::UnitType type) {
     std::optional<BWAPI::UnitType> unit = std::nullopt;
 
-    switch (type) {
-    case BWAPI::UnitTypes::Zerg_Larva: 
-        if (!larva_queue.empty()) {
-            unit = larva_queue.front(); 
-            larva_queue.pop();
+    auto buildIter = this->buildOrders.find(type);
+    if (buildIter != this->buildOrders.end()) {
+        if (buildIter->second.size()) {
+            unit = buildIter->second.front();
+            buildIter->second.pop();
         }
-        break;
-    case BWAPI::UnitTypes::Zerg_Drone:
-        if (!drone_queue.empty()) {
-            unit = drone_queue.front();
-            drone_queue.pop();
-        }
-        break;
-    case BWAPI::UnitTypes::Zerg_Hatchery: 
-        if (!hatchery_queue.empty()) {
-            unit = hatchery_queue.front(); 
-            hatchery_queue.pop();
-        }
-        break;
     }
     return unit;
+}
+
+std::optional<BWAPI::UpgradeType> Strategist::getUnitUpgradeOrder(BWAPI::UnitType type) {
+    std::optional<BWAPI::UpgradeType> upgrade = std::nullopt;
+
+    auto upgradeIter = this->upgradeOrders.find(type);
+    if (upgradeIter != this->upgradeOrders.end()) {
+        if (upgradeIter->second.size()) {
+            upgrade = upgradeIter->second.front();
+            upgradeIter->second.pop();
+        }
+    }
+    return upgrade;
 }
 
 void Strategist::chooseOpeningBuildOrder() {
@@ -120,28 +110,28 @@ void Strategist::chooseOpeningBuildOrder() {
 
     switch (Player::getEnemyInstance().getRace()) {
     case BWAPI::Races::Protoss:
-        switch (map_size) {
-        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
-        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
-        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
+        switch (this->mapSize) {
+        case MapSize::smallest: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_smallest); break;
+        case MapSize::medium: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_medium); break;
+        case MapSize::large: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(protoss_large); break;
         }
-    case BWAPI::Races::Terran: 
-        switch (map_size) {
-        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
-        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
-        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large); break;
+    case BWAPI::Races::Terran:
+        switch (this->mapSize) {
+        case MapSize::smallest: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_smallest); break;
+        case MapSize::medium: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_medium); break;
+        case MapSize::large: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(terran_large); break;
         }
     case BWAPI::Races::Zerg:
-        switch (map_size) {
-        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest); break;
-        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium); break;
-        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large); break;
+        switch (this->mapSize) {
+        case MapSize::smallest: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_smallest); break;
+        case MapSize::medium: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_medium); break;
+        case MapSize::large: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(zerg_large); break;
         }
     default:
-        switch (map_size) {
-        case MapSize::smallest: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest); break;
-        case MapSize::medium: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium); break;
-        case MapSize::large: build_order_queue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
+        switch (this->mapSize) {
+        case MapSize::smallest: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_smallest); break;
+        case MapSize::medium: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_medium); break;
+        case MapSize::large: this->startingBuildQueue = std::queue<std::pair<BWAPI::UnitType, int>>(unknown_large); break;
         }
     }
 }
@@ -150,34 +140,32 @@ void Strategist::updateUnitQueue() {
     // Need to track the amount of gas / minerals spent each frame in order to be able to queue multiple units on a single frame
     int frame_supply_used = 0;
 
-    while(!build_order_queue.empty() && 
-        ((BWAPI::Broodwar->self()->gatheredGas() - this->gas_spent) >= build_order_queue.front().first.gasPrice()) && 
-        ((BWAPI::Broodwar->self()->gatheredMinerals() - this->minerals_spent) >= build_order_queue.front().first.mineralPrice()) &&
-        ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= build_order_queue.front().second)) {
-        // Sufficient minerals, gas, and proper supply to build the unit
+    // Sufficient minerals, gas, and proper supply to build the unit
+    while(!this->startingBuildQueue.empty() &&
+        ((BWAPI::Broodwar->self()->gatheredGas() - this->spentGas) >= this->startingBuildQueue.front().first.gasPrice()) &&
+        ((BWAPI::Broodwar->self()->gatheredMinerals() - this->spentMinerals) >= this->startingBuildQueue.front().first.mineralPrice()) &&
+        ((BWAPI::Broodwar->self()->supplyUsed() + frame_supply_used) >= this->startingBuildQueue.front().second)) {
+        
+        if (this->buildOrders.find(this->startingBuildQueue.front().first.whatBuilds().first) == this->buildOrders.end())
+            this->buildOrders[this->startingBuildQueue.front().first.whatBuilds().first] = std::queue<BWAPI::UnitType>{};
+        this->buildOrders[this->startingBuildQueue.front().first.whatBuilds().first].push(this->startingBuildQueue.front().first);
 
-        switch(build_order_queue.front().first.whatBuilds().first) {
-            case BWAPI::UnitTypes::Zerg_Larva: larva_queue.push(build_order_queue.front().first); break;
-            case BWAPI::UnitTypes::Zerg_Drone: drone_queue.push(build_order_queue.front().first); break;
-            case BWAPI::UnitTypes::Zerg_Hatchery: hatchery_queue.push(build_order_queue.front().first); break;
-        }
-        if (build_order_queue.front().first.supplyProvided() > 0) {
-            incrementSupply();
-        }
+        this->adjustTotalSupply(this->startingBuildQueue.front().first.supplyProvided());
+
         // update spent minerals + gas + supply
-        minerals_spent += build_order_queue.front().first.mineralPrice();
-        gas_spent += build_order_queue.front().first.gasPrice();
+        this->spentMinerals += this->startingBuildQueue.front().first.mineralPrice();
+        this->spentGas += this->startingBuildQueue.front().first.gasPrice();
 
-        frame_supply_used += (build_order_queue.front().first == BWAPI::UnitTypes::Zerg_Zergling) ? (build_order_queue.front().first.supplyRequired() * 2) : build_order_queue.front().first.supplyRequired();
+        frame_supply_used += (this->startingBuildQueue.front().first == BWAPI::UnitTypes::Zerg_Zergling) ? (this->startingBuildQueue.front().first.supplyRequired() * 2) : this->startingBuildQueue.front().first.supplyRequired();
 
         // Pop from build_order_queue
-        build_order_queue.pop();
+        this->startingBuildQueue.pop();
     }
 }
 
-bool Strategist::foundEnemyBase() {
-    std::unordered_map<int, BWAPI::Unit> depot = Player::getEnemyInstance().getUnitsByType(Player::getEnemyInstance().getRace().getResourceDepot());
-    return(!depot.empty());
+bool Strategist::checkIfEnemyFound() {
+    return(!(Player::getEnemyInstance().getUnitsByPredicate(lambdas::unit::getBuildingsLambda).empty() &&
+        Player::getEnemyInstance().getUnitsByPredicate(lambdas::unit::getVisibleArmyUnitsLambda).empty()));
 }
 
 void Strategist::displayInfo(int x) {
