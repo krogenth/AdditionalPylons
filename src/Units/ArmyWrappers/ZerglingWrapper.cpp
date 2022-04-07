@@ -100,5 +100,4 @@ void ZerglingWrapper::displayInfo() {
     else if (this->unit->getLastCommand().getTargetTilePosition().isValid()) {
         BWAPI::Broodwar->drawLineMap(this->unit->getPosition(), BWAPI::Position(this->unit->getLastCommand().getTargetTilePosition()), BWAPI::Colors::White);
     }
-	BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "ZerglingWrapper");
 }

@@ -7,6 +7,7 @@
 #include "./Strategist/Strategist.h"
 #include "./Strategist/ScoutEngine/ScoutEngine.h"
 
+#include <chrono>
 void AdditionalPylonsModule::onStart() {
 	//	initialize BWEM
 	BWEM::Map::Instance().Initialize(BWAPI::BroodwarPtr);

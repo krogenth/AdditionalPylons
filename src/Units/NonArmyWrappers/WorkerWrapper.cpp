@@ -90,7 +90,6 @@ BWAPI::TilePosition WorkerWrapper::getBlockOfSize(BWAPI::UnitType type, BWAPI::T
 }
 
 void WorkerWrapper::displayInfo() {
-    BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "WorkerWrapper");
     if (this->unit->getLastCommand().getTarget()) {
         BWAPI::Broodwar->drawLineMap(this->unit->getPosition(), this->unit->getLastCommand().getTarget()->getPosition(), BWAPI::Colors::White);
     }

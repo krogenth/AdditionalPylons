@@ -1,7 +1,6 @@
 #include "./Player.h"
-
 #include <limits>
-
+#include <chrono>
 #include "../Strategist/Strategist.h"
 
 void Player::onStart(BWAPI::Race race) {
@@ -19,9 +18,9 @@ void Player::onFrame() {
 	}
 	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
-	BWAPI::Broodwar->drawTextScreen(0, 60, "Army time: %d ms", duration);
     if (!armyUnits.empty()) {
-        BWAPI::Broodwar->drawTextScreen(0, 70, "Army time per unit: %d ms", (duration / armyUnits.size()));
+        BWAPI::Broodwar->drawTextScreen(0, 60, "Army time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 60, "Per unit: %d ms", (duration / armyUnits.size()));
     }
 	t1 = std::chrono::high_resolution_clock::now();
 	for (auto& [key, value] : this->nonArmyUnits) {
@@ -29,9 +28,9 @@ void Player::onFrame() {
 	}
 	t2 = std::chrono::high_resolution_clock::now();
 	duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
-	BWAPI::Broodwar->drawTextScreen(0, 80, "NonArmy time: %d ms", duration);
     if (!nonArmyUnits.empty()) {
-        BWAPI::Broodwar->drawTextScreen(0, 90, "NonArmy time per unit: %d ms", (duration / nonArmyUnits.size()));
+        BWAPI::Broodwar->drawTextScreen(0, 70, "NonArmy time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 70, "Per unit: %d ms", (duration / nonArmyUnits.size()));
     }
 	t1 = std::chrono::high_resolution_clock::now();
 	for (auto& [key, value] : this->buildingUnits) {
@@ -39,9 +38,9 @@ void Player::onFrame() {
 	}
 	t2 = std::chrono::high_resolution_clock::now();
 	duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
-	BWAPI::Broodwar->drawTextScreen(0, 100, "Building time: %d ms", duration);
     if (!buildingUnits.empty()) {
-        BWAPI::Broodwar->drawTextScreen(0, 110, "Building time per unit: %d ms", (duration / buildingUnits.size()));
+        BWAPI::Broodwar->drawTextScreen(0, 80, "Building time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 80, "Per unit: %d ms", (duration / buildingUnits.size()));
     }
 }
 
