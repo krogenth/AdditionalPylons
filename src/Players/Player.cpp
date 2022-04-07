@@ -38,7 +38,6 @@ void Player::onUnitEvade(BWAPI::Unit unit) {
 void Player::onUnitHide(BWAPI::Unit unit) {
 }
 
-// When a unit is created, adds unit to maps corresponding to type
 void Player::onUnitCreate(BWAPI::Unit unit) {
 	//If this is the first time seeing an enemy unit, we now know what race the enemy is
 	if (this->playerRace == BWAPI::Races::Unknown) {
@@ -65,21 +64,19 @@ void Player::onUnitCreate(BWAPI::Unit unit) {
 	}
 	else {
 		switch (unit->getType()) {
-		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_unique<LarvaWrapper>(LarvaWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_unique<OverlordWrapper>(OverlordWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_unique<ZerglingWrapper>(ZerglingWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_unique<HydraliskWrapper>(HydraliskWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_unique<LurkerWrapper>(LurkerWrapper(unit)); break;
-		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_unique<MutaliskWrapper>(MutaliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Larva: this->nonArmyUnits[unit->getID()] = std::make_shared<LarvaWrapper>(LarvaWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Overlord: this->nonArmyUnits[unit->getID()] = std::make_shared<OverlordWrapper>(OverlordWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Zergling: this->armyUnits[unit->getID()] = std::make_shared<ZerglingWrapper>(ZerglingWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Hydralisk: this->armyUnits[unit->getID()] = std::make_shared<HydraliskWrapper>(HydraliskWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Lurker: this->armyUnits[unit->getID()] = std::make_shared<LurkerWrapper>(LurkerWrapper(unit)); break;
+		case BWAPI::UnitTypes::Zerg_Mutalisk: this->armyUnits[unit->getID()] = std::make_shared<MutaliskWrapper>(MutaliskWrapper(unit)); break;
 		default: this->armyUnits[unit->getID()] = std::make_unique<ArmyWrapper>(ArmyWrapper(unit)); break;
 		}
 	}
 	this->allUnits[unit->getID()] = std::make_unique<UnitWrapper>(UnitWrapper(unit));
 }
 
-// When a unit is destroyed, removes unit from maps corresponding type
 void Player::onUnitDestroy(BWAPI::Unit unit) {
-
     if (unit->getType().isBuilding()) {
         this->buildingUnits.erase(unit->getID());
     } else if (unit->getType().isWorker()) {
@@ -118,20 +115,14 @@ void Player::onUnitComplete(BWAPI::Unit unit) {
 void Player::onUnitDiscover(BWAPI::Unit unit) {
 }
 
-std::unordered_map<int, BWAPI::Unit> Player::getUnitsByType(BWAPI::UnitType type) {
-    std::unordered_map<int, BWAPI::Unit> specUnits;
-    if (type == BWAPI::UnitTypes::Unknown) {
-        for (auto& [key, value] : this->allUnits) {
-            specUnits[value->getID()] = value->getUnit();
-        }
-    } else {
-        for (auto& [key, value] : this->allUnits) {
-            if (value->getUnitType() == type)
-                specUnits[value->getID()] = value->getUnit();
+std::unordered_map<int, BWAPI::Unit> Player::getUnitsByPredicate(std::function <bool(const std::shared_ptr<UnitWrapper>)> predicate) {
+    std::unordered_map<int, BWAPI::Unit> units;
+    for (const auto& [key, value] : this->allUnits) {
+        if (predicate(value)) {
+            units[key] = value->getUnit();
         }
     }
-
-    return specUnits;
+    return units;
 }
 
 // Displays player info (race, # of units, # of buildings)
@@ -242,10 +233,32 @@ BWEM::Ressource* Player::getClosestResource(BWAPI::Position pos, const std::map<
             }
              return true;
         });
-        if(path.isReachable() && path.getTiles().size() < closestDistance){
+        if(path.isReachable() && path.getTiles().size() < closestDistance) {
             closest = key;
             closestDistance = path.getTiles().size();
         }
     }
     return closest;
 }
+
+namespace PlayerUpgrades {
+	std::map<BWAPI::Player, std::shared_ptr<Upgrades>> playerUpgradesMap;
+
+    void onStart() {
+        playerUpgradesMap.clear();
+    }
+
+	void onFrame() {
+		for (const auto& playerUpgrades : playerUpgradesMap)
+			playerUpgrades.second.get()->onFrame();
+	}
+
+	std::shared_ptr<Upgrades> getPlayerUpgrades(BWAPI::Player player) {
+		auto upgradesIter = playerUpgradesMap.find(player);
+		if (upgradesIter != playerUpgradesMap.end())
+			return upgradesIter->second;
+		auto upgrades = std::make_shared<Upgrades>(player);
+		playerUpgradesMap[player] = upgrades;
+		return upgrades;
+	}
+};
