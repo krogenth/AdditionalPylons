@@ -8,4 +8,9 @@ public:
 
     void onFrame() override;
     void displayInfo() override;
+
+protected:
+    void handleScoutStrategy();
+    void handleAttackStrategy();
+    void handleDefenseStrategy();
 };

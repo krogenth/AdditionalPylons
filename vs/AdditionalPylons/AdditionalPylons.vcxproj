@@ -179,6 +179,7 @@
     <ClCompile Include="..\..\src\Strategist\ScoutEngine\ScoutEngine.cpp" />
     <ClCompile Include="..\..\src\Players\Upgrades\Upgrades.cpp" />
     <ClCompile Include="..\..\src\Strategist\Strategist.cpp" />
+    <ClCompile Include="..\..\src\Units\ArmyWrappers\ArmyWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\HydraliskWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\LurkerWrapper.cpp" />
     <ClCompile Include="..\..\src\Units\ArmyWrappers\MustaliskWrapper.cpp" />

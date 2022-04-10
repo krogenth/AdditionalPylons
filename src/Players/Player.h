@@ -51,6 +51,8 @@ public:
     BWAPI::Race getRace() { return this->playerRace; }
     void displayInfo(int x);
 
+    void updateUnitPositions();
+
     /*
     Returns a map of all units in a specified area
     @returns
@@ -64,7 +66,7 @@ public:
     @returns
         @retval std::unordered_map<int, BWAPI::Unit> map of units
     */
-    std::unordered_map<int, BWAPI::Unit> getUnitsByPredicate(std::function <bool(const std::shared_ptr<UnitWrapper>)> predicate);
+    std::unordered_map<int, std::shared_ptr<UnitWrapper>> getUnitsByPredicate(std::function <bool(const std::shared_ptr<UnitWrapper>)> predicate);
 
     /*
     Returns a map of count of each BWAPI::UnitType owned by the player

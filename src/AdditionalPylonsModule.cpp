@@ -45,8 +45,12 @@ void AdditionalPylonsModule::onFrame() {
 
 	BWEB::Map::draw();
 
+	Player::getPlayerInstance().updateUnitPositions();
+	Player::getEnemyInstance().updateUnitPositions();
+
 	PlayerUpgrades::onFrame();
 	Player::getPlayerInstance().onFrame();
+
 
 	Player::getPlayerInstance().displayInfo(460);
 	Player::getEnemyInstance().displayInfo(560);
@@ -114,6 +118,12 @@ void AdditionalPylonsModule::onUnitDestroy(BWAPI::Unit unit) {
 }
 
 void AdditionalPylonsModule::onUnitMorph(BWAPI::Unit unit) {
+	// edge case: extractors only morph the underlying unit when they die and are created, so this can only be handled here
+	if (unit->getType() == BWAPI::UnitTypes::Resource_Vespene_Geyser) {
+		Player::getPlayerInstance().onUnitDestroy(unit);
+		Player::getEnemyInstance().onUnitDestroy(unit);
+	}
+
 	if (unit->getPlayer() == BWAPI::Broodwar->self()) {
 		Player::getPlayerInstance().onUnitMorph(unit);
 	}

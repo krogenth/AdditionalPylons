@@ -11,6 +11,15 @@ public:
     BWAPI::UnitType getUnitType() { return this->type; }
     int getID() { return this->unitID; }
 
+    virtual const BWAPI::Position& getPosition() { return this->pos; }
+    virtual const BWAPI::TilePosition& getTilePosition() { return this->tilePos; }
+    virtual void updatePosition() {
+        if (this->unit->isVisible(BWAPI::Broodwar->self()) && this->unit->getPosition().isValid()) {
+            this->pos = this->unit->getPosition();
+            this->tilePos = this->unit->getTilePosition();
+        }
+    }
+
     virtual bool isBusy() {
         if (!this->unit->isCompleted() ||
             this->unit->isCarryingMinerals() ||
@@ -22,9 +31,16 @@ public:
         return false;
     }
     virtual void onFrame() {}
-    virtual void displayInfo() { BWAPI::Broodwar->drawTextMap(this->unit->getPosition(), "UnitWrapper"); }
+    virtual void displayInfo() {}
+    
 
 protected:
+    virtual void handleScoutStrategy() {};
+	virtual void handleAttackStrategy() {};
+	virtual void handleDefenseStrategy() {};
+
+    BWAPI::Position pos = BWAPI::Positions::Invalid;
+    BWAPI::TilePosition tilePos = BWAPI::TilePositions::Invalid;
     std::queue<BWAPI::TilePosition> queue;
     int unitID;
     BWAPI::Unit unit;
