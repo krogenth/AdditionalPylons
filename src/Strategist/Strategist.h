@@ -52,8 +52,8 @@ private:
 
     void determineMapSize();
     void chooseOpeningBuildOrder();
-    void updateUnitQueue();
-
+    void updateStartingBuildingQueues();
+    void StartOfNonStart();
     void onStartAttemptFindEnemyStartingBase();
     bool checkIfEnemyFound();
 

@@ -17,7 +17,9 @@ void Strategist::onStart() {
 void Strategist::onFrame() {
     // Check if we need to add something to the queue
     if (!this->startingBuildQueue.empty()) {
-        this->updateUnitQueue();
+        this->updateStartingBuildingQueues();
+    }else {
+        
     }
 
     if (!this->checkIfEnemyFound()) {
@@ -136,7 +138,7 @@ void Strategist::chooseOpeningBuildOrder() {
     }
 }
 
-void Strategist::updateUnitQueue() {
+void Strategist::updateStartingBuildingQueues() {
     // Need to track the amount of gas / minerals spent each frame in order to be able to queue multiple units on a single frame
     int frame_supply_used = 0;
 
