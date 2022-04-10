@@ -7,6 +7,7 @@
 #include "./Strategist/Strategist.h"
 #include "./Strategist/ScoutEngine/ScoutEngine.h"
 
+#include <chrono>
 void AdditionalPylonsModule::onStart() {
 	//	initialize BWEM
 	BWEM::Map::Instance().Initialize(BWAPI::BroodwarPtr);
@@ -37,6 +38,7 @@ void AdditionalPylonsModule::onEnd(bool isWinner) {
 }
 
 void AdditionalPylonsModule::onFrame() {
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	Strategist::getInstance().onFrame();
 	ScoutEngine::getInstance().onFrame();
 	ScoutEngine::getInstance().displayInfo();
@@ -46,9 +48,13 @@ void AdditionalPylonsModule::onFrame() {
 	PlayerUpgrades::onFrame();
 	Player::getPlayerInstance().onFrame();
 
-	Player::getPlayerInstance().displayInfo(400);
-	Player::getEnemyInstance().displayInfo(530);
-	Strategist::getInstance().displayInfo(400);
+	Player::getPlayerInstance().displayInfo(460);
+	Player::getEnemyInstance().displayInfo(560);
+	Strategist::getInstance().displayInfo(460);
+
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+	BWAPI::Broodwar->drawTextScreen(0, 50, "Module time: %d ms", duration);
 }
 
 void AdditionalPylonsModule::onSendText(std::string text) {

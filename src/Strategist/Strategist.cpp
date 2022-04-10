@@ -176,7 +176,5 @@ void Strategist::displayInfo(int x) {
         case PlayDecision::defend: play = "Defend"; break;
         default: play = "None"; break;
     }
-    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
-    BWAPI::Broodwar->drawTextScreen(x, 95, "Play: %s", play.c_str());
-    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
+    BWAPI::Broodwar->drawTextScreen(x, 80, "Play: %s", play.c_str());
 }
