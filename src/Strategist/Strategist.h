@@ -2,7 +2,6 @@
 #include <map>
 #include <queue>
 #include <optional>
-
 #include <BWAPI.h>
 
 enum class MapSize { smallest, medium, large };
@@ -53,7 +52,7 @@ private:
     void determineMapSize();
     void chooseOpeningBuildOrder();
     void updateStartingBuildingQueues();
-    void StartOfNonStart();
+    void UpdateInfinityBuildQueues();
     void onStartAttemptFindEnemyStartingBase();
     bool checkIfEnemyFound();
 
