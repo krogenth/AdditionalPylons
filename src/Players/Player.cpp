@@ -1,7 +1,6 @@
 #include "./Player.h"
-
 #include <limits>
-
+#include <chrono>
 #include "../Strategist/Strategist.h"
 
 void Player::onStart(BWAPI::Race race) {
@@ -13,19 +12,35 @@ void Player::onStart(BWAPI::Race race) {
 }
 
 void Player::onFrame() {
-    for (auto& [key, value] : this->armyUnits) {
-        value->onFrame();
-        value->displayInfo();
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+	for (auto& [key, value] : this->armyUnits) {
+		value->onFrame();
+	}
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    if (!armyUnits.empty()) {
+        BWAPI::Broodwar->drawTextScreen(0, 60, "Army time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 60, "Per unit: %d ms", (duration / armyUnits.size()));
     }
-
-    for (auto& [key, value] : this->nonArmyUnits) {
-        value->onFrame();
-        value->displayInfo();
+	t1 = std::chrono::high_resolution_clock::now();
+	for (auto& [key, value] : this->nonArmyUnits) {
+		value->onFrame();
+	}
+	t2 = std::chrono::high_resolution_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    if (!nonArmyUnits.empty()) {
+        BWAPI::Broodwar->drawTextScreen(0, 70, "NonArmy time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 70, "Per unit: %d ms", (duration / nonArmyUnits.size()));
     }
-
-    for (auto& [key, value] : this->buildingUnits) {
-        value->onFrame();
-        value->displayInfo();
+	t1 = std::chrono::high_resolution_clock::now();
+	for (auto& [key, value] : this->buildingUnits) {
+		value->onFrame();
+	}
+	t2 = std::chrono::high_resolution_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    if (!buildingUnits.empty()) {
+        BWAPI::Broodwar->drawTextScreen(0, 80, "Building time: %d ms", duration);
+        BWAPI::Broodwar->drawTextScreen(120, 80, "Per unit: %d ms", (duration / buildingUnits.size()));
     }
 }
 
@@ -144,11 +159,19 @@ void Player::displayInfo(int x) {
             break;
     }
 
-    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Large);
-    BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
-    BWAPI::Broodwar->drawTextScreen(x, 65, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
-    BWAPI::Broodwar->drawTextScreen(x, 80, "Buildings: %d", this->buildingUnits.size());
-    BWAPI::Broodwar->setTextSize(BWAPI::Text::Size::Default);
+	BWAPI::Broodwar->drawTextScreen(x, 50, "Race: %s", race.c_str());
+	BWAPI::Broodwar->drawTextScreen(x, 60, "Units: %d", this->armyUnits.size() + this->nonArmyUnits.size());
+	BWAPI::Broodwar->drawTextScreen(x, 70, "Buildings: %d", this->buildingUnits.size());
+
+	for (auto& [key, value] : this->armyUnits) {
+		value->displayInfo();
+	}
+	for (auto& [key, value] : this->nonArmyUnits) {
+		value->displayInfo();
+	}
+	for (auto& [key, value] : this->buildingUnits) {
+		value->displayInfo();
+	}
 }
 
 std::unordered_map<int, BWAPI::Unit> Player::getUnitsByArea(BWAPI::Position topLeft, BWAPI::Position botRight) {
