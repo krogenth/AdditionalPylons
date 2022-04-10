@@ -47,9 +47,9 @@ void OverlordWrapper::handleScoutStrategy() {
 	}
 
 	// if we aren't at the scout location and we did not issue an order to go that location, issue the command
-	if (this->scoutLocation != this->unit->getTilePosition() && this->unit->getTargetPosition() != BWAPI::Position(this->scoutLocation)) {
-		this->unit->move(BWAPI::Position(this->scoutLocation));
-	} else if (this->scoutLocation == this->unit->getTilePosition()) {
+	if (!BWAPI::Broodwar->isVisible(this->scoutLocation) && this->unit->getTargetPosition() != BWAPI::Position(this->scoutLocation)) {
+		this->unit->move(BWAPI::Position(this->scoutLocation), true);
+	} else if (BWAPI::Broodwar->isVisible(this->scoutLocation)) {
 		if (this->scoutLocation.isValid()) {
 			if (Player::getEnemyInstance().getBuildingAreas().empty() ||
 				Player::getEnemyInstance().getBuildingAreas().find(BWEM::Map::Instance().GetArea(this->scoutLocation)) ==

@@ -100,6 +100,8 @@ void Player::onUnitDestroy(BWAPI::Unit unit) {
 			bool areaStillOwned = false;
 			auto area = BWEM::Map::Instance().GetArea(wrapper->second->getTilePosition());
 			for (const auto& building : this->buildingUnits) {
+				// ignore the building being destroyed
+				if (building.first == wrapper->first) continue;
 				if (BWEM::Map::Instance().GetArea(building.second->getTilePosition()) == area) {
 					areaStillOwned = true;
 				}
