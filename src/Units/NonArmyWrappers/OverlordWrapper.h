@@ -10,6 +10,9 @@ public:
 
     void onFrame() override;
     void displayInfo() override;
-private:
+
+protected:
+    void handleScoutStrategy();
+    
     BWAPI::TilePosition scoutLocation = BWAPI::TilePositions::Invalid;
 };
